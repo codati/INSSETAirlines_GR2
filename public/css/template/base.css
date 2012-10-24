@@ -1,0 +1,102 @@
+#body
+{
+	width: 688px;
+	min-height: 600px;
+	
+	position: absolute;
+	top: 0;
+	left: 50%;
+	margin-left: -344px;
+	
+	color: #2d578e;
+	font-size: 0.750em;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+
+a, a:hover, a:visited {color: #2d578e; text-decoration: none;}
+a:hover {text-decoration: underline;}
+
+#left_side
+{
+	background-image: url("../../img/template/cote.png");
+	background-position: top left;
+	background-repeat: no-repeat;
+	
+	width: 688px;
+}
+
+#right_side
+{
+	background-image: url("../../img/template/cote.png");
+	background-position: top right;
+	background-repeat: no-repeat;
+	
+	width: 688px;
+}
+
+#contenu
+{
+	width: 688px;
+	min-height: 600px;
+	
+	margin-left: 1px;
+	margin-right: 1px;
+}
+
+section
+{
+	padding: 5px;
+	width: 775px;
+}
+
+.end_float {
+ clear: both;
+}
+
+
+#bt_co_layout {
+ position : absolute;
+ border-radius : 10px;
+ font-size : 1.4em;
+ right : 10px;
+ top : 30px;
+ width : 120px;
+ height : 33px;
+ background : url('../../img/template/bt_co.png');
+}
+#bt_co_layout:hover {
+ text-decoration : underline;
+ font-size : 1.3em;
+ box-shadow : 2px 2px 3px black; 
+}
+
+/****		contenu		****/
+.section_contenu
+{
+	width: 686px;
+	padding-left: 0px;
+}
+
+article {margin-bottom: 60px;}
+
+.article {padding-left: 25px;}
+.article > legend
+{
+	font-size: 1.333em;
+	font-weight: bold;
+	
+}
+
+.article_cont
+{
+	clear: both;
+	padding-top: 7px;
+	padding-left: 25px;
+	padding-right: 25px;
+}
+
+
+
+
+
+

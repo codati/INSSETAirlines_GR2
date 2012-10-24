@@ -1,0 +1,76 @@
+#overlay {
+ width : 500px;
+ height : 343px;
+ background-image : url('../img/overlay/maquetteFin.png');
+ position : relative;
+ top  : 100px;
+ left : 400px;
+ z-index : 2;
+ border-radius : 50px;
+ box-shadow : 5px 5px 20px #ffffff;
+ display : none;
+}
+#erreur_co {
+ font-size : 1em;
+ color : red;
+}
+#bt_fermer {
+ position : absolute;
+ width : 43px;
+ height : 40px;
+ background : url('../img/overlay/bt_fermer.png');
+ right : -1px;
+ top : -6px;
+}
+#bt_fermer:hover {
+ background : url('../img/overlay/bt_fermer.png') 50px 0 ;
+}
+#lien_fermer {
+ position : absolute;
+ bottom : 10px;
+ left : 50px;
+}
+#form_login {
+ position : absolute;
+ top : 35%;
+ left : 12%;
+ width : 330px;
+ background : url('../img/overlay/pixel.png') repeat;
+ padding : 20px;
+}
+#input_user, #input_psw {
+ width : 200px;
+}
+#input_user, #input_psw, #bt_co {
+ margin-top : 10px;
+}
+#input_psw {
+ /*margin-left : 35px;*/
+}
+#bt_co { 
+ font-family : Verdana;
+ font-size : 1.5em;
+ width : 150px;
+ height : 39px;
+ margin-left : 100px;
+ background  : url('../img/overlay/bouton.png');
+ border-radius : 10px;
+ box-shadow : 2px 2px 5px black;
+}
+#bt_co:hover {
+ text-decoration : underline;
+ box-shadow : 2px 2px 5px black inset;
+ cursor : pointer;
+}
+#bglayer {
+ background : #779fff;
+ position : fixed;
+ top : 0;
+ left : 0;
+ opacity : 0.8	;
+ z-index : 1;
+ height : 100%;
+ width : 100%;
+ display : none;
+}
+

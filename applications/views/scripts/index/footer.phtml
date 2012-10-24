@@ -1,0 +1,76 @@
+				<footer>
+					<p></p>
+				</footer>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--			
+<div id="overlay">
+	<div id="bt_fermer"></div>
+	<!-- action : rediriger vers le site avec les menu perso 	--
+	<form action="<?php echo $this->baseUrl();?>/test/index" method="post" id="form_login">
+		Nom d'utilisateur : <input type="text" name="username" id="input_user"><br>
+		Mot de passe : <input type="password" name="pass" id="input_psw"><br>
+		<span id="erreur_co"></span>
+		<input type="button" name="valider" value="Connexion" id="bt_co" onclick="verifConnexion();">		<br>
+	</form>
+<!--	<a href="lienversaccueil" id="lien_fermer">Fermer [X]</a> --
+</div>
+
+<div id="bglayer"></div>
+-->
+
+
+<?php /*		*/
+	// creer un objet formulaire
+	$monform = new Zend_Form;
+	
+	// parametrer le formulaire
+	$monform->setMethod('post');
+	$monform->setAction('/test/index');
+	$monform->setAttrib('id','form_login');
+	
+	//creer des elements de formulaires
+	$eNom = new Zend_Form_Element_Text('input_user');
+	$eNom->setLabel('Nom d\'utilisateur : ');
+//	$eNom->setRequired(true);
+	
+	$ePsw = new Zend_Form_Element_Password('input_psw');
+	$ePsw->setLabel('Mot de passe : ');
+
+	$eBouton = new Zend_Form_Element_Button('bt_co');
+	$eBouton->setLabel('Connexion');
+	
+	// ajout des elements au formulaire
+	$monform->addElement($eNom);
+	$monform->addElement($ePsw);
+	$monform->addElement($eBouton);
+	
+	
+	echo '<div id=overlay>
+		<div id=bt_fermer></div>';
+	echo $monform;
+	echo '</div><div id=bglayer></div>';
+?>
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

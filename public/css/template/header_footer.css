@@ -1,0 +1,115 @@
+/**		HEADER		**/
+#banniere
+{
+	width: 686px;
+	height: 117px;
+	
+	background-image: url("../../img/template/head.jpg");
+	background-repeat: no-repeat;
+}
+
+#banniere_nuage
+{
+	background-image: url("../../img/template/nuage.png");
+	background-repeat: no-repeat;
+	position: absolute;
+	top: 0;
+	left: 0;
+	
+	width: 365px;
+	height: 110px;
+}
+
+.head_logo
+{
+	position: absolute;
+	top: 35px;
+	left: 45px;
+}
+
+#menu
+{
+	width: 686px;
+	
+	padding-bottom: 10px;
+	background-image: url("../../img/template/menu_ligne_horizontale.png");
+	background-position: bottom;
+	background-repeat: no-repeat;
+	
+	position: relative;
+	top: -10px;
+	font-size: 1.083em;
+	font-weight: bold;
+}
+
+#menu > ol
+{
+	list-style-type: none;
+	position: relative;
+	top: 0px;
+	left: 0px;
+}
+
+#menu > ol > li
+{
+	float: left;
+	display: block;
+	text-align: center;
+	
+	width: 108px;
+	height: 33px;
+	
+	background-image: url("../../img/template/menu_separation.jpg");
+	background-repeat: no-repeat;
+	background-position: right;
+	
+	padding-left: 3px;
+	padding-right: 3px;
+	padding-top: 3px;
+}
+
+#menu > ol > .menu_li_end {background: none;}
+#menu > ol > .menu_oneline {padding-top: 10px; height: 23px;}
+
+/**** Navigation (fil d'arianne) ****/
+nav {margin-bottom: 30px;}
+.nav_start /* ol */
+{
+	list-style-type: none;
+	font-size: 0.875em;
+}
+
+.nav_start > li
+{
+	display: inline;
+	float: left;
+}
+.nav_start > li > a, .nav_start > li > a:hover, .nav_start > li > a:visited
+{
+	color: #2d578e;;
+	text-decoration: none;
+}
+
+.nav_start > li > a:hover {text-decoration: underline;}
+
+.nav_separe
+{
+	margin: 0px;
+	margin-left: 5px;
+}
+.nav_separe:after
+{
+	content: "->";
+	
+	margin: 0px;
+	margin-right: 5px;
+}
+
+
+/** 		FOOTER			**/
+
+
+
+
+
+
