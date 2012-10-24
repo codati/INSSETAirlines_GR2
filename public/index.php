@@ -10,6 +10,7 @@ set_include_path(implode(PATH_SEPARATOR, array(realpath(LIBRARY_PATH), get_inclu
 // on a besoin de zend app pour lance lappli
 require_once 'Zend/Application.php';
 
+
 // on lance la session
 require_once 'Zend/Session.php';
 Zend_Session::start();
