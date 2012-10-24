@@ -39,15 +39,17 @@
  padding : 20px;
 }
 #input_user, #input_psw {
- width : 200px;
+ width : 150px;
 }
-#input_user, #input_psw, #bt_co {
- margin-top : 10px;
+#input_user {
+    margin-left : 10px;
+    
 }
 #input_psw {
- /*margin-left : 35px;*/
+ margin-left : 45px;    
 }
 #bt_co { 
+     margin-top : 10px;
  font-family : Verdana;
  font-size : 1.5em;
  width : 150px;
@@ -73,4 +75,7 @@
  width : 100%;
  display : none;
 }
-
+#form_login > dl > dt, #form_login > dl > dd {
+    float : left;
+    
+}

@@ -29,24 +29,32 @@
 	
 	// parametrer le formulaire
 	$monform->setMethod('post');
-	$monform->setAction('/test/index');
-	$monform->setAttrib('id','form_login');
-	
+	$monform->setAction($this->baseUrl().'/test/index');
+        $monform->setAttrib('id','form_login');
+        
+        $monform->addErrorMessage('test');
+        
 	//creer des elements de formulaires
 	$eNom = new Zend_Form_Element_Text('input_user');
 	$eNom->setLabel('Nom d\'utilisateur : ');
-//	$eNom->setRequired(true);
 	
 	$ePsw = new Zend_Form_Element_Password('input_psw');
 	$ePsw->setLabel('Mot de passe : ');
 
+        $eHidden = new Zend_Form_Element_Hidden('hid');
+        $eHidden->setAttrib('id', 'test');
+        
 	$eBouton = new Zend_Form_Element_Button('bt_co');
 	$eBouton->setLabel('Connexion');
+        $eBouton->setAttrib('onclick','verifConnexion();');
 	
+        
+        
 	// ajout des elements au formulaire
 	$monform->addElement($eNom);
 	$monform->addElement($ePsw);
-	$monform->addElement($eBouton);
+	$monform->addElement($eHidden);
+        $monform->addElement($eBouton);
 	
 	
 	echo '<div id=overlay>

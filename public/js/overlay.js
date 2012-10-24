@@ -19,7 +19,11 @@ function verifConnexion() {
 	var username = $('#input_user').val();
 	var mdp = $('#input_psw').val();
 	if((username == "") || (mdp == ""))
-		$('#erreur_co').html('Vous n\'avez pas remplis tous les champs !<br>');
-	else
-		$("#form_login").submit();
+        {
+		$('#test').after('<br><span id="erreur_co">Vous n\'avez pas remplis tous les champs<span><br>');
+        }
+        else
+	{	
+            $("#form_login").submit();  
+        }
 }	
