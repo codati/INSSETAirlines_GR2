@@ -3,7 +3,7 @@ class IndexController extends Zend_Controller_Action
 {
 	public function indexAction()
 	{
-            $this->_helper->actionStack('header','index','default',array());
+       $this->_helper->actionStack('header','index','default',array());
 	}	
 
    public function headerAction()

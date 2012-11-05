@@ -13,6 +13,8 @@ $(document).ready(function() {
 		if(e.which==13)
 			verifConnexion();
 	});
+        $('#overlay').css('top',screen.height /2);
+        $('#overlay').css('left',screen.width /2);
 });
 
 function verifConnexion() {
@@ -20,7 +22,7 @@ function verifConnexion() {
 	var mdp = $('#input_psw').val();
 	if((username == "") || (mdp == ""))
         {
-		$('#test').after('<br><span id="erreur_co">Vous n\'avez pas remplis tous les champs<span><br>');
+		$('#err').after('<br><span id="erreur_co">Vous n\'avez pas remplis tous les champs<span><br>');
         }
         else
 	{	

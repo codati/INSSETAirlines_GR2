@@ -3,8 +3,8 @@
  height : 343px;
  background-image : url('../img/overlay/maquetteFin.png');
  position : relative;
- top  : 100px;
- left : 400px;
+/* top  : 100px;
+ left : 400px;*/
  z-index : 2;
  border-radius : 50px;
  box-shadow : 5px 5px 20px #ffffff;
@@ -42,8 +42,7 @@
  width : 150px;
 }
 #input_user {
-    margin-left : 10px;
-    
+ margin-left : 10px;    
 }
 #input_psw {
  margin-left : 45px;    
@@ -76,6 +75,5 @@
  display : none;
 }
 #form_login > dl > dt, #form_login > dl > dd {
-    float : left;
-    
+    float : left;    
 }
