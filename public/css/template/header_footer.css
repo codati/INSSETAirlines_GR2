@@ -56,16 +56,22 @@
 	display: block;
 	text-align: center;
 	
-	width: 108px;
+	/*width: 108px;*/
 	height: 33px;
 	
 	background-image: url("../../img/template/menu_separation.jpg");
 	background-repeat: no-repeat;
 	background-position: right;
 	
-	padding-left: 3px;
-	padding-right: 3px;
+	padding-left: 15px;
+	padding-right: 15px;
 	padding-top: 3px;
+}
+
+#menu > ol > .menu_titre
+{
+	background-image: url("../../img/template/menu_separation_fleche.png");
+	padding-right: 20px;
 }
 
 #menu > ol > .menu_li_end {background: none;}
