@@ -6,12 +6,12 @@ $(document).ready(function() {
                     $('#bglayer').hide();
     });
     $('#bt_co_layout').click(function() {
-            $('#overlay').show();
             $('#bglayer').show();
+            $('#overlay').fadeIn(1000);
     });
     $('#input_psw').keypress(function(e) {
-            if(e.which==13)
-                    verifConnexion();
+        if(e.which==13)
+            verifConnexion();
     });
     $('#overlay').css('margin','auto');
     $('#overlay').css('margin-top','10%');
@@ -22,7 +22,8 @@ function verifConnexion() {
     var mdp = $('#input_psw').val();
     if((username == "") || (mdp == ""))
     {
-        $('#err').after('<br><span id="erreur_co">Vous n\'avez pas remplis tous les champs<span><br>');
+        $('#erreur_co').remove();
+        $('#err').after('<span id="erreur_co">Vous n\'avez pas remplis tous les champs<span>');
     }
     else
     {	
