@@ -1,59 +1,74 @@
 
 <div id="body">
-	<div id="left_side">
-		<div id="right_side">
-			<div id="contenu">
-				<input type="button" value="Se connecter" id="bt_co_layout">
-				<header>
-					<div id="banniere">
-						<div id="banniere_nuage"><a href="" title="Accueil"><img src="<?php echo $this->BaseUrl();?>/img/template/logo.png" alt="Insset Airline" class="head_logo"/></a></div>
-					</div>
-					<div id="menu">
-						<ol>
-							<li class="menu_oneline"><a href="" title="">Accueil</a></li>
-							<li><a href="">Offres<br/>promotionnelles</a></li>
-							<li class="menu_oneline"><a href="">Voir le catalogue</a></li>
-							<li class="menu_li_end"><a href="">Informations<br/>Retards</a></li>
-							
-							<!-- 
-							<li class="menu_titre">Service exploitation</li>
-							<li><a href="">Gestion des vols</a></li>
-							<li class="menu_oneline menu_li_end"><a href="">Incidents (0)</a></li>
-							-->
-							
-							<!-- 
-							<li class="menu_titre"><a href="" title="">Service maintenance</a></li>
-							<li class="menu_oneline menu_li_end"><a href="">Planification</a></li>
-							-->
-							
-							<!--
-							<li class="menu_titre"><a href="" title="">Service commercial</a></li>
-							-->
-							
-							<!-- 
-							<li class="menu_titre menu_oneline"><a href="" title="">DRH</a></li>
-							-->
-							
-							<!-- 
-							<li class="menu_titre menu_oneline"><a href="" title="">Planning</a></li>
-							-->
-						</ol>
-						<div class="end_float"></div>
-					</div>
-				</header>
-				<section>
-					<nav class="nav_ariane" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
-						<ol class="nav_start">
-							<li>
-								<a href="accueil" itemprop="url" title="Accueil"><span itemprop="title">Accueil</span></a>
-								<span class="nav_separe"></span>
-							</li>
-							<li itemprop="child" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
-								<a href="" itemprop="url" title="Lorem"><span itemprop="title">Lorem</span></a>
-							</li>
-						</ol>
-						<div class="end_float"></div>
-					</nav>
+    <div id="left_side">
+        <div id="right_side">
+            <div id="contenu">
+                <input type="button" value="Se connecter" id="bt_co_layout">
+                    <header>
+                        <div id="banniere">
+                            <div id="banniere_nuage"><a href="" title="Accueil"><img src="<?php echo $this->BaseUrl();?>/img/template/logo.png" alt="Insset Airline" class="head_logo"/></a></div>
+                        </div>
+                        <div id="menu">
+                            <table>
+                                <tr>
+                                <?php
+                                
+                                    if(isset($this->lesServices))  // menu de l'utilisateur
+                                    {
+                                        echo '<td><a href="" title="">Accueil</a></td>';
+                                        $nbServices = count($this->lesServices) -1;
+                                        //Zend_Debug::dump($this->lesSousServices);
+                                        foreach($this->lesServices as $key => $unService)
+                                        {                                            
+                                            if($key == $nbServices)
+                                            {
+                                                $laclasse =" menu_li_end";
+                                            }
+                                            else
+                                            {
+                                                $laclasse = "";
+                                            }
+                                            echo '<td class="niveau1 '.$laclasse.'">'.$unService.'
+                                                <ul class=sousmenu>';
+                                            foreach($this->lesSousServices[$key] as $unSousService)
+                                            {
+                                                echo '<li class=itemSousMenu><a href="">'.$unSousService['nomSousService'].'</a></li>';
+                                            }                                                   
+                                            echo '</ul>
+                                                 </td>';
+                                        }
+                                    }
+                                    else // menu public
+                                    {
+                                       echo '<td><a href="" title="">Consulter les vols</a></td>';
+                                       echo '<td><a href="" title="">Offres promotionnelles</a></td>';
+                                       echo '<td><a href="" title="">Informations retards</a></td>';
+                                       echo '<td><a href="" title="">Contact</a></td>';
+                                    }                                  
+                                    
+                                ?>                                
+                                </tr>
+                            </table>                           
+                            <div class="end_float"></div>
+                        </div>
+                    </header>
+                    <section>
+                        <nav class="nav_ariane" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                            <ol class="nav_start">
+                                <li>
+                                    <a href="accueil" itemprop="url" title="Accueil">
+                                        <span itemprop="title">Accueil</span>
+                                    </a>
+                                    <span class="nav_separe"></span>
+                                </li>
+                                <li itemprop="child" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                                    <a href="" itemprop="url" title="Lorem">
+                                        <span itemprop="title">Lorem</span>
+                                    </a>
+                                </li>
+                            </ol>
+                            <div class="end_float"></div>
+                        </nav>
 					
 					
 					

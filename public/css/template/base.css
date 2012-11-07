@@ -1,16 +1,16 @@
 #body
 {
-	width: 688px;
-	min-height: 600px;
-	
-	position: absolute;
-	top: 0;
-	left: 50%;
-	margin-left: -344px;
-	
-	color: #2d578e;
-	font-size: 0.750em;
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+    width: 688px;
+    min-height: 600px;
+
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin-left: -344px;
+
+    color: #2d578e;
+    font-size: 0.750em;
+    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
 }
 
 a, a:hover, a:visited {color: #2d578e; text-decoration: none;}
@@ -18,35 +18,35 @@ a:hover {text-decoration: underline;}
 
 #left_side
 {
-	background-image: url("../../img/template/cote.png");
-	background-position: top left;
-	background-repeat: no-repeat;
-	
-	width: 688px;
+    background-image: url("../../img/template/cote.png");
+    background-position: top left;
+    background-repeat: no-repeat;
+
+    width: 688px;
 }
 
 #right_side
 {
-	background-image: url("../../img/template/cote.png");
-	background-position: top right;
-	background-repeat: no-repeat;
-	
-	width: 688px;
+    background-image: url("../../img/template/cote.png");
+    background-position: top right;
+    background-repeat: no-repeat;
+
+    width: 688px;
 }
 
 #contenu
 {
-	width: 688px;
-	min-height: 600px;
-	
-	margin-left: 1px;
-	margin-right: 1px;
+    width: 688px;
+    min-height: 600px;
+
+    margin-left: 1px;
+    margin-right: 1px;
 }
 
 section
 {
-	padding: 5px;
-	width: 775px;
+    padding: 5px;
+    width: 775px;
 }
 
 .end_float {
@@ -73,8 +73,8 @@ section
 /****		contenu		****/
 .section_contenu
 {
-	width: 686px;
-	padding-left: 0px;
+    width: 686px;
+    padding-left: 0px;
 }
 
 article {margin-bottom: 60px;}
@@ -82,17 +82,17 @@ article {margin-bottom: 60px;}
 .article {padding-left: 25px;}
 .article > legend
 {
-	font-size: 1.333em;
-	font-weight: bold;
+    font-size: 1.333em;
+    font-weight: bold;
 	
 }
 
 .article_cont
 {
-	clear: both;
-	padding-top: 7px;
-	padding-left: 25px;
-	padding-right: 25px;
+    clear: both;
+    padding-top: 7px;
+    padding-left: 25px;
+    padding-right: 25px;
 }
 
 
