@@ -48,8 +48,7 @@ class IndexController extends Zend_Controller_Action
          }
          
          if($leUtilisateur)
-         {
-             
+         {             
              $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
              $espaceSession->idUtilisateur = $leUtilisateur['idUtilisateur'];
              $espaceSession->nomUtilisateur = $leUtilisateur['nomUtilisateur'];

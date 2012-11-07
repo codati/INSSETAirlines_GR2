@@ -1,13 +1,17 @@
 
 
 $(document).ready(function() {
-    $('#bt_fermer').click(function() {
-                    $('#overlay').hide();
-                    $('#bglayer').hide();
+   
+    $('#bt_fermer').click(function () {
+        fermer()
     });
+    $('#bglayer').click(function() {
+       fermer(); 
+    });    
     $('#bt_co_layout').click(function() {
             $('#bglayer').show();
             $('#overlay').fadeIn(1000);
+            $('#input_user').focus();
     });
     $('#input_psw').keypress(function(e) {
         if(e.which==13)
@@ -15,7 +19,13 @@ $(document).ready(function() {
     });
     $('#overlay').css('margin','auto');
     $('#overlay').css('margin-top','10%');
+    
 });
+
+function fermer() {    
+    $('#overlay').hide();
+    $('#bglayer').fadeOut(1000);
+}
 
 function verifConnexion() {
     var username = $('#input_user').val();
