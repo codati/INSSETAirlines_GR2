@@ -1,12 +1,12 @@
 #body
 {
-    width: 688px;
+    width: 980px;
     min-height: 600px;
 
     position: absolute;
     top: 0;
     left: 50%;
-    margin-left: -344px;
+    margin-left: -490px;
 
     color: #2d578e;
     font-size: 0.750em;
@@ -22,7 +22,7 @@ a:hover {text-decoration: underline;}
     background-position: top left;
     background-repeat: no-repeat;
 
-    width: 688px;
+    width: 980px;
 }
 
 #right_side
@@ -31,12 +31,12 @@ a:hover {text-decoration: underline;}
     background-position: top right;
     background-repeat: no-repeat;
 
-    width: 688px;
+    width: 980px;
 }
 
 #contenu
 {
-    width: 688px;
+    width: 980px;
     min-height: 600px;
 
     margin-left: 1px;
@@ -73,7 +73,7 @@ section
 /****		contenu		****/
 .section_contenu
 {
-    width: 686px;
+    width: 978px;
     padding-left: 0px;
 }
 
@@ -95,6 +95,12 @@ article {margin-bottom: 60px;}
     padding-right: 25px;
 }
 
+.infos_accueil
+{
+	float: left;
+	width: 210px;
+	text-align: center;
+}
 
 
 

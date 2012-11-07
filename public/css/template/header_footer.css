@@ -1,10 +1,10 @@
 /**		HEADER		**/
 #banniere
 {
-    width: 686px;
+    width: 978px;
     height: 117px;
     background-image: url("../../img/template/head.jpg");
-    background-repeat: no-repeat;
+    background-repeat: repeat-x;
 }
 
 #banniere_nuage
@@ -27,7 +27,7 @@
 
 #menu
 {
-    width: 686px;
+    width: 980px;
     padding-bottom: 10px;
     background-image: url("../../img/template/menu_ligne_horizontale.png");
     background-position: bottom;
@@ -120,9 +120,13 @@ nav {margin-bottom: 30px;}
 
 
 /** 		FOOTER			**/
-
-
-
-
-
-
+footer
+{
+	color: #1e325d;
+	font-size: 0.750em;
+	text-align: center;
+	
+	width: 978px;
+	margin-top: 50px;
+	margin-bottom: 10px;
+}
