@@ -4,20 +4,14 @@ class ApiController extends Zend_Controller_Action
 	public function init()
 	{
 		//On change de layout
-		//*
 		$layout = Zend_Layout::getMvcInstance();
 		$layout->setLayout('api');
-		/*//*/
-		//$this->_helper->layout->setLayout('api');
 	}
 	
 	public function indexAction() {echo 'index'; exit;}
 	
 	public function infosresajsonAction()
 	{
-		//echo 'test';
-		//exit;
-		
 		//Préparation pour le cas d'une erreur
 		$erreur = 0;
 		$data = '';
@@ -70,12 +64,9 @@ class ApiController extends Zend_Controller_Action
 			
 			try {$resInfo_resa = $db->fetchRow($reqInfo_resa);}
 			catch (Zend_Db_Exception $e) {die ($e->getMessage());}
-			//exit;
 			
 			if($resInfo_resa)
 			{
-				//echo '<pre>';print_r($resInfo_resa);echo '</pre>';
-				
 				//S'il y a des escales ont récupère les infos dessus
 				if($resInfo_resa['nbEscale'] > 0)
 				{
@@ -108,26 +99,30 @@ class ApiController extends Zend_Controller_Action
 						if($InfosEscales['datehArriveeEffectiveEscale'] != null)
 						{
 							$dateDepEffectiveEscale = new Zend_Date($InfosEscales['datehArriveeEffectiveEscale']);
-							$escales[$i]['datehArriveeEffectiveEscale'] = $dateDepEffectiveEscale->getTimestamp();
+							$escales[$i]['datehArriveeEffectiveEscale'] = (int) $dateDepEffectiveEscale->getTimestamp();
 						}
+						else {$escales[$i]['datehArriveeEffectiveEscale'] = 0;}
 						
 						if($InfosEscales['datehArriveePrevueEscale'] != null)
 						{
 							$dateDepPrevueEscale = new Zend_Date($InfosEscales['datehArriveePrevueEscale']);
-							$escales[$i]['datehArriveePrevueEscale'] = $dateDepPrevueEscale->getTimestamp();
+							$escales[$i]['datehArriveePrevueEscale'] = (int) $dateDepPrevueEscale->getTimestamp();
 						}
+						else {$escales[$i]['datehArriveePrevueEscale'] = 0;}
 						
 						if($InfosEscales['datehDepartEffectiveEscale'] != null)
 						{
 							$dateArrEffectiveEscale = new Zend_Date($InfosEscales['datehDepartEffectiveEscale']);
-							$escales[$i]['datehDepartEffectiveEscale'] = $dateArrEffectiveEscale->getTimestamp();
+							$escales[$i]['datehDepartEffectiveEscale'] = (int) $dateArrEffectiveEscale->getTimestamp();
 						}
+						else {$escales[$i]['datehDepartEffectiveEscale'] = 0;}
 						
 						if($InfosEscales['datehDepartPrevueEscale'] != null)
 						{
 							$dateArrPrevueEscale = new Zend_Date($InfosEscales['datehDepartPrevueEscale']);
-							$escales[$i]['datehDepartPrevueEscale'] = $dateArrPrevueEscale->getTimestamp();
+							$escales[$i]['datehDepartPrevueEscale'] = (int) $dateArrPrevueEscale->getTimestamp();
 						}
+						else {$escales[$i]['datehDepartPrevueEscale'] = 0;}
 					}
 				}
 				else {$escales = null;}
@@ -144,27 +139,30 @@ class ApiController extends Zend_Controller_Action
 				if($resInfo_resa['dateHeureDepartEffectiveVol'] != null)
 				{
 					$dateDepEffectiveVol = new Zend_Date($resInfo_resa['dateHeureDepartEffectiveVol']);
-					$data['dateHeureDepartEffectiveVol'] = $dateDepEffectiveVol->getTimestamp();
-					
+					$data['dateHeureDepartEffectiveVol'] = intval($dateDepEffectiveVol->getTimestamp());
 				}
+				else {$data['dateHeureDepartEffectiveVol'] = 0;}
 				
 				if($resInfo_resa['dateHeureDepartPrevueVol'] != null)
 				{
 					$dateDepPrevueVol = new Zend_Date($resInfo_resa['dateHeureDepartPrevueVol']);
-					$data['dateHeureDepartPrevueVol'] = $dateDepPrevueVol->getTimestamp();
+					$data['dateHeureDepartPrevueVol'] = (int) $dateDepPrevueVol->getTimestamp();
 				}
+				else {$data['dateHeureDepartPrevueVol'] = 0;}
 				
 				if($resInfo_resa['dateHeureArriveeEffectiveVol'] != null)
 				{
 					$dateArrEffectiveVol = new Zend_Date($resInfo_resa['dateHeureArriveeEffectiveVol']);
-					$data['dateHeureArriveeEffectiveVol'] = $dateArrEffectiveVol->getTimestamp();
+					$data['dateHeureArriveeEffectiveVol'] = (int) $dateArrEffectiveVol->getTimestamp();
 				}
+				else {$data['dateHeureArriveeEffectiveVol'] = 0;}
 				
 				if($resInfo_resa['dateHeureArriveePrevueVol'] != null)
 				{
 					$dateArrPrevueVol = new Zend_Date($resInfo_resa['dateHeureArriveePrevueVol']);
-					$data['dateHeureArriveePrevueVol'] = $dateArrPrevueVol->getTimestamp();
+					$data['dateHeureArriveePrevueVol'] = (int) $dateArrPrevueVol->getTimestamp();
 				}
+				else {$data['dateHeureArriveePrevueVol'] = 0;}
 			}
 			else
 			{
@@ -182,8 +180,27 @@ class ApiController extends Zend_Controller_Action
 		$InfosRetour['data'] = $data;
 		$InfosRetour['erreur'] = $erreur;
 		
+		//Passage en utf8 des valeurs pour éviter des mises à null.
+		foreach($InfosRetour['data'] as $key => $val)
+		{
+			if(!is_array($val)) {if(!is_int($val)) {$InfosRetour['data'][$key] = utf8_encode($val);}}
+			else
+			{
+				foreach($InfosRetour['data'][$key] as $key2 => $val2)
+				{
+					if(!is_array($val2)) {if(!is_int($val2)) {$InfosRetour['data'][$key][$key2] = utf8_encode($val2);}}
+					else
+					{
+						foreach($InfosRetour['data'][$key][$key2] as $key3 => $val3)
+						{
+							if(!is_array($val3) && !is_int($val3)) {$InfosRetour['data'][$key][$key2][$key3] = utf8_encode($val3);}
+						}
+					}
+				}
+			}
+		}
+		
 		//echo '<pre>';print_r($InfosRetour);echo '</pre>';
-		//exit;
 		
 		//Passage au format JSON
 		$json = Zend_Json::encode($InfosRetour);
