@@ -15,7 +15,8 @@ class ApiController extends Zend_Controller_Action
 	
 	public function infosresajsonAction()
 	{
-		//echo 'test'; exit;
+		//echo 'test';
+		//exit;
 		
 		//Préparation pour le cas d'une erreur
 		$erreur = 0;
@@ -59,16 +60,22 @@ class ApiController extends Zend_Controller_Action
 						 
 						 ->join(array('aeArr' => 'aeroport'), 'aeArr.trigrammeAeroport=l.trigrammeAeroportArrivee', array('nomAeroportArrivee' => 'nomAeroport'))
 						 ->join(array('dArr' => 'desservir'), 'dArr.trigrammeAeroport=aeArr.trigrammeAeroport', '')
-						 ->join(array('vArr' => 'ville'), 'vArr.idVille=dArr.idVille', array('villeDepart' => 'nomVille'))
-						 ->join(array('pArr' => 'pays'), 'pArr.idPays=vArr.idPays', array('paysDepart' => 'nomPays'))
+						 ->join(array('vArr' => 'ville'), 'vArr.idVille=dArr.idVille', array('villeArrivee' => 'nomVille'))
+						 ->join(array('pArr' => 'pays'), 'pArr.idPays=vArr.idPays', array('paysArrivee' => 'nomPays'))
 						 
 						 ->where('r.idReservation='.$id_resa);
 			
 			//echo $reqInfo_resa->assemble();
 			//exit;
-			$resInfo_resa = $db->fetchRow($reqInfo_resa);
+			
+			try {$resInfo_resa = $db->fetchRow($reqInfo_resa);}
+			catch (Zend_Db_Exception $e) {die ($e->getMessage());}
+			//exit;
+			
 			if($resInfo_resa)
 			{
+				//echo '<pre>';print_r($resInfo_resa);echo '</pre>';
+				
 				//S'il y a des escales ont récupère les infos dessus
 				if($resInfo_resa['nbEscale'] > 0)
 				{
@@ -90,7 +97,9 @@ class ApiController extends Zend_Controller_Action
 					//echo $reqInfosEscales->assemble();
 					//exit;
 					
-					$resInfosEscales = $db->fetchAll($reqInfosEscales);
+					try {$resInfosEscales = $db->fetchAll($reqInfosEscales);}
+					catch (Zend_Db_Exception $e) {die ($e->getMessage());}
+					
 					foreach($resInfosEscales as $i => $InfosEscales)
 					{
 						//On passe les dates des escales en timestamp (demandé pour l'appli android)
