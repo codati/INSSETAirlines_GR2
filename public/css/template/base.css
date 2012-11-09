@@ -13,6 +13,35 @@
     font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
 }
 
+h1
+{
+    font-size: 1.667em;
+    font-weight:bold;
+}
+
+#tableau
+{
+    border-collapse: collapse;
+}
+
+#tableau th 
+{
+    border: thin solid #6495ed;
+    padding: 5px;
+    background-color: #D0E3FA;
+}
+#tableau td 
+{
+    border: thin solid #6495ed;
+    padding: 5px;
+    text-align: center;
+    background-color: #ffffff;
+    line-height: 15px;
+}
+
+
+
+
 a, a:hover, a:visited {color: #2d578e; text-decoration: none;}
 a:hover {text-decoration: underline;}
 
@@ -45,8 +74,8 @@ a:hover {text-decoration: underline;}
 
 section
 {
-    padding: 5px;
-    width: 775px;
+    padding: 15px;
+    width: 965px;
 }
 
 .end_float {
@@ -101,8 +130,6 @@ article {margin-bottom: 60px;}
 	width: 210px;
 	text-align: center;
 }
-
-
 
 
 

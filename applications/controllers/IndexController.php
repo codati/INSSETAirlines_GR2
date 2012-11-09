@@ -13,7 +13,7 @@ class IndexController extends Zend_Controller_Action
         
         $db = Zend_Registry::get('db');        
         $reqUtil = $db->select()
-            ->from(array('u' => 'utilisateurs'), array('*'))
+            ->from(array('u' => 'utilisateur'), array('*'))
             ->where('u.nomUtilisateur = ?', $user)
             ->where('u.mdpUtilisateur = ?', $psw)
            ;
