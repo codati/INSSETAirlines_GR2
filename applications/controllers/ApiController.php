@@ -181,6 +181,10 @@ class ApiController extends Zend_Controller_Action
 		$InfosRetour['erreur'] = $erreur;
 		
 		//Passage en utf8 des valeurs pour éviter des mises à null.
+		
+		//Pas besoin du code tant que la ligne ci-dessous est dans l'application.ini
+			// database.params.charset = "utf8"
+		/*
 		foreach($InfosRetour['data'] as $key => $val)
 		{
 			if(!is_array($val)) {if(!is_int($val)) {$InfosRetour['data'][$key] = utf8_encode($val);}}
@@ -199,7 +203,7 @@ class ApiController extends Zend_Controller_Action
 				}
 			}
 		}
-		
+		*/
 		//echo '<pre>';print_r($InfosRetour);echo '</pre>';
 		
 		//Passage au format JSON
