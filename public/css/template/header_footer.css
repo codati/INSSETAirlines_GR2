@@ -83,6 +83,22 @@
     border : 1px solid transparent;
     box-shadow : 3px 2px 5px white;
 }
+#bt_co_layout, #bt_deco_layout {
+ position : absolute;
+ border-radius : 10px;
+ font-size : 1.4em;
+ right : 10px;
+ top : 30px;
+ width : 120px;
+ height : 30px;
+ background : url('../../img/template/bt3.png');
+}
+#bt_co_layout:hover {
+ text-decoration : underline;
+ font-size : 1.3em;
+ box-shadow : 2px 2px 3px black; 
+}
+
 /*#menu > ol > .menu_oneline {padding-top: 10px; height: 23px;}*/
 
 /**** Navigation (fil d'arianne) ****/

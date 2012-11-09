@@ -10,9 +10,12 @@
 
     color: #2d578e;
     font-size: 0.750em;
-    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-family: Verdana, "Verdana2", Geneva, Arial, Helvetica, sans-serif;
 }
-
+@font-face {
+    font-family: "Verdana2";
+    src: url('verdana.TTF');
+}
 a, a:hover, a:visited {color: #2d578e; text-decoration: none;}
 a:hover {text-decoration: underline;}
 
@@ -52,24 +55,6 @@ section
 .end_float {
  clear: both;
 }
-
-
-#bt_co_layout {
- position : absolute;
- border-radius : 10px;
- font-size : 1.4em;
- right : 10px;
- top : 30px;
- width : 120px;
- height : 30px;
- background : url('../../img/template/bt3.png');
-}
-#bt_co_layout:hover {
- text-decoration : underline;
- font-size : 1.3em;
- box-shadow : 2px 2px 3px black; 
-}
-
 /****		contenu		****/
 .section_contenu
 {

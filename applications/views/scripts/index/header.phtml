@@ -1,9 +1,40 @@
+<?php 
+    if($this->test)
+    {
+        $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
+        
+        if($espaceSession->connecte)
+        {
+            $leboutonconnexion = '<input type=button value=Deconnexion id=bt_deco_layout>';
+        }
+    }   
+    else 
+    {
+        $leboutonconnexion = '<input type=button value="Se connecter" id=bt_co_layout>';
+    }
+    /*echo $espaceSession->idUtilisateur.'<br>';
+        echo $espaceSession->nomUtilisateur.'<br>';
+        var_dump($espaceSession->connecte).'<br>';
+        var_dump($espaceSession->lesServicesUtilisateur);
+    
+    Zend_Debug::dump($this->lesServices);
+    echo '<hr>';
+    Zend_Debug::dump($espaceSession->lesServicesUtilisateur);
+        
+*/
+    
+    
+?>
+
 
 <div id="body">
     <div id="left_side">
         <div id="right_side">
             <div id="contenu">
-                <input type="button" value="Se connecter" id="bt_co_layout">
+               <!-- <input type="button" value="Se connecter" id="bt_co_layout">-->
+                <?php
+                    echo $leboutonconnexion;
+                ?>
                     <header>
                         <div id="banniere">
                             <div id="banniere_nuage"><a href="<?php $this->baseUrl();?>/" title="Accueil"><img src="<?php echo $this->BaseUrl();?>/img/template/logo.png" alt="Insset Airline" class="head_logo"/></a></div>
@@ -13,12 +44,12 @@
                                 <tr>
                                 <?php
                                 
-                                    if(isset($this->lesServices))  // menu de l'utilisateur
+                                    //if(isset($this->lesServices))  // menu de l'utilisateur
+                                    if(isset($espaceSession->lesServicesUtilisateur))
                                     {
                                         echo '<td><a href="" title="">Accueil</a></td>';
-                                        $nbServices = count($this->lesServices) -1;
-                                        //Zend_Debug::dump($this->lesSousServices);
-                                        foreach($this->lesServices as $key => $unService)
+                                        $nbServices = count($espaceSession->lesServicesUtilisateur) -1;
+                                        foreach($espaceSession->lesServicesUtilisateur as $key => $unService)
                                         {                                            
                                             if($key == $nbServices)
                                             {
@@ -30,7 +61,7 @@
                                             }
                                             echo '<td class="niveau1 '.$laclasse.'">'.$unService.'
                                                 <ul class=sousmenu>';
-                                            foreach($this->lesSousServices[$key] as $unSousService)
+                                            foreach($espaceSession->lesSousServicesUtilisateur[$key] as $unSousService)
                                             {
                                                 echo '<li class=itemSousMenu><a href="">'.$unSousService['nomSousService'].'</a></li>';
                                             }                                                   
@@ -40,7 +71,7 @@
                                     }
                                     else // menu public
                                     {
-                                       echo '<td><a href="" title="">Consulter les vols</a></td>';
+                                       echo '<td><a href='.$this->baseUrl().'"vols/consulter" title="">Consulter les vols</a></td>';
                                        echo '<td><a href="" title="">Offres promotionnelles</a></td>';
                                        echo '<td><a href="" title="">Informations retards</a></td>';
                                        echo '<td><a href="" title="">Contact</a></td>';

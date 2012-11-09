@@ -14,7 +14,6 @@ function checkHover() {
 $(document).ready(function() {
     $(".niveau1").unbind();
     $('.niveau1').hover(function() {
-
         flag=1;
         if($(this).find('ul').css('display')!='block' )
         {
@@ -26,14 +25,12 @@ $(document).ready(function() {
             $(this).find('ul').slideDown('fast');
             obj=$(this);
         }
-},function() {
-    flag=0;
-    if($(this).find('ul').css('display')=='block')
-    {
-        obj=$(this);
-        setTimeout("checkHover()",750); 
-    }
-});
-
-
+    },function() {
+        flag=0;
+        if($(this).find('ul').css('display')=='block')
+        {
+            obj=$(this);
+            setTimeout("checkHover()",750); 
+        }
+    });
 });
