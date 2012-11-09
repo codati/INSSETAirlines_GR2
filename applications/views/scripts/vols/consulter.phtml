@@ -11,21 +11,18 @@
             <th>Aéroport d'arrivée</th>
             <th>Périodicité du vol</th>
             <th>Nombre de vols disponibles</th>
-            <th>Choisir la ligne</th>
+            <th>Choisir</th>
         </tr>
         <?php
-            
-            foreach ($this->lignes as $ligne)
-            {
-                echo "<tr>";
-                echo "<td>".$ligne["aeroportDepart"]."<br> ".$ligne["trigrammeAeroportDepart"]."</td>";
-                echo "<td>".$ligne["aeroportArrivee"]."<br> ".$ligne["trigrammeAeroportArrivee"]."</td>";
-                echo "<td>".$ligne["nomPeriode"]."</td>";
-                echo "<td></td>";
-                echo "<td><a>Choisir un vol de cette ligne</a></td>";
-                echo "</tr>";
-            }
-            echo "</table>";
-        ?>      
+        foreach ($this->lignes as $ligne) {
+            echo "<tr>";
+            echo "<td>" . $ligne["aeroportDepart"] . "<br> " . $ligne["trigrammeAeroportDepart"] . "</td>";
+            echo "<td>" . $ligne["aeroportArrivee"] . "<br> " . $ligne["trigrammeAeroportArrivee"] . "</td>";
+            echo "<td>" . $ligne["nomPeriode"] . "</td>";
+            echo "<td></td>";
+            echo "<td><a>Choisir un vol de cette ligne</a></td>";
+            echo "</tr>";
+        }
+        ?>   
+        </table>
 </div>
-

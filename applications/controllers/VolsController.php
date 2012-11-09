@@ -13,7 +13,7 @@ class VolsController extends Zend_Controller_Action
         
         //Recupération de la base de données
         $db = Zend_Registry::get('db');
-
+        
         $lignesReq = $db->select()
                         ->from(array('l' => 'ligne'), array('*'))                         
                         ->join(array('p'=>'periodicite'),'l.idPeriodicite = p.idPeriode', 'nomPeriode')
