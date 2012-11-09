@@ -10,38 +10,12 @@
 
     color: #2d578e;
     font-size: 0.750em;
-    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-family: Verdana, "Verdana2", Geneva, Arial, Helvetica, sans-serif;
 }
-
-h1
-{
-    font-size: 1.667em;
-    font-weight:bold;
+@font-face {
+    font-family: "Verdana2";
+    src: url('verdana.TTF');
 }
-
-#tableau
-{
-    border-collapse: collapse;
-}
-
-#tableau th 
-{
-    border: thin solid #6495ed;
-    padding: 5px;
-    background-color: #D0E3FA;
-}
-#tableau td 
-{
-    border: thin solid #6495ed;
-    padding: 5px;
-    text-align: center;
-    background-color: #ffffff;
-    line-height: 15px;
-}
-
-
-
-
 a, a:hover, a:visited {color: #2d578e; text-decoration: none;}
 a:hover {text-decoration: underline;}
 
@@ -74,31 +48,13 @@ a:hover {text-decoration: underline;}
 
 section
 {
-    padding: 15px;
+    padding: 5px;
     width: 965px;
 }
 
 .end_float {
  clear: both;
 }
-
-
-#bt_co_layout {
- position : absolute;
- border-radius : 10px;
- font-size : 1.4em;
- right : 10px;
- top : 30px;
- width : 120px;
- height : 30px;
- background : url('../../img/template/bt3.png');
-}
-#bt_co_layout:hover {
- text-decoration : underline;
- font-size : 1.3em;
- box-shadow : 2px 2px 3px black; 
-}
-
 /****		contenu		****/
 .section_contenu
 {
@@ -130,6 +86,8 @@ article {margin-bottom: 60px;}
 	width: 210px;
 	text-align: center;
 }
+
+
 
 
 

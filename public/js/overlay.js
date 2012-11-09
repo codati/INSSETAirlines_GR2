@@ -1,17 +1,19 @@
 
-
-$(document).ready(function() {
-   
+$(document).ready(function() {   
     $('#bt_fermer').click(function () {
         fermer()
     });
     $('#bglayer').click(function() {
        fermer(); 
-    });    
+    });
     $('#bt_co_layout').click(function() {
-            $('#bglayer').show();
-            $('#overlay').fadeIn(1000);
-            $('#input_user').focus();
+        $('#erreur_co').remove();
+        $('#bglayer').show();
+        $('#overlay').fadeIn(1000);
+        $('#input_user').focus();
+    });
+    $('#bt_deco_layout').click(function() {
+       window.location = "logout"; 
     });
     $('#input_psw').keypress(function(e) {
         if(e.which==13)
@@ -30,6 +32,7 @@ function fermer() {
 function verifConnexion() {
     var username = $('#input_user').val();
     var mdp = $('#input_psw').val();
+    
     if((username == "") || (mdp == ""))
     {
         $('#erreur_co').remove();
@@ -37,6 +40,19 @@ function verifConnexion() {
     }
     else
     {	
-        $("#form_login").submit();  
+        $.post("/index/verifconnexion",{login:username, pass:mdp}, 
+            function(data) 
+            {
+                if(data==1)
+                {
+                    $("#form_login").submit();
+                }
+                else
+                {
+                    $('#erreur_co').remove();
+                    $('#err').after('<span id="erreur_co">Login ou mot de passe errone<span>');
+                }
+            });
+        
     }
 }	
