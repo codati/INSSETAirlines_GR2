@@ -12,18 +12,7 @@
     {
         $leboutonconnexion = '<input type=button value="Se connecter" id=bt_co_layout>';
     }
-    /*echo $espaceSession->idUtilisateur.'<br>';
-        echo $espaceSession->nomUtilisateur.'<br>';
-        var_dump($espaceSession->connecte).'<br>';
-        var_dump($espaceSession->lesServicesUtilisateur);
-    
-    Zend_Debug::dump($this->lesServices);
-    echo '<hr>';
-    Zend_Debug::dump($espaceSession->lesServicesUtilisateur);
-        
-*/
-    
-    
+ 
 ?>
 
 
@@ -71,7 +60,7 @@
                                     }
                                     else // menu public
                                     {
-                                       echo '<td><a href='.$this->baseUrl().'"vols/consulter" title="">Consulter les vols</a></td>';
+                                       echo '<td><a href='.$this->baseUrl().'"/vols/consulter" title="">Consulter les vols</a></td>';
                                        echo '<td><a href="" title="">Offres promotionnelles</a></td>';
                                        echo '<td><a href="" title="">Informations retards</a></td>';
                                        echo '<td><a href="" title="">Contact</a></td>';

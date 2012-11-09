@@ -44,11 +44,11 @@ class IndexController extends Zend_Controller_Action
         
         
         // requete recuperation utilisateur
-        $reqUtil = $db->select()
-            ->from(array('u' => 'utilisateurs'), array('*'))
+       /* $reqUtil = $db->select()
+            ->from(array('u' => 'utilisateur'), array('*'))
             ->where('u.nomUtilisateur = ?', $user)
             ->where('u.mdpUtilisateur = ?', $psw)
-           ;
+           ;*/
             //Zend_Debug::dump($lesServices);exit();
 
             $tabLesServices = array();
@@ -94,7 +94,7 @@ class IndexController extends Zend_Controller_Action
         
         // requete recuperation utilisateur
         $reqUtil = $db->select()
-            ->from(array('u' => 'utilisateurs'), array('*'))
+            ->from(array('u' => 'utilisateur'), array('*'))
             ->where('u.nomUtilisateur = ?', $login)
             ->where('u.mdpUtilisateur = ?', $mdp)
            ;
