@@ -99,6 +99,17 @@
  box-shadow : 2px 2px 3px black; 
 }
 
+#message_deco {
+    text-align : center;
+    margin-bottom : 10px;
+}
+.message_erreur {
+    color : black;
+    background :  #B8E8AD;
+    font-size : 1.5em;
+    border : 2px solid green;
+    padding : 5px 10px;
+}
 /*#menu > ol > .menu_oneline {padding-top: 10px; height: 23px;}*/
 
 /**** Navigation (fil d'arianne) ****/
