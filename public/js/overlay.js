@@ -13,7 +13,7 @@ $(document).ready(function() {
         $('#input_user').focus();
     });
     $('#bt_deco_layout').click(function() {
-       window.location = "logout"; 
+       window.location = "/index/logout"; 
     });
     $('#input_psw').keypress(function(e) {
         if(e.which==13)
@@ -36,7 +36,7 @@ function verifConnexion() {
     if((username == "") || (mdp == ""))
     {
         $('#erreur_co').remove();
-        $('#err').after('<span id="erreur_co">Vous n\'avez pas remplis tous les champs<span>');
+        $('#err').after('<span id="erreur_co" class="erreur">Vous n\'avez pas remplis tous les champs<span>');
     }
     else
     {	
@@ -50,7 +50,7 @@ function verifConnexion() {
                 else
                 {
                     $('#erreur_co').remove();
-                    $('#err').after('<span id="erreur_co">Login ou mot de passe errone<span>');
+                    $('#err').after('<span id="erreur_co" class="erreur">Login ou mot de passe erroné<span>');
                 }
             });
         

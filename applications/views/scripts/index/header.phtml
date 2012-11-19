@@ -1,29 +1,20 @@
 <?php 
-    if($this->test)
+    if(is_null($this->pasCo))
+    {
+        $leboutonconnexion = '<input type="button" value="Se connecter" id="bt_co_layout">';
+       
+    }   
+    else /// connecté
     {
         $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
         
         if($espaceSession->connecte)
         {
-            $leboutonconnexion = '<input type=button value=Deconnexion id=bt_deco_layout>';
+            $leboutonconnexion = '<input type="button" value="Déconnexion" id="bt_deco_layout">';
         }
-    }   
-    else 
-    {
-        $leboutonconnexion = '<input type=button value="Se connecter" id=bt_co_layout>';
-    }
-    /*echo $espaceSession->idUtilisateur.'<br>';
-        echo $espaceSession->nomUtilisateur.'<br>';
-        var_dump($espaceSession->connecte).'<br>';
-        var_dump($espaceSession->lesServicesUtilisateur);
-    
-    Zend_Debug::dump($this->lesServices);
-    echo '<hr>';
-    Zend_Debug::dump($espaceSession->lesServicesUtilisateur);
         
-*/
-    
-    
+    }
+ 
 ?>
 
 
@@ -44,10 +35,9 @@
                                 <tr>
                                 <?php
                                 
-                                    //if(isset($this->lesServices))  // menu de l'utilisateur
                                     if(isset($espaceSession->lesServicesUtilisateur))
                                     {
-                                        echo '<td><a href="" title="">Accueil</a></td>';
+                                        echo '<td><a href="'.$this->baseUrl().'/" title="">Accueil</a></td>';
                                         $nbServices = count($espaceSession->lesServicesUtilisateur) -1;
                                         foreach($espaceSession->lesServicesUtilisateur as $key => $unService)
                                         {                                            
@@ -72,9 +62,9 @@
                                     else // menu public
                                     {
                                        echo '<td><a href='.$this->baseUrl().'"/vols/consulter" title="">Consulter les vols</a></td>';
-                                       echo '<td><a href="" title="">Offres promotionnelles</a></td>';
-                                       echo '<td><a href="" title="">Informations retards</a></td>';
-                                       echo '<td><a href="" title="">Contact</a></td>';
+                                       echo '<td><a href="/" title="">Offres promotionnelles</a></td>';
+                                       echo '<td><a href="/" title="">Informations retards</a></td>';
+                                       echo '<td><a href="/" title="">Contact</a></td>';
                                     }                                  
                                     
                                 ?>                                
