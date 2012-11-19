@@ -1,5 +1,5 @@
 <?php
-    class TVol extends Zend_Db_Table_Abstract
+    class Table_Vol extends Zend_Db_Table_Abstract
     {
         protected $_name = 'vol';
         protected $_primary = 'idVol';

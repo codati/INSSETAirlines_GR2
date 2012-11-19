@@ -1,5 +1,5 @@
 <?php
-    class TLigne extends Zend_Db_Table_Abstract
+    class Table_Ligne extends Zend_Db_Table_Abstract
     {
         protected $_name = 'ligne';
         protected $_primary = 'idLigne';
