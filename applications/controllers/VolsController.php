@@ -11,19 +11,17 @@ class VolsController extends Zend_Controller_Action
     {
         $this->_helper->actionStack('header','index','default',array());
         
-        //Recupération de la base de données
-        $db = Zend_Registry::get('db');
+        $tableLigne = new Table_Ligne;
+        $lignes = $tableLigne->fetchAll();
+        $this->view->lignes= $lignes;
         
-        $lignesReq = $db->select()
-                        ->from(array('l' => 'ligne'), array('*'))                         
-                        ->join(array('p'=>'periodicite'),'l.idPeriodicite = p.idPeriode', 'nomPeriode')
-                        ->join(array('a'=>'aeroport'), 'l.trigrammeAeroportDepart = a.trigrammeAeroport', 'nomAeroport as aeroportDepart')
-                        ->join(array('ae'=>'aeroport'), 'l.trigrammeAeroportArrivee = ae.trigrammeAeroport', 'nomAeroport as aeroportArrivee')
-                         ;
-        $lignes = $db->fetchAll($lignesReq);
+        $nbVolsLigne = array();
+        foreach ($lignes as $ligne)
+        {
+            $nbVolsLigne[$ligne->idLigne] = $tableLigne->getNbVolsDisponibles($ligne->idLigne);
+        }
+        $this->view->leNbDeligne = $nbVolsLigne;
 
-        $this->view->lignes = $lignes;
-        
     }
 }
 ?>

@@ -8,17 +8,38 @@
         protected $_referenceMap = array(
                 'AeroportDepart' => array(
                     'columns' => 'trigrammeAeroport',
-                    'refTableClass' => 'TAeroport'
+                    'refTableClass' => 'Table_Aeroport'
                      ),
                 'AeroportArrivee' => array(
                     'columns' => 'trigrammeAeroport',
-                    'refTableClass' => 'TAeroport'
+                    'refTableClass' => 'Table_Aeroport'
                     ),
                 'Periodicite' => array(
                     'columns' => 'idPeriodicite',
-                    'refTableClass' => 'TPeriodicite'
+                    'refTableClass' => 'Table_Periodicite'
                     )
             );
+        
+        /*************** Fonctions ***************/
+
+        //Renvoie toutes les lignes
+        public function getLignes()
+        {
+            $tableligne = new Table_Ligne;
+            $lignes = $tableligne->fetchAll();
+            return $lignes;
+
+        }
+
+        //Renvoie le nb de vols de cette ligne
+	public function getNbVolsDisponibles($idLigne)
+	{
+		$tableVol = new Table_Vol;
+		$reqVol= $tableVol->select()
+                                  ->from($tableVol)
+                                  ->where('idLigne = ?', $idLigne);
+		return $reqVol->query()->rowCount();
+	}
 
     }
 ?>

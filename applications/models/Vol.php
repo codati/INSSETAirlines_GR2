@@ -8,11 +8,11 @@
         protected $_referenceMap = array(
                 'Ligne' => array(
                     'columns' => 'idLigne',
-                    'refTableClass' => 'TLigne'
+                    'refTableClass' => 'Table_Ligne'
                      ),
                 'Avion' => array(
                     'columns' => 'immatriculationAvion',
-                    'refTableClass' => 'TAvion'
+                    'refTableClass' => 'Table_Avion'
                     ),
             );
 

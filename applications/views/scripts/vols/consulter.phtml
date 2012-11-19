@@ -14,13 +14,14 @@
             <th>Choisir</th>
         </tr>
         <?php
+        
         foreach ($this->lignes as $ligne) {
             echo "<tr>";
-            echo "<td>" . $ligne["aeroportDepart"] . "<br> " . $ligne["trigrammeAeroportDepart"] . "</td>";
-            echo "<td>" . $ligne["aeroportArrivee"] . "<br> " . $ligne["trigrammeAeroportArrivee"] . "</td>";
-            echo "<td>" . $ligne["nomPeriode"] . "</td>";
+            echo "<td>" . $ligne["trigrammeAeroportDepart"] . "</td>";
+            echo "<td>" . $ligne["trigrammeAeroportArrivee"] . "</td>";
             echo "<td></td>";
-            echo "<td><a>Choisir un vol de cette ligne</a></td>";
+            echo "<td>" . $this->leNbDeligne[$ligne["idLigne"]]."</td>";
+            echo "<td>  <a>Choisir un vol de cette ligne</a>    </td>";
             echo "</tr>";
         }
         ?>   
