@@ -12,6 +12,8 @@ class Table_Service extends Zend_Db_Table_Abstract
             'refColumns' => 'idService'
         )
     );*/
+    
+    //retourne les service d'un utilisateur
     public function getLesServices($idUtilisateur)
     {
         
