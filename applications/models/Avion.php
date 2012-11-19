@@ -11,5 +11,11 @@
                     'refTableClass' => 'Table_ModeleAvion'
                     )
             );
-
+        
+        public function Ajouter($p_immatriculation, $p_modele) {
+            $db = Zend_Registry::get('db');
+            
+            $data = array('immatriculationAvion' => $p_immatriculation, 'idModeleAvion' => $p_modele);
+            $db->insert('avion', $data);
+        }
     }
