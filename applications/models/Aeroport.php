@@ -1,5 +1,5 @@
 <?php
-    class TAvion extends Zend_Db_Table_Abstract
+    class Table_Aeroport extends Zend_Db_Table_Abstract
     {
         protected $_name = 'aeroport';
         
