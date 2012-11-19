@@ -1,5 +1,5 @@
 <?php
-class TUtilisateur extends Zend_Db_Table_Abstract
+class Table_Utilisateur extends Zend_Db_Table_Abstract
 {
     protected $_name = 'utilisateur';
     protected $_primary = 'idUtilisateur';
@@ -12,7 +12,7 @@ class TUtilisateur extends Zend_Db_Table_Abstract
              ->where('u.mdpUtilisateur = ?', $psw)
             ;
         $leUtilisateur = $this->fetchRow($reqUtil);
-        
+       
         $identifiants = array( 
             'idUtilisateur' => $leUtilisateur->idUtilisateur,
             'nomUtilisateur' => $leUtilisateur->nomUtilisateur             

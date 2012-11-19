@@ -30,41 +30,19 @@ class IndexController extends Zend_Controller_Action
      {
          $user = $this->getRequest()->getPost('input_user');
          $psw = md5($this->getRequest()->getPost('input_psw'));
-
-         $db = Zend_Registry::get('db');        
-
-
+       
          $utilisateur = new TUtilisateur;
          $leUtilisateur = $utilisateur->login($user,$psw);
-         //Zend_Debug::dump($leUtilisateur);
-       // exit;
-         // requete recuperation utilisateur
-         /*$reqUtil = $db->select()
-             ->from(array('u' => 'utilisateur'), array('*'))
-             ->where('u.nomUtilisateur = ?', $user)
-             ->where('u.mdpUtilisateur = ?', $psw)
-            ;
-*/
-         // $leUtilisateur = $db->fetchRow($reqUtil);
-
-          //Zend_Debug::dump($leUtilisateur);exit();
-
+        
           // requete recuperation des services de l'utilisateur         
-          if($leUtilisateur)
+          if(is_array($leUtilisateur))
           { 
-            /* $reqService = $db->select()
-                     ->from(array('s' => 'service'), array('*'))
-                     ->join(array('t' => 'travailler'),'t.idService = s.idService', array('*'))
-                     ->where('t.idUtilisateur = ?', $leUtilisateur['idUtilisateur'])
-                     ;
-
-             $lesServices = $db->fetchAll($reqService); 
-*/
-             // echo $leUtilisateur['idUtilisateur'];exit;
+         
             $service = new TService;
-            
+
+            //recupere les services de l'utilisateur
             $lesServices = $service->getLesServices($leUtilisateur['idUtilisateur']);
-             Zend_Debug::dump($lesServices);exit();
+            
 
              $tabLesServices = array();
              $tabLesSousServices = array();
