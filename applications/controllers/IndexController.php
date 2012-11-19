@@ -24,40 +24,25 @@ class IndexController extends Zend_Controller_Action
      {
          //Zend_Session::destroy();  
          Zend_Session::namespaceUnset('utilisateurCourant');
-         $this->_helper->actionStack('index','index','default',array('decoReussie'=>'Déconnexion réussie'));
+         $this->_helper->actionStack('index','index','default',array('decoReussie'=>'Déconnexion réussie'));       
      }
      public function connexionAction()
      {
          $user = $this->getRequest()->getPost('input_user');
          $psw = md5($this->getRequest()->getPost('input_psw'));
-
-         $db = Zend_Registry::get('db');        
-
-
-         // requete recuperation utilisateur
-         $reqUtil = $db->select()
-             ->from(array('u' => 'utilisateur'), array('*'))
-             ->where('u.nomUtilisateur = ?', $user)
-             ->where('u.mdpUtilisateur = ?', $psw)
-            ;
-
-          $leUtilisateur = $db->fetchRow($reqUtil);
-
-          //Zend_Debug::dump($leUtilisateur);exit();
-
+       
+         $utilisateur = new TUtilisateur;
+         $leUtilisateur = $utilisateur->login($user,$psw);
+        
           // requete recuperation des services de l'utilisateur         
-          if($leUtilisateur)
+          if(is_array($leUtilisateur))
           { 
-             $reqService = $db->select()
-                     ->from(array('s' => 'service'), array('*'))
-                     ->join(array('t' => 'travailler'),'t.idService = s.idService', array('*'))
-                     ->where('t.idUtilisateur = ?', $leUtilisateur['idUtilisateur'])
-                     ;
+         
+            $service = new TService;
 
-             $lesServices = $db->fetchAll($reqService); 
-
-
-             //Zend_Debug::dump($lesServices);exit();
+            //recupere les services de l'utilisateur
+            $lesServices = $service->getLesServices($leUtilisateur['idUtilisateur']);
+            
 
              $tabLesServices = array();
              $tabLesSousServices = array();
@@ -106,6 +91,10 @@ class IndexController extends Zend_Controller_Action
           }
           exit();
 
+    }
+    public function telechargerAction()
+    {
+        
     }
 }
 
