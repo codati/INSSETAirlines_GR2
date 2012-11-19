@@ -3,5 +3,5 @@
     {
         protected $_name = 'classe';
         
-        protected $_idClasse = 'idClasse';
+        protected $_primary = 'idClasse';
     }

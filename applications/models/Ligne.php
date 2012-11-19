@@ -8,16 +8,16 @@
         protected $_referenceMap = array(
                 'AeroportDepart' => array(
                     'columns' => 'trigrammeAeroport',
-                    'refTableClass' => 'TAeroport',
+                    'refTableClass' => 'TAeroport'
                      ),
                 'AeroportArrivee' => array(
                     'columns' => 'trigrammeAeroport',
-                    'refTableClass' => 'TAeroport',
+                    'refTableClass' => 'TAeroport'
                     ),
                 'Periodicite' => array(
                     'columns' => 'idPeriodicite',
-                    'refTableClass' => 'TPeriodicite',
-                    ),
+                    'refTableClass' => 'TPeriodicite'
+                    )
             );
 
     }
