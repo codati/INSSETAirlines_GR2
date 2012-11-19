@@ -16,8 +16,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	}
 	protected function _initDb()
 	{
+            //Zend_Loader::loadClass('TUtilisateur');
+            Zend_Loader::registerAutoload();
+
+            
             $db = Zend_Db::factory(Zend_Registry::get('config')->database);
-           
             Zend_Db_Table_Abstract::setDefaultAdapter($db);
             Zend_Registry::set('db',$db);           
 	}
