@@ -12,5 +12,15 @@
                     'refTableClass' => 'Table_Avion'
                      )
             );
-
+        
+        public function Ajouter($p_numeroIntervention, $p_immatriculationAvion, $p_datePrevue, $p_dateEffective, $p_typeIntervention) {
+            $db = Zend_Registry::get('db');
+            
+            $data = array('numeroIntervention' => $p_numeroIntervention,
+                'immatriculationAvion' => $p_immatriculationAvion, 
+                'datePrevueIntervention' => $p_datePrevue, 
+                'dateEffectiveIntervention' => $p_dateEffective, 
+                'typeIntervention' => $p_typeIntervention);
+            $db->insert('intervention', $data);
+        }
     }

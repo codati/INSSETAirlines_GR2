@@ -44,6 +44,7 @@
 			try {$resInfosEscales = $this->fetchAll($reqInfosEscales);}
 			catch (Zend_Db_Exception $e) {die ($e->getMessage());}
 			
-			return $resInfosEscales->toArray();
+			if($resInfosEscales) {return $resInfosEscales->toArray();}
+			else {return false;}
 		}
     }

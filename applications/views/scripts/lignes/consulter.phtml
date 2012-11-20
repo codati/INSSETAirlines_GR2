@@ -1,0 +1,32 @@
+<h1>Consulter le catalogue</h1><br />
+
+<p>Pour consulter les vols disponibles, choisissez tout d'abord une ligne :</p><br />
+
+<div id="tableau">
+    <table>
+        <caption>Les lignes disponibles</caption>
+        <tr>
+            <th>Aéroport de départ</th>
+            <th>Aéroport d'arrivée</th>
+            <th>Périodicité du vol</th>
+            <th>Nombre de vols à venir</th>
+            <th>Choisir</th>
+        </tr>
+        <?php
+            foreach ($this->lignes as $ligne) 
+            {
+                $nbLignes =  $this->leNbDeligne[$ligne["idLigne"]];
+                if ($nbLignes > 0)
+                {
+                    echo "<tr>";
+                    echo "<td>".$ligne["depart"] ."<br>(" . $ligne["trigrammeAeroportDepart"] . ")</td>";
+                    echo "<td>".$ligne["arrivee"] ."<br>(" . $ligne["trigrammeAeroportArrivee"] . ")</td>";
+                    echo "<td>". $ligne["nomPeriode"] ."</td>";
+                    echo "<td>". $nbLignes ."</td>";
+                    echo "<td>  <a href=\"".$this->baseUrl()."/vols/consulter/idligne/".$ligne['idLigne']."\">Voir les vols de cette ligne</a>    </td>";
+                    echo "</tr>";
+                }
+            }
+        ?>   
+    </table>
+</div>

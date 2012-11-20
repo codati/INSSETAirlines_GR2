@@ -68,8 +68,8 @@
                                         }
                                     }
                                     else // menu public
-                                    {                                       
-                                       echo '<td><a href='.$this->baseUrl().'"/vols/consulter" title="">Consulter les vols</a></td>';
+                                    {
+                                       echo '<td><a href='.$this->baseUrl().'"/lignes/consulter" title="">Consulter le catalogue</a></td>';
                                        echo '<td><a href="/" title="">Offres promotionnelles</a></td>';
                                        echo '<td><a href="/" title="">Informations retards</a></td>';
                                        echo '<td><a href="/" title="">Contact</a></td>';
@@ -83,10 +83,12 @@
                         </div>
                     </header>
                     <section>
+                    	<?php
+                    	/* 
                         <nav class="nav_ariane" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
                             <ol class="nav_start">
                                 <li>
-                                    <a href="accueil" itemprop="url" title="Accueil">
+                                    <a href="<?php $this->baseUrl();?>/" itemprop="url" title="Accueil">
                                         <span itemprop="title">Accueil</span>
                                     </a>
                                     <span class="nav_separe"></span>
@@ -99,6 +101,8 @@
                             </ol>
                             <div class="end_float"></div>
                         </nav>
+                        */
+                    	?>
 					
 					
 					

@@ -13,8 +13,8 @@ class IndexController extends Zend_Controller_Action
             $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
             $this->view->pasCo = $espaceSession->connecte;// $this->_getParam('pasCo');
         }
-         $this->_helper->viewRenderer->setResponseSegment('header');
-         $this->_helper->actionStack('footer','index','default',array());
+        $this->_helper->viewRenderer->setResponseSegment('header');
+        $this->_helper->actionStack('footer','index','default',array());
     }
     public function footerAction()
     {
@@ -60,10 +60,10 @@ class IndexController extends Zend_Controller_Action
               $espaceSession->nomUtilisateur = $leUtilisateur['nomUtilisateur'];
               $espaceSession->lesServicesUtilisateur = $tabLesServices;
               $espaceSession->lesSousServicesUtilisateur = $tabSousServices;
-              $espaceSession->connecte = true;            
-          }
+              $espaceSession->connecte = true;    
           $this->_helper->actionStack('header','index','default',array('test'=>true));    
     }
+     }
     public function verifconnexionAction()
     {
          $user = $this->_getParam('user');

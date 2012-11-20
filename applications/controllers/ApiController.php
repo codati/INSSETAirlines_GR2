@@ -26,11 +26,11 @@ class ApiController extends Zend_Controller_Action
 			
 			if($resInfo_resa)
 			{
+				$escales = array();
+				
 				//S'il y a des escales ont récupère les infos dessus
 				if($resInfo_resa['nbEscale'] > 0)
 				{
-					$escales = array();
-					
 					$tableEscale = new Table_Escale();
 					$resInfosEscales = $tableEscale->get_InfosEscales($resInfo_resa['idVol']);
 					
@@ -42,38 +42,39 @@ class ApiController extends Zend_Controller_Action
 						if($InfosEscales['datehArriveeEffectiveEscale'] != null)
 						{
 							$dateDepEffectiveEscale = new Zend_Date($InfosEscales['datehArriveeEffectiveEscale']);
-							$escales[$i]['datehArriveeEffectiveEscale'] = (int) $dateDepEffectiveEscale->getTimestamp();
+							$escales[$i]['datehArriveeEffectiveEscale'] = ((int) $dateDepEffectiveEscale->getTimestamp())*1000;
 						}
 						else {$escales[$i]['datehArriveeEffectiveEscale'] = 0;}
 						
 						if($InfosEscales['datehArriveePrevueEscale'] != null)
 						{
 							$dateDepPrevueEscale = new Zend_Date($InfosEscales['datehArriveePrevueEscale']);
-							$escales[$i]['datehArriveePrevueEscale'] = (int) $dateDepPrevueEscale->getTimestamp();
+							$escales[$i]['datehArriveePrevueEscale'] = ((int) $dateDepPrevueEscale->getTimestamp())*1000;
 						}
 						else {$escales[$i]['datehArriveePrevueEscale'] = 0;}
 						
 						if($InfosEscales['datehDepartEffectiveEscale'] != null)
 						{
 							$dateArrEffectiveEscale = new Zend_Date($InfosEscales['datehDepartEffectiveEscale']);
-							$escales[$i]['datehDepartEffectiveEscale'] = (int) $dateArrEffectiveEscale->getTimestamp();
+							$escales[$i]['datehDepartEffectiveEscale'] = ((int) $dateArrEffectiveEscale->getTimestamp())*1000;
 						}
 						else {$escales[$i]['datehDepartEffectiveEscale'] = 0;}
 						
 						if($InfosEscales['datehDepartPrevueEscale'] != null)
 						{
 							$dateArrPrevueEscale = new Zend_Date($InfosEscales['datehDepartPrevueEscale']);
-							$escales[$i]['datehDepartPrevueEscale'] = (int) $dateArrPrevueEscale->getTimestamp();
+							$escales[$i]['datehDepartPrevueEscale'] = ((int) $dateArrPrevueEscale->getTimestamp())*1000;
 						}
 						else {$escales[$i]['datehDepartPrevueEscale'] = 0;}
 					}
 				}
-				else {$escales = null;}
 				
 				//On réunis les infos
 				$data = $resInfo_resa;
 				$data['escales'] = $escales;
 				$erreur = 0;
+				
+				$data['nbEscale'] = (int) $resInfo_resa['nbEscale'];
 				
 				//On enlève idVol des informations retourné
 				unset($data['idVol']);
@@ -82,28 +83,28 @@ class ApiController extends Zend_Controller_Action
 				if($resInfo_resa['dateHeureDepartEffectiveVol'] != null)
 				{
 					$dateDepEffectiveVol = new Zend_Date($resInfo_resa['dateHeureDepartEffectiveVol']);
-					$data['dateHeureDepartEffectiveVol'] = intval($dateDepEffectiveVol->getTimestamp());
+					$data['dateHeureDepartEffectiveVol'] = ((int) $dateDepEffectiveVol->getTimestamp())*1000;
 				}
 				else {$data['dateHeureDepartEffectiveVol'] = 0;}
 				
 				if($resInfo_resa['dateHeureDepartPrevueVol'] != null)
 				{
 					$dateDepPrevueVol = new Zend_Date($resInfo_resa['dateHeureDepartPrevueVol']);
-					$data['dateHeureDepartPrevueVol'] = (int) $dateDepPrevueVol->getTimestamp();
+					$data['dateHeureDepartPrevueVol'] = ((int) $dateDepPrevueVol->getTimestamp())*1000;
 				}
 				else {$data['dateHeureDepartPrevueVol'] = 0;}
 				
 				if($resInfo_resa['dateHeureArriveeEffectiveVol'] != null)
 				{
 					$dateArrEffectiveVol = new Zend_Date($resInfo_resa['dateHeureArriveeEffectiveVol']);
-					$data['dateHeureArriveeEffectiveVol'] = (int) $dateArrEffectiveVol->getTimestamp();
+					$data['dateHeureArriveeEffectiveVol'] = ((int) $dateArrEffectiveVol->getTimestamp())*1000;
 				}
 				else {$data['dateHeureArriveeEffectiveVol'] = 0;}
 				
 				if($resInfo_resa['dateHeureArriveePrevueVol'] != null)
 				{
 					$dateArrPrevueVol = new Zend_Date($resInfo_resa['dateHeureArriveePrevueVol']);
-					$data['dateHeureArriveePrevueVol'] = (int) $dateArrPrevueVol->getTimestamp();
+					$data['dateHeureArriveePrevueVol'] = ((int) $dateArrPrevueVol->getTimestamp())*1000;
 				}
 				else {$data['dateHeureArriveePrevueVol'] = 0;}
 			}
