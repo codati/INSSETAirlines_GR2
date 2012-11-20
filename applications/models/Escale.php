@@ -27,17 +27,17 @@
 		{
 			$reqInfosEscales = $this->select()->setIntegrityCheck(false);
 			$reqInfosEscales->from(array('e' => 'escale'), array(
-								'datehArriveeEffectiveEscale',
-								'datehArriveePrevueEscale',
-								'datehDepartEffectiveEscale',
-								'datehDepartPrevueEscale'
-							))
-							->join(array('ae' => 'aeroport'), 'ae.trigrammeAeroport=e.trigrammeAeroport', 'nomAeroport')
-							->join(array('d' => 'desservir'), 'd.trigrammeAeroport=e.trigrammeAeroport', '')
-							->join(array('v' => 'ville'), 'v.idVille=d.idVille', 'nomVille')
-							->join(array('p' => 'pays'), 'p.idPays=v.idPays', 'nomPays')
-							->where('e.idVol='.$idVol);
-			
+                                                'datehArriveeEffectiveEscale',
+                                                'datehArriveePrevueEscale',
+                                                'datehDepartEffectiveEscale',
+                                                'datehDepartPrevueEscale'
+                                        ))
+                                        ->join(array('ae' => 'aeroport'), 'ae.trigrammeAeroport=e.trigrammeAeroport', 'nomAeroport')
+                                        ->join(array('d' => 'desservir'), 'd.trigrammeAeroport=e.trigrammeAeroport', '')
+                                        ->join(array('v' => 'ville'), 'v.idVille=d.idVille', 'nomVille')
+                                        ->join(array('p' => 'pays'), 'p.idPays=v.idPays', 'nomPays')
+                                        ->where('e.idVol='.$idVol);
+
 			//echo $reqInfosEscales->assemble();
 			//exit;
 			
