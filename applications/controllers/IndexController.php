@@ -13,8 +13,8 @@ class IndexController extends Zend_Controller_Action
             $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
             $this->view->pasCo = $espaceSession->connecte;// $this->_getParam('pasCo');
         }
-         $this->_helper->viewRenderer->setResponseSegment('header');
-         $this->_helper->actionStack('footer','index','default',array());
+        $this->_helper->viewRenderer->setResponseSegment('header');
+        $this->_helper->actionStack('footer','index','default',array());
     }
     public function footerAction()
     {
@@ -24,45 +24,30 @@ class IndexController extends Zend_Controller_Action
      {
          //Zend_Session::destroy();  
          Zend_Session::namespaceUnset('utilisateurCourant');
-         $this->_helper->actionStack('index','index','default',array('decoReussie'=>'Déconnexion réussie'));
+         $this->_helper->actionStack('index','index','default',array('decoReussie'=>'Déconnexion réussie'));       
      }
      public function connexionAction()
      {
          $user = $this->getRequest()->getPost('input_user');
          $psw = md5($this->getRequest()->getPost('input_psw'));
-
-         $db = Zend_Registry::get('db');        
-
-
-         // requete recuperation utilisateur
-         $reqUtil = $db->select()
-             ->from(array('u' => 'utilisateur'), array('*'))
-             ->where('u.nomUtilisateur = ?', $user)
-             ->where('u.mdpUtilisateur = ?', $psw)
-            ;
-
-          $leUtilisateur = $db->fetchRow($reqUtil);
-
-          //Zend_Debug::dump($leUtilisateur);exit();
-
+       
+         $utilisateur = new TUtilisateur;
+         $leUtilisateur = $utilisateur->login($user,$psw);
+        
           // requete recuperation des services de l'utilisateur         
-          if($leUtilisateur)
-          { 
-             $reqService = $db->select()
-                     ->from(array('s' => 'service'), array('*'))
-                     ->join(array('t' => 'travailler'),'t.idService = s.idService', array('*'))
-                     ->where('t.idUtilisateur = ?', $leUtilisateur['idUtilisateur'])
-                     ;
+         if(is_array($leUtilisateur))
+         { 
+         
+            $service = new TService;
 
-             $lesServices = $db->fetchAll($reqService); 
+            //recupere les services de l'utilisateur
+            $lesServices = $service->getLesServices($leUtilisateur['idUtilisateur']);
+            
 
-
-             //Zend_Debug::dump($lesServices);exit();
-
-             $tabLesServices = array();
-             $tabLesSousServices = array();
-             foreach ($lesServices as $unService)
-             {
+            $tabLesServices = array();
+            $tabLesSousServices = array();
+            foreach ($lesServices as $unService)
+            {
                 $tabLesServices[] = $unService['nomService'];
 
                 // requete recuperation des sous services 
@@ -72,13 +57,13 @@ class IndexController extends Zend_Controller_Action
                                     ;
 
                 $tabLesSousServices[] = $db->fetchAll($reqSousServices);
-             }                
-              $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
-              $espaceSession->idUtilisateur = $leUtilisateur['idUtilisateur'];
-              $espaceSession->nomUtilisateur = $leUtilisateur['nomUtilisateur'];
-              $espaceSession->lesServicesUtilisateur = $tabLesServices;
-              $espaceSession->lesSousServicesUtilisateur = $tabLesSousServices;
-              $espaceSession->connecte = true;            
+            }                
+            $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
+            $espaceSession->idUtilisateur = $leUtilisateur['idUtilisateur'];
+            $espaceSession->nomUtilisateur = $leUtilisateur['nomUtilisateur'];
+            $espaceSession->lesServicesUtilisateur = $tabLesServices;
+            $espaceSession->lesSousServicesUtilisateur = $tabLesSousServices;
+            $espaceSession->connecte = true;            
           }
           $this->_helper->actionStack('header','index','default',array('test'=>true));    
     }
@@ -106,6 +91,10 @@ class IndexController extends Zend_Controller_Action
           }
           exit();
 
+    }
+    public function telechargerAction()
+    {
+        
     }
 }
 
