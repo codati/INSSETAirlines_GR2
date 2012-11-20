@@ -13,8 +13,8 @@ class IndexController extends Zend_Controller_Action
             $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
             $this->view->pasCo = $espaceSession->connecte;// $this->_getParam('pasCo');
         }
-         $this->_helper->viewRenderer->setResponseSegment('header');
-         $this->_helper->actionStack('footer','index','default',array());
+        $this->_helper->viewRenderer->setResponseSegment('header');
+        $this->_helper->actionStack('footer','index','default',array());
     }
     public function footerAction()
     {
@@ -35,8 +35,8 @@ class IndexController extends Zend_Controller_Action
          $leUtilisateur = $utilisateur->login($user,$psw);
         
           // requete recuperation des services de l'utilisateur         
-          if(is_array($leUtilisateur))
-          { 
+         if(is_array($leUtilisateur))
+         { 
          
             $service = new TService;
 
@@ -44,10 +44,10 @@ class IndexController extends Zend_Controller_Action
             $lesServices = $service->getLesServices($leUtilisateur['idUtilisateur']);
             
 
-             $tabLesServices = array();
-             $tabLesSousServices = array();
-             foreach ($lesServices as $unService)
-             {
+            $tabLesServices = array();
+            $tabLesSousServices = array();
+            foreach ($lesServices as $unService)
+            {
                 $tabLesServices[] = $unService['nomService'];
 
                 // requete recuperation des sous services 
@@ -57,13 +57,13 @@ class IndexController extends Zend_Controller_Action
                                     ;
 
                 $tabLesSousServices[] = $db->fetchAll($reqSousServices);
-             }                
-              $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
-              $espaceSession->idUtilisateur = $leUtilisateur['idUtilisateur'];
-              $espaceSession->nomUtilisateur = $leUtilisateur['nomUtilisateur'];
-              $espaceSession->lesServicesUtilisateur = $tabLesServices;
-              $espaceSession->lesSousServicesUtilisateur = $tabLesSousServices;
-              $espaceSession->connecte = true;            
+            }                
+            $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
+            $espaceSession->idUtilisateur = $leUtilisateur['idUtilisateur'];
+            $espaceSession->nomUtilisateur = $leUtilisateur['nomUtilisateur'];
+            $espaceSession->lesServicesUtilisateur = $tabLesServices;
+            $espaceSession->lesSousServicesUtilisateur = $tabLesSousServices;
+            $espaceSession->connecte = true;            
           }
           $this->_helper->actionStack('header','index','default',array('test'=>true));    
     }

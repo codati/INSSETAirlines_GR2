@@ -13,9 +13,22 @@
             );
         
         public function Ajouter($p_immatriculation, $p_modele) {
-            $db = Zend_Registry::get('db');
-            
             $data = array('immatriculationAvion' => $p_immatriculation, 'idModeleAvion' => $p_modele);
-            $db->insert('avion', $data);
+            $this->insert('avion', $data);
         }
-    }
+        
+        public function Modifier($p_immatriculation, $p_newImmatriculation, $p_modele) {
+            $data = array('immatriculationAvion' => $p_newImmatriculation, 'idModeleAvion' => $p_modele);
+            $this->update('avion', $data, 'immatriclationAvion = '.$p_immatriculation);
+        }
+        
+        public function Reset($p_immatriculation) {          
+            $data = array('heuresVolDerniereIntervention' => 0);
+            $this->update('avion', $data, 'immatriclationAvion = '.$p_immatriculation);
+        }
+        
+        public function Up($p_immatriculation, $p_heuresVol) {
+            $data = array('heuresVolDerniereIntervention' => $p_heuresVol);
+            $this->update('avion', $data, 'immatriclationAvion = '.$p_immatriculation);
+        }
+    }    
