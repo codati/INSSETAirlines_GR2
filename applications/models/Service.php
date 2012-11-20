@@ -32,7 +32,9 @@ class Table_Service extends Zend_Db_Table_Abstract
        {
            $tabServices[] = $unService->toArray();
        }
-       //Zend_Debug::dump($tabServices);exit;
+       
+       //Zend_Debug::dump($tabServices);
+       
        return $tabServices;
     }
    

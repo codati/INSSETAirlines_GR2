@@ -7,14 +7,11 @@
     else /// connecté
     {
         $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
-        
         if($espaceSession->connecte)
         {
             $leboutonconnexion = '<input type="button" value="Déconnexion" id="bt_deco_layout">';
-        }
-        
-    }
- 
+        }      
+    } 
 ?>
 
 
@@ -34,10 +31,10 @@
                             <table>
                                 <tr>
                                 <?php
-                                
+                                    echo '<td><a href="'.$this->baseUrl().'/" title="">Accueil</a></td>';
                                     if(isset($espaceSession->lesServicesUtilisateur))
                                     {
-                                        echo '<td><a href="'.$this->baseUrl().'/" title="">Accueil</a></td>';
+                                        //echo '<td><a href="'.$this->baseUrl().'/" title="">Accueil</a></td>';
                                         $nbServices = count($espaceSession->lesServicesUtilisateur) -1;
                                         foreach($espaceSession->lesServicesUtilisateur as $key => $unService)
                                         {                                            
@@ -58,6 +55,17 @@
                                             echo '</ul>
                                                  </td>';
                                         }
+                                        
+                                        if($espaceSession->idUtilisateur == 7)
+                                        {   // c'est l'admin, a virer plus tard
+                                            echo '<td class=niveau1><a href='.$this->baseUrl().'"/" title="">Trucs</a>
+                                                   <ul class=sousmenu>
+                                                       <li class=itemSousMenu><a href="/modeleavion/ajouter">Nouveau modele d\'avion</a></li>
+                                                       <li class=itemSousMenu><a href="#">Modifier modele d\'avion</a></li>
+                                                       <li class=itemSousMenu><a href="#">Nouvelle intervention</a></li>
+                                                   </ul>
+                                                </td>';
+                                        }
                                     }
                                     else // menu public
                                     {
@@ -65,7 +73,7 @@
                                        echo '<td><a href="/" title="">Offres promotionnelles</a></td>';
                                        echo '<td><a href="/" title="">Informations retards</a></td>';
                                        echo '<td><a href="/" title="">Contact</a></td>';
-                                       echo '<td><a href="/android/appli.apk" title="">Téléchargement</a></td>';
+                                       echo '<td><a href="/index/telecharger" title="">Téléchargement</a></td>';
                                     }                                  
                                     
                                 ?>                                

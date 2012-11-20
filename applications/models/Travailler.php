@@ -11,7 +11,7 @@
                     'refTableClass' => 'Table_Service'
                      ),
                 'Utilisateur' => array(
-                    'columns' => 'Utilisateur',
+                    'columns' => 'idUtilisateur',
                     'refTableClass' => 'Table_Utilisateur'
                     )
             );
