@@ -33,7 +33,7 @@ class IndexController extends Zend_Controller_Action
             
          $utilisateur = new Table_Utilisateur;
          $leUtilisateur = $utilisateur->login($user,$psw);
-        
+         
             //Zend_Debug::dump($leUtilisateur);exit;
           // requete recuperation des services de l'utilisateur         
           //if(is_array($leUtilisateur))
