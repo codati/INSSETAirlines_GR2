@@ -61,9 +61,9 @@ class IndexController extends Zend_Controller_Action
               $espaceSession->lesServicesUtilisateur = $tabLesServices;
               $espaceSession->lesSousServicesUtilisateur = $tabSousServices;
               $espaceSession->connecte = true;    
+          }
           $this->_helper->actionStack('header','index','default',array('test'=>true));    
     }
-     }
     public function verifconnexionAction()
     {
          $user = $this->_getParam('user');
