@@ -15,13 +15,17 @@
         <?php
             foreach ($this->lignes as $ligne) 
             {
-                echo "<tr>";
-                echo "<td>".$ligne["depart"] ."<br>(" . $ligne["trigrammeAeroportDepart"] . ")</td>";
-                echo "<td>".$ligne["arrivee"] ."<br>(" . $ligne["trigrammeAeroportArrivee"] . ")</td>";
-                echo "<td>" . $ligne["nomPeriode"] . "</td>";
-                echo "<td>" . $this->leNbDeligne[$ligne["idLigne"]]."</td>";
-                echo "<td>  <a>Voir les vols de cette ligne</a>    </td>";
-                echo "</tr>";
+                $nbLignes =  $this->leNbDeligne[$ligne["idLigne"]];
+                if ($nbLignes > 0)
+                {
+                    echo "<tr>";
+                    echo "<td>".$ligne["depart"] ."<br>(" . $ligne["trigrammeAeroportDepart"] . ")</td>";
+                    echo "<td>".$ligne["arrivee"] ."<br>(" . $ligne["trigrammeAeroportArrivee"] . ")</td>";
+                    echo "<td>". $ligne["nomPeriode"] ."</td>";
+                    echo "<td>". $nbLignes ."</td>";
+                    echo "<td>  <a href=\"".$this->baseUrl()."/vols/consulter/idligne/".$ligne['idLigne']."\">Voir les vols de cette ligne</a>    </td>";
+                    echo "</tr>";
+                }
             }
         ?>   
     </table>

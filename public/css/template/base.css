@@ -23,6 +23,10 @@ h1{
     font-size: 1.750em;
 }
 
+h2{
+    font-size: 1.450em;
+}
+
 #left_side
 {
     background-image: url("../../img/template/cote.png");
