@@ -72,6 +72,7 @@
 			catch (Zend_Db_Exception $e) {die ($e->getMessage());}
 			
 			//echo '<pre>';print_r($resInfo_resa);echo '</pre>';exit;
-			return $resInfo_resa->toArray();
+			if($resInfo_resa) {return $resInfo_resa->toArray();}
+			else {return false;}
 		}
     }
