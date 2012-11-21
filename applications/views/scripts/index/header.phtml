@@ -50,7 +50,7 @@
                                                 <ul class=sousmenu>';
                                             foreach($espaceSession->lesSousServicesUtilisateur[$key] as $unSousService)
                                             {
-                                                echo '<li class=itemSousMenu><a href="">'.$unSousService['nomSousService'].'</a></li>';
+                                                echo '<li class=itemSousMenu><a href="'.$this->baseUrl().'/'.strtolower(str_replace(" ","",$unService).'/'.str_replace(" ","",$unSousService['actionSousService'])).'">'.$unSousService['nomSousService'].'</a></li>';
                                             }                                                   
                                             echo '</ul>
                                                  </td>';
