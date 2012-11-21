@@ -30,58 +30,49 @@ class IndexController extends Zend_Controller_Action
      {
          $user = $this->getRequest()->getPost('input_user');
          $psw = md5($this->getRequest()->getPost('input_psw'));
-       
-         $utilisateur = new TUtilisateur;
+            
+         $utilisateur = new Table_Utilisateur;
          $leUtilisateur = $utilisateur->login($user,$psw);
-        
-          // requete recuperation des services de l'utilisateur         
-         if(is_array($leUtilisateur))
-         { 
          
-            $service = new TService;
-
+            //Zend_Debug::dump($leUtilisateur);exit;
+          // requete recuperation des services de l'utilisateur         
+          //if(is_array($leUtilisateur))
+         if(!is_null($leUtilisateur))
+          { 
+                 
+            $service = new Table_Service;  
+            $sousservice = new Table_SousService;
+             
             //recupere les services de l'utilisateur
             $lesServices = $service->getLesServices($leUtilisateur['idUtilisateur']);
-            
 
-            $tabLesServices = array();
-            $tabLesSousServices = array();
-            foreach ($lesServices as $unService)
-            {
+             $tabLesServices = array();
+             $tabSousServices = array();
+             foreach ($lesServices as $unService)
+             {
                 $tabLesServices[] = $unService['nomService'];
-
+              
                 // requete recuperation des sous services 
-                $reqSousServices = $db->select()
-                                    ->from(array('ss' => 'sousservice'),array('*'))
-                                    ->where('ss.idService = ?', $unService['idService'])
-                                    ;
-
-                $tabLesSousServices[] = $db->fetchAll($reqSousServices);
-            }                
-            $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
-            $espaceSession->idUtilisateur = $leUtilisateur['idUtilisateur'];
-            $espaceSession->nomUtilisateur = $leUtilisateur['nomUtilisateur'];
-            $espaceSession->lesServicesUtilisateur = $tabLesServices;
-            $espaceSession->lesSousServicesUtilisateur = $tabLesSousServices;
-            $espaceSession->connecte = true;            
+                $tabSousServices[] = $sousservice->getLesSousServices($unService['idService']);
+             }             
+              $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
+              $espaceSession->idUtilisateur = $leUtilisateur['idUtilisateur'];
+              $espaceSession->nomUtilisateur = $leUtilisateur['nomUtilisateur'];
+              $espaceSession->lesServicesUtilisateur = $tabLesServices;
+              $espaceSession->lesSousServicesUtilisateur = $tabSousServices;
+              $espaceSession->connecte = true;    
           }
           $this->_helper->actionStack('header','index','default',array('test'=>true));    
     }
     public function verifconnexionAction()
     {
-         $login = $this->_getParam('login');
-         $mdp = md5($this->_getParam('pass'));
-         $db = Zend_Registry::get('db');               
-
-         // requete recuperation utilisateur
-         $reqUtil = $db->select()
-             ->from(array('u' => 'utilisateur'), array('nomUtilisateur'))
-             ->where('u.nomUtilisateur = ?', $login)
-             ->where('u.mdpUtilisateur = ?', $mdp)
-            ;
-          $leUtilisateur = $db->fetchOne($reqUtil);
-
-          if($leUtilisateur)
+         $user = $this->_getParam('user');
+         $psw = md5($this->_getParam('pass'));
+         
+         $utilisateur = new Table_Utilisateur;
+         $leUtilisateur = $utilisateur->login($user,$psw);
+         
+          if(!is_null($leUtilisateur))
           {
               echo '1';
           }
@@ -94,7 +85,7 @@ class IndexController extends Zend_Controller_Action
     }
     public function telechargerAction()
     {
-        
+        $this->_helper->actionStack('header','index','default',array()); 
     }
 }
 

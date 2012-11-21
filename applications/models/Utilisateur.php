@@ -12,12 +12,11 @@ class Table_Utilisateur extends Zend_Db_Table_Abstract
              ->where('u.mdpUtilisateur = ?', $psw)
             ;
         $leUtilisateur = $this->fetchRow($reqUtil);
-       
-        $identifiants = array( 
-            'idUtilisateur' => $leUtilisateur->idUtilisateur,
-            'nomUtilisateur' => $leUtilisateur->nomUtilisateur             
-                );
         
+        $identifiants = array( 
+                'idUtilisateur' => $leUtilisateur->idUtilisateur,
+                'nomUtilisateur' => $leUtilisateur->nomUtilisateur             
+                );
        return $identifiants;
     }
 }

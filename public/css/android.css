@@ -1,0 +1,17 @@
+ #h1_dl_appli {
+    color : green;
+    margin : 10px;
+}
+#div_qrcode, #h1_dl_appli  {
+    text-align : center;
+}
+#lien_appli {
+    color : green;
+}
+#lien_appli:hover {
+    text-decoration: underline;
+}
+#imgqrcode {
+    margin-top : 5px;
+    margin-left : -10px;
+}

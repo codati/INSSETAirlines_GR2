@@ -40,7 +40,7 @@ function verifConnexion() {
     }
     else
     {	
-        $.post("/index/verifconnexion",{login:username, pass:mdp}, 
+        $.post("/index/verifconnexion",{user:username, pass:mdp}, 
             function(data) 
             {
                 if(data==1)

@@ -21,6 +21,6 @@
                 'datePrevueIntervention' => $p_datePrevue, 
                 'dateEffectiveIntervention' => $p_dateEffective, 
                 'typeIntervention' => $p_typeIntervention);
-            $db->insert('intervention', $data);
+            $db->insert($data);
         }
     }
