@@ -48,13 +48,19 @@ class IndexController extends Zend_Controller_Action
 
              $tabLesServices = array();
              $tabSousServices = array();
+             $tabActionSousService = array();
              foreach ($lesServices as $unService)
              {
                 $tabLesServices[] = $unService['nomService'];
+                
               
                 // requete recuperation des sous services 
                 $tabSousServices[] = $sousservice->getLesSousServices($unService['idService']);
-             }             
+                
+                
+             }   
+             
+             //exit;
               $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
               $espaceSession->idUtilisateur = $leUtilisateur['idUtilisateur'];
               $espaceSession->nomUtilisateur = $leUtilisateur['nomUtilisateur'];
