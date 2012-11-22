@@ -14,7 +14,14 @@
  
         public function Ajouter($p_immatriculation, $p_modele) {     
             $data = array('immatriculationAvion' => $p_immatriculation, 'idModeleAvion' => $p_modele);
-            $this->insert($data);
+            try {
+                $this->insert($data);
+            }
+            catch (Exception $e)
+            {
+                return false;
+            }
+            return true;
         }
         
         public function Modifier($p_immatriculation, $p_newImmatriculation, $p_modele) {

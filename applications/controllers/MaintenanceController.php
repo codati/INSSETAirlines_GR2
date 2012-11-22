@@ -56,6 +56,18 @@
             $immat = $this->getRequest()->getPost('ImmatAvion');
             $modele = $this->getRequest()->getPost('modeleAvion');
             
-            $tabAvion->Ajouter($immat, $modele);
+            if(($immat != null) or ($modele != null))
+            {          
+                $ajoutsql = $tabAvion->Ajouter($immat, $modele);
+
+                if($ajoutsql == true)
+                {
+                    echo '<h3 class="reussi">Ajout réussi</h3>';
+                }
+                else
+                {
+                    echo '<h3 class="echoue">Ajout échoué</h3>';
+                }
+            }
         }
     }
