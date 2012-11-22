@@ -144,3 +144,11 @@ line-height: 15px;
 #tableau caption {
 margin-bottom: 5px;
 }
+
+dd, dt {
+    margin : 10px;
+}
+
+form {
+    padding : 10px 0 0 25px;
+}

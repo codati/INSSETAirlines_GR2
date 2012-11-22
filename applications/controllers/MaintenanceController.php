@@ -32,6 +32,7 @@
 
             $eImmatAvion = new Zend_Form_Element_Text('ImmatAvion');
             $eImmatAvion->setLabel('Immatriculation de l\'avion : ');
+            //$eImmatAvion->addValidator(Zend_Validate_Alnum());
             
             $eModeleAvion = new Zend_Form_Element_Select('ModeleAvion');
             $eModeleAvion->addMultiOptions($lesOptions);
@@ -49,6 +50,7 @@
         
         public function ajoutsqlAction()
         {
+            
             $this->_helper->actionStack('header','index','default',array());
             
             $tabAvion = new Table_Avion;
@@ -56,18 +58,25 @@
             $immat = $this->getRequest()->getPost('ImmatAvion');
             $modele = $this->getRequest()->getPost('modeleAvion');
             
-            if(($immat != null) or ($modele != null))
+            $immatUp = strtoupper($immat);
+
+            if((($immatUp != null) or ($modele != null)) AND (preg_match('^[A-Z0-9\-]+$', $immatUp)))
             {          
-                $ajoutsql = $tabAvion->Ajouter($immat, $modele);
+                $ajoutsql = $tabAvion->Ajouter($immatUp, $modele);
 
                 if($ajoutsql == true)
                 {
-                    echo '<h3 class="reussi">Ajout réussi</h3>';
+                    $message = '<h3 class="reussi">Ajout réussi</h3>';
                 }
                 else
                 {
-                    echo '<h3 class="echoue">Ajout échoué</h3>';
+                    $message = '<h3 class="echoue">Ajout échoué</h3>';
                 }
             }
+            else
+            {
+                $message = '<h3 class="echoue">Ajout échoué, saisie invalide</h3>';
+            }
+            $this->view->message = $message;
         }
     }

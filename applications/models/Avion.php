@@ -14,7 +14,7 @@
  
         public function Ajouter($p_immatriculation, $p_modele) {     
             $data = array('immatriculationAvion' => $p_immatriculation, 'idModeleAvion' => $p_modele);
-            try {
+            try {                
                 $this->insert($data);
             }
             catch (Exception $e)
