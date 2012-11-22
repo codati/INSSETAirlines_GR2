@@ -39,6 +39,14 @@
                 $lesTarifs[$unVol['idVol']] = $tableValoir->getTarifsVol($unVol['idVol']);
             }
            $this->view->lesTarifs = $lesTarifs;
+           
+           /*On récupérer les escales d'un vol via son id*/
+           $tableEscale = new Table_Escale;
+           foreach ($lesVols as $unVol)
+            {
+               $lesEscales[$unVol['idVol']] = $tableEscale->get_InfosEscales($unVol['idVol']);
+            }
+            $this->view->lesEscales = $lesEscales;
         }
     }
 ?>

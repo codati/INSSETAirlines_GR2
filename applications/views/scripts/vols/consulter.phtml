@@ -28,11 +28,14 @@
                 echo "<td>".$unVol['dateHeureArriveePrevueVol']->toString(' EEEE dd MMMM yyyy à HH:mm')."</td>";
                 if ($unVol['nbEscales'] == 0)
                 {
-                    echo "<td>Ligne directe</td>";
+                    echo "<td>Aucune (ligne directe)</td>";
                 }
                 else
                 {
-                    echo "<td>".$unVol['nbEscales']."</td>";
+                    echo "<td>".$unVol['nbEscales']." (détails)";
+                    echo"<br />
+                        
+                    </td>";
                 }
                 echo "<td>";
                 foreach ($this->lesTarifs[$unVol['idVol']] as $lesTarifsDuVol)
