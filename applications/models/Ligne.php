@@ -45,7 +45,7 @@
                 $date = Zend_Date::now(); // date actuelle
 		$tableVol = new Table_Vol;
                 $imbrique = $this->select()->setIntegrityCheck(false)
-                ->from(array('va'=>'valoir'),'va.idVol');
+                                ->from(array('va'=>'valoir'),'va.idVol');
 		$reqVol= $tableVol->select()
                                   ->from($tableVol)
                                   ->where('idLigne = ?', $idLigne)
@@ -53,8 +53,8 @@
                                   ->where("idVol IN ($imbrique)")
                         
                         ;
-                
-                                  
+              //  echo $reqVol->assemble();exit;
+                            
 		return $reqVol->query()->rowCount();
 	}
 
