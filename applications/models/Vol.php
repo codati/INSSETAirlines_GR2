@@ -15,16 +15,18 @@
                     'refTableClass' => 'Table_Avion'
                     ),
             );
-        /*************** Fonctions ***************/                
-        public function get_InfosVol($idVol)
+        /*************** Fonctions ***************/ 
+        //Renvoie des informations sur tous les vols à venir et planifiés d'une ligne
+        public function get_InfosVolsLigne($idLigne)
         {
-            //On fait la requ�te pour r�cuperer les infos de la r�servation
+            $date = Zend_Date::now(); // date actuelle
             $reqNbEscales = $this->select()->setIntegrityCheck(false);
-            $reqNbEscales->from('escale', array('numeroEscale','COUNT(numeroEscale)'))
+            $reqNbEscales->from('escale', array('COUNT(numeroEscale)'))
                                      ->where('idVol=v.idVol');
-            //echo $reqNbEscales->assemble();
-
-            $reqInfo_vol = $this->select()->setIntegrityCheck(false);
+            $imbrique = $this->select()->setIntegrityCheck(false)
+                            ->from(array('va'=>'valoir'),'va.idVol');
+            
+            $reqInfo_vol = $this->select()->distinct()->setIntegrityCheck(false);
             $reqInfo_vol->from(array('v' => 'vol'), array(
                                             'idVol', 
                                             'remarqueVol', 
@@ -32,11 +34,7 @@
                                             'dateHeureDepartPrevueVol',
                                             'dateHeureArriveeEffectiveVol',
                                             'dateHeureArriveePrevueVol',
-                                            //'nbEscale' => '('.new Zend_Db_Expr($reqNbEscales).')'
-                                            array(
-                                                'numeroEscale',
-                                                'nbEscale'
-                                            ) => '('.new Zend_Db_Expr($reqNbEscales).')'
+                                            'nbEscales' => '('.new Zend_Db_Expr($reqNbEscales).')'
                                      ))
                                      ->join(array('l' => 'ligne'), 'l.idLigne=v.idLigne', '')
 
@@ -49,16 +47,18 @@
                                      ->join(array('dArr' => 'desservir'), 'dArr.trigrammeAeroport=aeArr.trigrammeAeroport', '')
                                      ->join(array('vArr' => 'ville'), 'vArr.idVille=dArr.idVille', array('villeArrivee' => 'nomVille'))
                                      ->join(array('pArr' => 'pays'), 'pArr.idPays=vArr.idPays', array('paysArrivee' => 'nomPays'))
+                                     
+                                     ->where("v.idVol IN ($imbrique)")
+                                     ->where('v.idLigne='.$idLigne)
+                                     ->where('v.dateHeureDepartPrevueVol > ?', $date->getIso());
 
-                                     ->where('v.idLigne='.$idVol);
-
-            //echo $reqInfo_vol->assemble();exit;
-
+                          //   echo $reqInfo_vol->assemble();exit;
             try {$resInfo_vol = $this->fetchAll($reqInfo_vol);}
             catch (Zend_Db_Exception $e) {die ($e->getMessage());}
 
-            echo '<pre>';print_r($resInfo_vol->toArray());echo '</pre>';exit;
             return $resInfo_vol->toArray();
         }
+        
+       
     }
 ?>

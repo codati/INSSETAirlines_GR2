@@ -20,7 +20,7 @@ class LignesController extends Zend_Controller_Action
         {
             $nbVolsLigne[$ligne->idLigne] = $tableLigne->getNbVolsDisponibles($ligne->idLigne);
         }
-        $this->view->leNbDeligne = $nbVolsLigne;
+        $this->view->nbVolsLigne = $nbVolsLigne;
 
     }
 }
