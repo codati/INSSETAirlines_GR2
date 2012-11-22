@@ -27,6 +27,7 @@
 
             // parametrer le formulaire
             $monform->setMethod('post');
+            $monform->setAttrib('id','formtest');
             
             $monform->setAction($this->view->baseUrl().'/maintenance/ajoutsql');
 

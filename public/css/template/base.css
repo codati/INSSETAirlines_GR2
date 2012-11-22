@@ -146,10 +146,10 @@ vertical-align:middle;
 margin-bottom: 5px;
 }
 
-dd, dt {
+#formtest dd,#formtest dt {
     margin : 10px;
 }
 
-form {
+#formtest {
     padding : 10px 0 0 25px;
 }
