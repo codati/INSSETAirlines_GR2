@@ -1,7 +1,4 @@
-<h1>Consulter les vols</h1><br />
-
-<h2>
-    Ligne sélectionnée :
+<h1>
     <?php
         echo $this->aeroportDepart['nomAeroport'];
         echo " (".$this->ligne['trigrammeAeroportDepart'].")";
@@ -9,18 +6,43 @@
         echo $this->aeroportArrivee['nomAeroport'];
         echo " (".$this->ligne['trigrammeAeroportArrivee'].")";
     ?>
-</h2><br>
-
-<p>Sélectionnez un vol parmi ceux ci-dessous :</p>
+</h1><br /><br />
 
 <div id="tableau">
     <table>
-        <caption>Les vols à venir :</caption>
+        <caption>Les vols à venir de cette ligne :</caption>
         <tr>
-            <th>Départ prévu</th>
-            <th>Arrivée prévue</th>
-            <th>Nombre d'escales</th>
-            <th>Réserver</th>
-        </tr> 
+            <th>Départ prévu le</th>
+            <th>Arrivée prévue le</th>
+            <th>Escales</th>
+            <th>Tarifs</th>
+        </tr>
+        <?php
+            $locale = new Zend_Locale('fr_FR');
+            foreach ($this->lesVols as $unVol)
+            {
+                $unVol['dateHeureDepartPrevueVol'] = new Zend_Date($unVol['dateHeureDepartPrevueVol'], false, $locale);          
+                $unVol['dateHeureArriveePrevueVol'] = new Zend_Date($unVol['dateHeureArriveePrevueVol'],false, $locale);          
+                echo "<tr>";
+                echo "<td>".$unVol['dateHeureDepartPrevueVol']->toString('EEEE dd MMMM yyyy à HH:mm')."</td>";
+                echo "<td>".$unVol['dateHeureArriveePrevueVol']->toString(' EEEE dd MMMM yyyy à HH:mm')."</td>";
+                if ($unVol['nbEscales'] == 0)
+                {
+                    echo "<td>Ligne directe</td>";
+                }
+                else
+                {
+                    echo "<td>".$unVol['nbEscales']."</td>";
+                }
+                echo "<td>";
+                foreach ($this->lesTarifs[$unVol['idVol']] as $lesTarifsDuVol)
+                {
+                        echo $lesTarifsDuVol['nomClasse'];
+                        echo " : ".$lesTarifsDuVol['prixUnitaire']." euros<br />";                        
+                }
+                echo"</td>";
+                echo "</tr>";
+            }
+        ?>
     </table>
 </div>

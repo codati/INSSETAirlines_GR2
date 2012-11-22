@@ -139,6 +139,7 @@ border:1px solid #6495ed;
 padding:5px;
 text-align:center;
 line-height: 15px;
+vertical-align:middle;
 }
 
 #tableau caption {
