@@ -14,20 +14,21 @@
         <tr>
             <th>Départ prévu le</th>
             <th>Arrivée prévue le</th>
-            <th>Nombre d'escales</th>
+            <th>Escales</th>
             <th>Tarifs</th>
         </tr>
         <?php
+            $locale = new Zend_Locale('fr_FR');
             foreach ($this->lesVols as $unVol)
             {
-                $unVol['dateHeureDepartPrevueVol'] = new Zend_Date($unVol['dateHeureDepartPrevueVol']);          
-                $unVol['dateHeureArriveePrevueVol'] = new Zend_Date($unVol['dateHeureArriveePrevueVol']);          
+                $unVol['dateHeureDepartPrevueVol'] = new Zend_Date($unVol['dateHeureDepartPrevueVol'], false, $locale);          
+                $unVol['dateHeureArriveePrevueVol'] = new Zend_Date($unVol['dateHeureArriveePrevueVol'],false, $locale);          
                 echo "<tr>";
                 echo "<td>".$unVol['dateHeureDepartPrevueVol']->toString('EEEE dd MMMM yyyy à HH:mm')."</td>";
-                echo "<td>".$unVol['dateHeureArriveePrevueVol']->toString('EEEE dd MMMM yyyy à HH:mm')."</td>";
+                echo "<td>".$unVol['dateHeureArriveePrevueVol']->toString(' EEEE dd MMMM yyyy à HH:mm')."</td>";
                 if ($unVol['nbEscales'] == 0)
                 {
-                    echo "<td>0 (ligne directe)</td>";
+                    echo "<td>Ligne directe</td>";
                 }
                 else
                 {
