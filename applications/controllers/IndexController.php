@@ -36,7 +36,21 @@ class IndexController extends Zend_Controller_Action
          {
             $utilisateur = new Table_Utilisateur;
             $leUtilisateur = $utilisateur->login($user,$psw);
-
+            
+         $utilisateur = new Table_Utilisateur;
+         $leUtilisateur = $utilisateur->login($user,$psw);
+         
+            //Zend_Debug::dump($leUtilisateur);exit;
+          // requete recuperation des services de l'utilisateur         
+          //if(is_array($leUtilisateur))
+         if(!is_null($leUtilisateur))
+          { 
+                 
+            $service = new Table_Service;  
+            $sousservice = new Table_SousService;
+             
+            //recupere les services de l'utilisateur
+            $lesServices = $service->getLesServices($leUtilisateur['idUtilisateur']);
                //Zend_Debug::dump($leUtilisateur);exit;
              // requete recuperation des services de l'utilisateur         
              //if(is_array($leUtilisateur))
@@ -75,6 +89,27 @@ class IndexController extends Zend_Controller_Action
              
              
          }
+             $tabLesServices = array();
+             $tabSousServices = array();
+             foreach ($lesServices as $unService)
+             {
+                $tabLesServices[] = $unService['nomService'];
+                
+              
+                // requete recuperation des sous services 
+                $tabSousServices[] = $sousservice->getLesSousServices($unService['idService']);
+                
+                
+             }   
+             
+             //exit;
+              $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
+              $espaceSession->idUtilisateur = $leUtilisateur['idUtilisateur'];
+              $espaceSession->nomUtilisateur = $leUtilisateur['nomUtilisateur'];
+              $espaceSession->lesServicesUtilisateur = $tabLesServices;
+              $espaceSession->lesSousServicesUtilisateur = $tabSousServices;
+              $espaceSession->connecte = true;    
+          }
           $this->_helper->actionStack('header','index','default',array('test'=>true));    
     }
     public function verifconnexionAction()

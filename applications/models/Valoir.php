@@ -15,5 +15,19 @@
                     'refTableClass' => 'Table_Classe'
                     )
             );
-
+        public function getTarifsVol($idVol)
+               {
+                    $req = $this->select()
+                    ->setIntegrityCheck(false)
+                    ->from(array('va'=>'valoir'),array('va.prixUnitaire'))
+                    ->join(array('c'=>'classe'),'c.idClasse = va.idClasse', array('c.nomClasse'))
+                    ->where('idVol= ?', $idVol)
+                    ;
+                   $tarifs = $this->fetchAll($req)->toArray();
+                    //if(count($tarifs) > 0) 
+                   if(!is_null($tarifs))
+                    {
+                         return $tarifs;
+                    }
+               }
     }
