@@ -21,7 +21,12 @@
             {
                 $lesOptions[$unModele['idModeleAvion']] = $unModele['libelleModeleAvion'];
             }
-
+            
+            $espaceSession = new Zend_Session_Namespace('AjoutAvionCourant');
+            
+            $immat = $espaceSession->ImmatAvion;
+            $modele = $espaceSession->modeleAvion;
+            
             // creer un objet formulaire
             $monform = new Zend_Form;
 
@@ -32,10 +37,12 @@
             $monform->setAction($this->view->baseUrl().'/maintenance/ajoutsql');
 
             $eImmatAvion = new Zend_Form_Element_Text('ImmatAvion');
+            $eImmatAvion->setValue($immat);
             $eImmatAvion->setLabel('Immatriculation de l\'avion : ');
-            //$eImmatAvion->addValidator(Zend_Validate_Alnum());
-            
+            $eImmatAvion->setAttrib('required', 'required');
+
             $eModeleAvion = new Zend_Form_Element_Select('ModeleAvion');
+            $eModeleAvion->setValue($modele);
             $eModeleAvion->addMultiOptions($lesOptions);
             $eModeleAvion->setLabel('Modèle de l\'avion : ');
             
@@ -59,9 +66,13 @@
             $immat = $this->getRequest()->getPost('ImmatAvion');
             $modele = $this->getRequest()->getPost('modeleAvion');
             
+            $espaceSession = new Zend_Session_Namespace('AjoutAvionCourant');
+            $espaceSession->ImmatAvion = $immat['ImmatAvion'];
+            $espaceSession->modeleAvion = $modele['modeleAvion'];
+            
             $immatUp = strtoupper($immat);
 
-            if((($immatUp != null) or ($modele != null)) AND (preg_match('^[A-Z0-9\-]+$', $immatUp)))
+            if((($immatUp != null) or ($modele != null)) AND (preg_match('#^[A-Z0-9\-]+$#', $immatUp)))
             {          
                 $ajoutsql = $tabAvion->Ajouter($immatUp, $modele);
 
