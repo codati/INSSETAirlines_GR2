@@ -33,6 +33,7 @@
 			$reqNbEscales = $this->select()->setIntegrityCheck(false);
 			$reqNbEscales->from('escale', 'COUNT(numeroEscale)')
 						 ->where('idVol=v.idVol');
+			//SELECT COUNT(numeroEscale) FROM escale WHERE idVol=v.idVol
 			//echo $reqNbEscales->assemble();
 			
 			$reqInfo_resa = $this->select()->setIntegrityCheck(false);
