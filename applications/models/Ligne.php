@@ -33,7 +33,9 @@
                         ->join(array('p'=>'periodicite'),'p.idPeriode = l.idPeriodicite','nomPeriode')
                     ;
             $lignes = $this->fetchAll($req);
-            return $lignes;
+            ///Zend_Debug::dump($lignes->toArray());exit;
+            return $lignes->toArray();
+            
             
         }
 
@@ -47,6 +49,7 @@
                                   ->where('idLigne = ?', $idLigne)
                                   ->where('dateHeureDepartPrevueVol > ?', $date->getIso())
                         ;
+                
                                   
 		return $reqVol->query()->rowCount();
 	}

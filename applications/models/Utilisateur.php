@@ -13,11 +13,19 @@ class Table_Utilisateur extends Zend_Db_Table_Abstract
             ;
         $leUtilisateur = $this->fetchRow($reqUtil);
         
-        $identifiants = array( 
+        if(!is_null($leUtilisateur))
+        {
+            $identifiants = array( 
                 'idUtilisateur' => $leUtilisateur->idUtilisateur,
                 'nomUtilisateur' => $leUtilisateur->nomUtilisateur             
                 );
-       return $identifiants;
+            return $identifiants;
+        }
+        else 
+        {
+            return null;
+        }
+        
     }
 }
 

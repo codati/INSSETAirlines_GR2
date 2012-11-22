@@ -35,8 +35,8 @@
 #form_login {
  position : absolute;
  top : 35%;
- left : 12%;
- width : 350px;
+ left : 10%;
+ width : 360px;
  background : url('../img/overlay/pixel.png') repeat;
  padding : 20px;
 }
@@ -75,4 +75,13 @@
 }
 #form_login > dl > dt, #form_login > dl > dd {
     float : left;    
+}
+#bt_rad-element, #bt_rad-label {
+    font-size : 0.8em;
+}
+#radio_form_co-element label{    
+    float: left;
+}
+#bt_rad-label {
+    width : auto !important;
 }
