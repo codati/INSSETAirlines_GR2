@@ -40,7 +40,7 @@
             }
            $this->view->lesTarifs = $lesTarifs;
            
-           /*On récupérer les escales d'un vol via son id*/
+           /*On récupérer les escales des vols via id*/
            $tableEscale = new Table_Escale;
            foreach ($lesVols as $unVol)
             {

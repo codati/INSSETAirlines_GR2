@@ -8,13 +8,15 @@
     ?>
 </h1><br /><br />
 
+<h2>Les vols</h2>
+
 <div id="tableau">
     <table>
         <caption>Les vols à venir de cette ligne :</caption>
         <tr>
             <th>Départ prévu le</th>
             <th>Arrivée prévue le</th>
-            <th>Escales</th>
+            <th>Nombre d'escales</th>
             <th>Tarifs</th>
         </tr>
         <?php
@@ -28,14 +30,17 @@
                 echo "<td>".$unVol['dateHeureArriveePrevueVol']->toString(' EEEE dd MMMM yyyy à HH:mm')."</td>";
                 if ($unVol['nbEscales'] == 0)
                 {
-                    echo "<td>Aucune (ligne directe)</td>";
+                    echo "<td>Ligne directe (sans escale)</td>";
                 }
                 else
                 {
-                    echo "<td>".$unVol['nbEscales']." (détails)";
-                    echo"<br />
-                        
-                    </td>";
+                    echo "<td>".$unVol['nbEscales']." : <br /><ul>";
+                    foreach ($this->lesEscales[$unVol['idVol']] as $lesEscalesduVol)
+                    {
+                        echo "<li>".$lesEscalesduVol['nomAeroport']."";
+                        echo " (".$lesEscalesduVol['nomPays'].")<br /></li>";
+                    }
+                    echo "</ul></td>";
                 }
                 echo "<td>";
                 foreach ($this->lesTarifs[$unVol['idVol']] as $lesTarifsDuVol)
@@ -47,5 +52,7 @@
                 echo "</tr>";
             }
         ?>
-    </table>
+    </table> <br />
+    <h2>Information</h2>
+    <p>Pour réserver un vol, veuillez passer par l'administration en cliquant sur le bouton Connexion.</p>
 </div>
