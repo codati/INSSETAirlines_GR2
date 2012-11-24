@@ -1,0 +1,90 @@
+<p style="float: left;">Planning des dernières semaines de <span style="font-weight: bold;"><?php echo $this->pilote; ?></span></p>
+
+<table style="float: right;">
+	<tr>
+		<td style="font-style: italic; text-decoration: underline;">Légende : </td>
+		<td style="width: 15px;"></td>
+		<td style="border:1px solid #6495ED; width: 20px;"></td>
+		<td style="font-style: italic; padding-left: 10px;">Pas de vol</td>
+		<td style="width: 15px;"></td>
+		<td style="border:1px solid #6495ED; width: 20px; background-color: red;"></td>
+		<td style="font-style: italic; padding-left: 10px;">Vol effectué ou planifié</td>
+	</tr>
+	<tr><td colspan="7" style="height: 5px;"></td></tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td style="border:1px solid #6495ED; width: 20px; background-color: #47FF2B;"></td>
+		<td colspan="4" style="font-style: italic; padding-left: 10px;">Vol en train d'être planifié</td>
+	</tr>
+</table>
+<div style="clear: both;"></div>
+<br/><br/>
+
+<?php
+$iTab = 1;
+foreach($this->tableaux as $table)
+{
+	?>
+	<table id="tableau">
+		<tr><th colspan="168">Semaine du <?php echo $table['date_dep'].' au '.$table['date_arr']; ?></th></tr>
+		<tr>
+			<td colspan="24">Lundi</td>
+			<td colspan="24">Mardi</td>
+			<td colspan="24">Mercredi</td>
+			<td colspan="24">Jeudi</td>
+			<td colspan="24">Vendredi</td>
+			<td colspan="24">Samedi</td>
+			<td colspan="24">Dimanche</td>
+		</tr>
+		<tr>
+			<?php
+			$iArr = 0;
+			$ArrFind = false;
+			$ArrPlanFind = false;
+			
+			$cntLstDate = count($table['lst_date']);
+			for($i=1;$i<=168;$i++)
+			{
+				$style = 'background-color: red;';
+				
+				if($cntLstDate > 0)
+				{
+					if(isset($table['lst_date'][$iArr]))
+					{
+						if($ArrFind == false && $table['lst_date'][$iArr]['nbHoursBeforeDep'] == $i) {$ArrFind = true;}
+						if($ArrFind == false) {$style = '';}
+						
+						if($ArrFind == true && $table['lst_date'][$iArr]['nbHoursBeforeArr'] == $i)
+						{
+							$iArr++;
+							$ArrFind = false;
+						}
+					}
+					else {$style = '';}
+				}
+				else {$style = '';}
+				
+				if($iTab == 1)
+				{
+					if($ArrPlanFind == false && $i == $this->nbHoursBeforeDep)
+					{
+						$style = 'background-color: #47FF2B;';
+						$ArrPlanFind = true;
+					}
+					elseif($ArrPlanFind == true && $i <= $this->nbHoursBeforeArr) {$style = 'background-color: #47FF2B;';}
+					if($ArrPlanFind == true && $i == $this->nbHoursBeforeArr) {$ArrPlanFind = false;}
+				}
+				
+				echo '<td style="width: 5px; padding:0; height: 15px; '.$style.'"></td>';
+			}
+			
+			?>
+		</tr>
+	</table>
+	<br/>
+	<?php
+	$iTab++;
+}
+?>
+<br/>

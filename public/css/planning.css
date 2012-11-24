@@ -1,0 +1,73 @@
+/* Debut Planning/recapvol */
+#recapPlanning .label-element, #recapPlanning .value-element {margin: 5px;}
+#recapPlanning .label-element {float: left; width: 130px;}
+
+#form_RecapPlanifier #valid {background-image: url("/img/accept.png"); color: green;}
+#form_RecapPlanifier #cancel {background-image: url("/img/cancel.png"); color: red;}
+
+#form_RecapPlanifier #valid, #form_RecapPlanifier #cancel {float: left; margin-left: 20px;}
+#form_RecapPlanifier dt {height: 0;}
+
+#valid-formRecapPlanifier
+{
+	width: 400px;
+	margin-left: 250px;
+	text-align: center;
+	
+	border: 1px solid green;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	
+	margin-bottom: 20px;
+	padding: 5px;
+	
+	display: none;
+}
+#valid-formRecapPlanifier p {color: green; margin-bottom: 5px;}
+
+#error-formRecapPlanifier
+{
+	width: 400px;
+	margin-left: 250px;
+	text-align: center;
+	color: red;
+	
+	border: 1px solid red;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	
+	margin-bottom: 20px;
+	padding: 5px;
+	
+	display: none;
+}
+
+#formRecapPlanifier_load-valid
+{
+	margin-top: 10px;
+	margin-left: 250px;
+}
+/* Fin Planning/recapvol */
+
+/* Debut Planning/planifiervol */
+#form_planifier dd, #form_planifier dt {margin: 5px;}
+#form_planifier dt {float: left; width: 130px;}
+#form_planifier #send-label {width: 50px;}
+
+#form_planifier #dateDepart-label, #form_planifier #dateArrivee-label {float: none;}
+
+#form_planifier #detail_pilote, #form_planifier #detail_copilote {margin-left: 15px; cursor: pointer;}
+#form_planifier #detail_pilote:hover, #form_planifier #detail_copilote:hover {text-decoration: underline;}
+
+#form_planifier #load-avion, #form_planifier #load-pilote, #form_planifier #load-copilote,
+#form_planifier #load-detail_pilote, #form_planifier #load-detail_copilote
+	{margin-left:15px;} 
+
+#form_planifier input[type=submit]
+{
+	margin-top: 15px;
+	background-image: url("/img/report.png");
+}
+/* Fin Planning/planifiervol */

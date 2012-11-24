@@ -29,31 +29,31 @@
             
             $reqInfo_vol = $this->select()->distinct()->setIntegrityCheck(false);
             $reqInfo_vol->from(array('v' => 'vol'), array(
-                                            'idVol', 
-                                            'remarqueVol', 
-                                            'dateHeureDepartEffectiveVol',
-                                            'dateHeureDepartPrevueVol',
-                                            'dateHeureArriveeEffectiveVol',
-                                            'dateHeureArriveePrevueVol',
-                                            'nbEscales' => '('.new Zend_Db_Expr($reqNbEscales).')'
-                                     ))
-                                     ->join(array('l' => 'ligne'), 'l.idLigne=v.idLigne', '')
-
-                                     ->join(array('aeDep' => 'aeroport'), 'aeDep.trigrammeAeroport=l.trigrammeAeroportDepart', array('nomAeroportDepart' => 'nomAeroport'))
-                                     ->join(array('dDep' => 'desservir'), 'dDep.trigrammeAeroport=aeDep.trigrammeAeroport', '')
-                                     ->join(array('vDep' => 'ville'), 'vDep.idVille=dDep.idVille', array('villeDepart' => 'nomVille'))
-                                     ->join(array('pDep' => 'pays'), 'pDep.idPays=vDep.idPays', array('paysDepart' => 'nomPays'))
-
-                                     ->join(array('aeArr' => 'aeroport'), 'aeArr.trigrammeAeroport=l.trigrammeAeroportArrivee', array('nomAeroportArrivee' => 'nomAeroport'))
-                                     ->join(array('dArr' => 'desservir'), 'dArr.trigrammeAeroport=aeArr.trigrammeAeroport', '')
-                                     ->join(array('vArr' => 'ville'), 'vArr.idVille=dArr.idVille', array('villeArrivee' => 'nomVille'))
-                                     ->join(array('pArr' => 'pays'), 'pArr.idPays=vArr.idPays', array('paysArrivee' => 'nomPays'))
-                                     
-                                     ->where("v.idVol IN ($imbrique)")
-                                     ->where('v.idLigne='.$idLigne)
-                                     ->where('v.dateHeureDepartPrevueVol > ?', $date->getIso());
-
-                          //   echo $reqInfo_vol->assemble();exit;
+							'idVol', 
+							'remarqueVol', 
+							'dateHeureDepartEffectiveVol',
+							'dateHeureDepartPrevueVol',
+							'dateHeureArriveeEffectiveVol',
+							'dateHeureArriveePrevueVol',
+							'nbEscales' => '('.new Zend_Db_Expr($reqNbEscales).')'
+						))
+						->join(array('l' => 'ligne'), 'l.idLigne=v.idLigne', '')
+						
+						->join(array('aeDep' => 'aeroport'), 'aeDep.trigrammeAeroport=l.trigrammeAeroportDepart', array('nomAeroportDepart' => 'nomAeroport'))
+						->join(array('dDep' => 'desservir'), 'dDep.trigrammeAeroport=aeDep.trigrammeAeroport', '')
+						->join(array('vDep' => 'ville'), 'vDep.idVille=dDep.idVille', array('villeDepart' => 'nomVille'))
+						->join(array('pDep' => 'pays'), 'pDep.idPays=vDep.idPays', array('paysDepart' => 'nomPays'))
+						
+						->join(array('aeArr' => 'aeroport'), 'aeArr.trigrammeAeroport=l.trigrammeAeroportArrivee', array('nomAeroportArrivee' => 'nomAeroport'))
+						->join(array('dArr' => 'desservir'), 'dArr.trigrammeAeroport=aeArr.trigrammeAeroport', '')
+						->join(array('vArr' => 'ville'), 'vArr.idVille=dArr.idVille', array('villeArrivee' => 'nomVille'))
+						->join(array('pArr' => 'pays'), 'pArr.idPays=vArr.idPays', array('paysArrivee' => 'nomPays'))
+						
+						->where("v.idVol IN ($imbrique)")
+						->where('v.idLigne='.$idLigne)
+						->where('v.dateHeureDepartPrevueVol > ?', $date->getIso());
+						
+			//echo $reqInfo_vol->assemble();exit;
             try {$resInfo_vol = $this->fetchAll($reqInfo_vol);}
             catch (Zend_Db_Exception $e) {die ($e->getMessage());}
 
@@ -83,20 +83,20 @@
 						->join(array('l' => 'ligne'), 'l.idLigne=v.idLigne', '')
 						
 						->join(array('aeDep' => 'aeroport'), 'aeDep.trigrammeAeroport=l.trigrammeAeroportDepart', array('nomAeroportDepart' => 'nomAeroport'))
-						->join(array('dDep' => 'desservir'), 'dDep.trigrammeAeroport=aeDep.trigrammeAeroport', '')
+						->join(array('dDep' => 'desservir'), 'dDep.trigrammeAeroport=aeDep.trigrammeAeroport', array('trigrammeAeDepart' => 'trigrammeAeroport'))
 						->join(array('vDep' => 'ville'), 'vDep.idVille=dDep.idVille', array('villeDepart' => 'nomVille'))
 						->join(array('pDep' => 'pays'), 'pDep.idPays=vDep.idPays', array('paysDepart' => 'nomPays'))
 						
 						->join(array('aeArr' => 'aeroport'), 'aeArr.trigrammeAeroport=l.trigrammeAeroportArrivee', array('nomAeroportArrivee' => 'nomAeroport'))
-						->join(array('dArr' => 'desservir'), 'dArr.trigrammeAeroport=aeArr.trigrammeAeroport', '')
+						->join(array('dArr' => 'desservir'), 'dArr.trigrammeAeroport=aeArr.trigrammeAeroport', array('trigrammeAeArrivee' => 'trigrammeAeroport'))
 						->join(array('vArr' => 'ville'), 'vArr.idVille=dArr.idVille', array('villeArrivee' => 'nomVille'))
 						->join(array('pArr' => 'pays'), 'pArr.idPays=vArr.idPays', array('paysArrivee' => 'nomPays'))
 						
-						->where('v.idLigne='.$idVol);
+						->where('v.idVol='.$idVol);
 			
 			//echo $reqInfo_vol->assemble();exit;
 			
-			try {$resInfo_vol = $this->fetchAll($reqInfo_vol);}
+			try {$resInfo_vol = $this->fetchRow($reqInfo_vol);}
 			catch (Zend_Db_Exception $e) {die ($e->getMessage());}
 			
 			//echo '<pre>';print_r($resInfo_vol->toArray());echo '</pre>';exit;
@@ -137,6 +137,40 @@
 			
 			//echo '<pre>';print_r($res->toArray());echo '</pre>';exit;
 			return $res->toArray();
+		}
+        
+		/**
+		 * Récupère la liste des vols que fait un pilote entre deux dates
+		 * @param int $idPilote : L'id du pilote
+		 * @param string $dateDeb : La date de début de recherche
+		 * @param string $dateFin : La date de fin de recherche
+		 * @return array : La liste des vols du pilotes.
+		 */
+		public function get_LstVolPilote_entreDate($idPilote, $dateDeb, $dateFin)
+		{
+			$req = $this->select()->setIntegrityCheck(false)
+						->from(array('v' => 'vol'), array('dateHeureDepartEffectiveVol', 'dateHeureDepartPrevueVol', 'dateHeureArriveeEffectiveVol', 'dateHeureArriveePrevueVol'))
+						->join(array('a' => 'assurer'), 'a.idVol=v.idVol')
+						->where('a.idPilote="'.$idPilote.'"')
+						->where('(v.dateHeureDepartEffectiveVol IS NOT NULL AND v.dateHeureDepartEffectiveVol >= "'.$dateDeb.'") OR (v.dateHeureDepartEffectiveVol IS NULL AND v.dateHeureDepartPrevueVol >= "'.$dateDeb.'")')
+						->where('(v.dateHeureArriveeEffectiveVol IS NOT NULL AND v.dateHeureArriveeEffectiveVol <= "'.$dateFin.'") OR (v.dateHeureArriveeEffectiveVol IS NULL AND v.dateHeureArriveePrevueVol <= "'.$dateFin.'")')
+						->order('v.dateHeureDepartPrevueVol ASC');
+			//echo $req->assemble().'<br/>';
+			
+			$res = $this->fetchAll($req);
+			return $res->toArray();
+		}
+		
+		/**
+		 * Change l'immatriculation de l'avion d'un vol
+		 * @param int $idVol : L'id du vol
+		 * @param string $newImmatriculation : La nouvelle immatriculation
+		 */
+		public function changeImmatriculation($idVol, $newImmatriculation)
+		{
+			$data = array('matriculeAvion' => $newImmatriculation);
+            $where = $this->getAdapter()->quoteInto('idVol = ?', $idVol);
+            $this->update($data, $where);
 		}
     }
 ?>

@@ -34,4 +34,39 @@
             $where = $this->getAdapter()->quoteInto('immatriculationAvion = ?', $p_immatriculation);
             $this->update($data, $where);
         }
+        
+        /**
+         * Retourne la liste des avions disponible pour un modèle et entre deux date
+         * @param int $idModele : L'id du modèle d'avion voulu
+         * @param string $dateDepart : La date de départ au format SQL
+         * @param string $dateArrivee : La date d'arrivée au format SQL
+         * @return array : La liste des avions disponible
+         */
+		public function get_LstAvionsDispo_PourModeleEtDate($idModele, $dateDepart, $dateArrivee)
+		{
+			$reqDate = $this->select()->setIntegrityCheck(false)
+        						->from(array('v' => 'vol'), 'COUNT(v.idVol)')
+        						->where('v.matriculeAvion=a.immatriculationAvion')
+        						->where('dateHeureDepartPrevueVol >= "'.$dateDepart.'"')
+        						->where('dateHeureArriveePrevueVol <= "'.$dateArrivee.'"');
+        	
+        	$req = $this->select()->setIntegrityCheck(false)
+						->from(array('a' => 'avion'), 'immatriculationAvion')
+						->where('a.idModeleAvion="'.$idModele.'"')
+						->where('('.new Zend_Db_Expr($reqDate).') = 0');
+			$res = $this->fetchAll($req);
+			return $res->toArray();
+		}
+	
+		/**
+		 * Récupère le nom d'un avion
+		 * @param int $idAvion : L'id de l'avion
+		 * @return string : Le nom de l'avion
+		 */
+		public function get_immatriculation($idAvion)
+		{
+			$req = $this->select()->from($this->_name, 'immatriculationAvion')->where('idAvion=?', $idAvion);
+			$res = $this->fetchRow($req)->toArray();
+			return $res['immatriculationAvion'];
+		}
     }    
