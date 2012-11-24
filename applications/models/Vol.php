@@ -17,7 +17,11 @@
             );
 
         /*************** Fonctions ***************/ 
-        //Renvoie des informations sur tous les vols à venir et planifiés d'une ligne
+        /**
+         * Renvoie des informations sur tous les vols à venir et planifiés
+         * @param int $idLigne : L'id de la ligne des vols
+         * @return : L'array des infos des vols
+         */
         public function get_InfosVolsLigne($idLigne)
         {
             $date = Zend_Date::now(); // date actuelle

@@ -31,4 +31,12 @@ class Table_ModeleAvion extends Zend_Db_Table_Abstract
 		$res = $this->fetchRow($req)->toArray();
 		return $res['libelleModeleAvion'];
 	}
+	
+	public function GetListLibelle()
+	{
+		$laListe = $this->select()
+						->from(array('modeleavion'), array('idModeleAvion','libelleModeleAvion'));
+		
+		return $this->fetchAll($laListe)->toArray();
+	}
 }

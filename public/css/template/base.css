@@ -27,6 +27,24 @@ h2{
     font-size: 1.450em;
 }
 
+h3.echoue {
+    border : 2px solid red;
+    padding : 5px 10px;
+    background : #E8B9B3;
+    font-size : 1em;
+    color : black;
+    text-align : center;
+}
+
+h3.reussi {
+    color : black;
+    background :  #B8E8AD;
+    font-size : 1em;
+    border : 2px solid green;
+    padding : 5px 10px;
+    text-align : center;
+}
+
 #left_side
 {
     background-image: url("../../img/template/cote.png");
@@ -147,3 +165,11 @@ input[type=submit], button
 }
 
 input[type=submit]:hover, button:hover {background-color: #f7f7f7;}
+
+#formtest dd,#formtest dt {
+    margin : 10px;
+}
+
+#formtest {
+    padding : 10px 0 0 25px;
+}
