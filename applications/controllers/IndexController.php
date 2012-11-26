@@ -22,7 +22,7 @@ class IndexController extends Zend_Controller_Action
                 $espaceAgence = new Zend_Session_Namespace('agenceCourante');
                 $pasCo = $espaceAgence->connecte;
             }
-            else
+            else 
             {
                 $pasCo = null;
             }
@@ -99,8 +99,7 @@ class IndexController extends Zend_Controller_Action
              $espaceAgence->nomAgence = $agence['nomAgence'];
              $espaceAgence->connecte = true; 
              
-             // ecrire le code pour le menu des agences  
-             
+             // ecrire le code pour le menu des agences              
          }
             
     }
