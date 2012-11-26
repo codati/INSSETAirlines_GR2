@@ -1,13 +1,14 @@
 <?php 
     if(is_null($this->pasCo))
     {
-        $leboutonconnexion = '<input type="button" value="Se connecter" id="bt_co_layout">';
-       
+        $leboutonconnexion = '<input type="button" value="Se connecter" id="bt_co_layout">';       
     }   
     else /// connecté
     {
         $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
-        if($espaceSession->connecte)
+        $espaceAgence = new Zend_Session_Namespace('agenceCourante');
+        
+        if(($espaceSession->connecte) || ($espaceAgence->connecte))
         {
             $leboutonconnexion = '<input type="button" value="Déconnexion" id="bt_deco_layout">';
         }      

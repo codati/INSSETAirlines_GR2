@@ -18,9 +18,7 @@ class LignesController extends Zend_Controller_Action
         $nbVolsLigne = array();
         foreach ($lignes as $ligne)
         {
-           
-                $nbVolsLigne[$ligne['idLigne']] = $tableLigne->getNbVolsDisponibles($ligne['idLigne']);
-               
+           $nbVolsLigne[$ligne['idLigne']] = $tableLigne->getNbVolsDisponibles($ligne['idLigne']);
         }
         $this->view->nbVolsLigne = $nbVolsLigne;
 

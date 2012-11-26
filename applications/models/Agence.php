@@ -6,19 +6,20 @@
         
         public function login($user, $psw)
         {
-            $reqUtil = $this->select()
+            $reqAgence = $this->select()
                  ->from(array('a' => 'agence'), array('*'))
                  ->where('a.nomAgence = ?', $user)
                  ->where('a.mdpAgence = ?', $psw)
                 ;
-            $laAgence = $this->fetchRow($reqUtil);
+            $laAgence = $this->fetchRow($reqAgence);
 
             if(!is_null($laAgence))
             {
-                $identifiants = array( 
-                    'idUtilisateur' => $laAgence->idAgence,
-                    'nomUtilisateur' => $laAgence->nomAgence             
+                $identifiants = array(
+                    'idAgence' => $laAgence->idAgence,
+                    'nomAgence' => $laAgence->nomAgence             
                     );
+                //Zend_Debug::dump($identifiants);exit;
                 return $identifiants;
             }
             else 
