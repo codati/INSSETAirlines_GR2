@@ -3,32 +3,12 @@ class IndexController extends Zend_Controller_Action
 {
     public function indexAction()
     {
-       //  Zend_Session::namespaceUnset('utilisateurCourant');
-        // Zend_Session::namespaceUnset('agenceCourante');
         $this->view->msgDeco = $this->_getParam('decoReussie');
         $this->_helper->actionStack('header','index','default',array());
     }	
     public function headerAction()
     {   
-        if(Zend_Session::namespaceIsset('utilisateurCourant'))
-        {
-             $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
-             $pasCo = $espaceSession->connecte;
-        }
-        else
-        {
-            if(Zend_Session::namespaceIsset('agenceCourante'))
-            {
-                $espaceAgence = new Zend_Session_Namespace('agenceCourante');
-                $pasCo = $espaceAgence->connecte;
-            }
-            else 
-            {
-                $pasCo = null;
-            }
-        }
-        
-        $this->view->pasCo = $pasCo;// $this->_getParam('pasCo');
+        $this->view->pasCo = session_encours(); // va voir si une session est en cours (agence ou insset)
         $this->_helper->viewRenderer->setResponseSegment('header');
         $this->_helper->actionStack('footer','index','default',array());
     }
@@ -38,7 +18,6 @@ class IndexController extends Zend_Controller_Action
     }
      public function logoutAction()
      {
-         //Zend_Session::destroy();  
          Zend_Session::namespaceUnset('utilisateurCourant');
          Zend_Session::namespaceUnset('agenceCourante');
          $this->_helper->actionStack('index','index','default',array('decoReussie'=>'Déconnexion réussie'));       
@@ -50,18 +29,17 @@ class IndexController extends Zend_Controller_Action
          $user = $this->getRequest()->getPost('input_user');
          $psw = md5($this->getRequest()->getPost('input_psw'));
          $radio = $this->getRequest()->getPost('radio_form_co'); // 0 => insset, 1 => agence
-        // echo $radio;exit;
          
          if($radio == 0) /// utilisateur de l'insset
          {
+             // connecte l'utilisateur
             $utilisateur = new Table_Utilisateur;
             $leUtilisateur = $utilisateur->login($user,$psw);
             
-            // requete recuperation des services de l'utilisateur         
              //if(is_array($leUtilisateur))
             if(!is_null($leUtilisateur))
              { 
-
+                // requete recuperation des services de l'utilisateur   
                $service = new Table_Service;  
                $sousservice = new Table_SousService;
 
@@ -77,7 +55,10 @@ class IndexController extends Zend_Controller_Action
                    // requete recuperation des sous services 
                    $tabSousServices[] = $sousservice->getLesSousServices($unService['idService']);
                 }      
+                // deconnecte une agence, au cas ou...
                  Zend_Session::namespaceUnset('agenceCourante');
+                 
+                 // crée la session de l'utilisateur et ajoute des données nécéssaires
                  $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
                  $espaceSession->idUtilisateur = $leUtilisateur['idUtilisateur'];
                  $espaceSession->nomUtilisateur = $leUtilisateur['nomUtilisateur'];
@@ -86,20 +67,27 @@ class IndexController extends Zend_Controller_Action
                  $espaceSession->connecte = true;    
              }
          }
-         else   // radio = 1, agence
+         else   // radio = 1, c'est une agence
          {
-             //echo 'test';exit;
+             // connexion de l'agence avec les champs saisis
              $tableAgence = new Table_Agence;
              $agence = $tableAgence->login($user,$psw);
              
              Zend_Session::namespaceUnset('utilisateurCourant');
-             //Zend_Debug::dump($agence);exit;
+             // pour ajouter une action aux agences, ajouter une valeur dans le tableau
+             $lesServicesAgences = array(
+                    'reservervol' => 'Reserver un vol',
+                    'modifier' => 'Modifier une réservation',
+                    'voir' => 'Voir ses reservations',
+                    'annuler' => 'Annuler une réservation'
+             );
+             
+             // crée la session de l'agence et ajoute des données nécéssaires
              $espaceAgence = new Zend_Session_Namespace('agenceCourante');
              $espaceAgence->idAgence = $agence['idAgence'];
              $espaceAgence->nomAgence = $agence['nomAgence'];
+             $espaceAgence->lesServicesAgence = $lesServicesAgences;
              $espaceAgence->connecte = true; 
-             
-             // ecrire le code pour le menu des agences              
          }
             
     }

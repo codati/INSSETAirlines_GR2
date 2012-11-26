@@ -1,14 +1,28 @@
 <?php 
+
+   $sessEnCours = null;
     if(is_null($this->pasCo))
     {
         $leboutonconnexion = '<input type="button" value="Se connecter" id="bt_co_layout">';       
     }   
     else /// connecté
     {
-        $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
-        $espaceAgence = new Zend_Session_Namespace('agenceCourante');
-        
-        if(($espaceSession->connecte) || ($espaceAgence->connecte))
+        if(Zend_Session::namespaceIsset('utilisateurCourant'))
+        {   // en tant qu'utilisateur insset
+            $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
+            $espaceAgence = null;
+            $sessEnCours = 'insset';
+        }
+        else
+        {   // en tant qu'agence
+            $espaceAgence = new Zend_Session_Namespace('agenceCourante');
+            $espaceSession = null;
+            $sessEnCours = 'agence';
+        }        
+        // verfie que la session est pas nulle et que l'on y est connecté
+        // le fait sur les deux sessions possibles
+        if( (!is_null($espaceSession) && ($espaceSession->connecte))
+                ||  (!is_null($espaceAgence) && ($espaceAgence->connecte)))
         {
             $leboutonconnexion = '<input type="button" value="Déconnexion" id="bt_deco_layout">';
         }      
@@ -33,39 +47,49 @@
                                 <tr>
                                 <?php
                                     echo '<td><a href="'.$this->baseUrl().'/" title="">Accueil</a></td>';
-                                    if(isset($espaceSession->lesServicesUtilisateur))
+                                    if($sessEnCours == 'insset')
                                     {
-                                        //echo '<td><a href="'.$this->baseUrl().'/" title="">Accueil</a></td>';
-                                        $nbServices = count($espaceSession->lesServicesUtilisateur) -1;
-                                        foreach($espaceSession->lesServicesUtilisateur as $key => $unService)
-                                        {                                            
-                                            if($key == $nbServices)
-                                            {
-                                                $laclasse =" menu_li_end";
+                                        if(isset($espaceSession->lesServicesUtilisateur))
+                                        {
+                                            //echo '<td><a href="'.$this->baseUrl().'/" title="">Accueil</a></td>';
+                                            $nbServices = count($espaceSession->lesServicesUtilisateur) -1;
+                                            foreach($espaceSession->lesServicesUtilisateur as $key => $unService)
+                                            {                                            
+                                                if($key == $nbServices)
+                                                {
+                                                    $laclasse =" menu_li_end";
+                                                }
+                                                else
+                                                {
+                                                    $laclasse = "";
+                                                }
+                                                echo '<td class="niveau1 '.$laclasse.'">'.$unService.'
+                                                    <ul class=sousmenu>';
+                                                foreach($espaceSession->lesSousServicesUtilisateur[$key] as $unSousService)
+                                                {
+                                                    echo '<li class=itemSousMenu><a href="'.$this->baseUrl().'/'.strtolower(str_replace(" ","",$unService).'/'.str_replace(" ","",$unSousService['actionSousService'])).'">'.$unSousService['nomSousService'].'</a></li>';
+                                                }                                                   
+                                                echo '</ul>
+                                                     </td>';
                                             }
-                                            else
-                                            {
-                                                $laclasse = "";
+
+                                            if($espaceSession->idUtilisateur == 7)
+                                            {   // c'est l'admin, a virer plus tard
+                                                echo '</tr><tr><td class=niveau1><a href='.$this->baseUrl().'"/" title="">Trucs</a>
+                                                       <ul class=sousmenu>
+                                                           <li class=itemSousMenu><a href='.$this->baseUrl().'/modeleavion/ajouter>Nouveau modele d\'avion</a></li>
+                                                           <li class=itemSousMenu><a href="#">Modifier modele d\'avion</a></li>
+                                                           <li class=itemSousMenu><a href="#">Nouvelle intervention</a></li>
+                                                       </ul>
+                                                    </td>';
                                             }
-                                            echo '<td class="niveau1 '.$laclasse.'">'.$unService.'
-                                                <ul class=sousmenu>';
-                                            foreach($espaceSession->lesSousServicesUtilisateur[$key] as $unSousService)
-                                            {
-                                                echo '<li class=itemSousMenu><a href="'.$this->baseUrl().'/'.strtolower(str_replace(" ","",$unService).'/'.str_replace(" ","",$unSousService['actionSousService'])).'">'.$unSousService['nomSousService'].'</a></li>';
-                                            }                                                   
-                                            echo '</ul>
-                                                 </td>';
                                         }
-                                        
-                                        if($espaceSession->idUtilisateur == 7)
-                                        {   // c'est l'admin, a virer plus tard
-                                            echo '</tr><tr><td class=niveau1><a href='.$this->baseUrl().'"/" title="">Trucs</a>
-                                                   <ul class=sousmenu>
-                                                       <li class=itemSousMenu><a href='.$this->baseUrl().'/modeleavion/ajouter>Nouveau modele d\'avion</a></li>
-                                                       <li class=itemSousMenu><a href="#">Modifier modele d\'avion</a></li>
-                                                       <li class=itemSousMenu><a href="#">Nouvelle intervention</a></li>
-                                                   </ul>
-                                                </td>';
+                                    }
+                                    elseif ($sessEnCours == 'agence')
+                                    {
+                                        foreach ($espaceAgence->lesServicesAgence as $lienService => $unServiceAgence)
+                                        {
+                                            echo '<td><a href="/reservation/'.$lienService.'">'.$unServiceAgence.'</a></td>';
                                         }
                                     }
                                     else // menu public
