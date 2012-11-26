@@ -119,7 +119,7 @@ article {margin-bottom: 60px;}
 	width:90%;
 	margin:auto;
 }
-#tableau thead, #tableau tfoot .tableau thead, .tableau tfoot {
+#tableau thead, #tableau tfoot, .tableau thead, .tableau tfoot {
 	background-color:#D0E3FA;
 	border:1px solid #6495ed;
 }
