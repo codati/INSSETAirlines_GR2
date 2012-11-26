@@ -85,7 +85,7 @@
                 }
                 else
                 {                  
-                    $message = '<h3 class="echec">Ajout échoué</h3>';
+                    $message = '<h3 class="echoue">Ajout échoué</h3>';
                 }
             }
             else
