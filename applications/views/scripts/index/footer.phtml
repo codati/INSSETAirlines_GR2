@@ -1,6 +1,6 @@
 				<footer>
 					<p>Insset-Airline &copy; <?php echo date('Y'); ?></p><br/>
-					<p><a href="">Mentions l&eacute;gales</a> - <a href="">Nous contacter</a> - <a href="">Plan du site</a></p>
+					<p><a href="">Mentions légales</a> - <a href="">Nous contacter</a> - <a href="">Plan du site</a></p>
 				</footer>
 			</div>
 		</div>
@@ -17,9 +17,14 @@
 	$monform->setAction($this->baseUrl().'/index/connexion');
         $monform->setAttrib('id','form_login');
         
-        $monform->addErrorMessage('test');
-        
 	//creer des elements de formulaires
+        $eRadio = new Zend_Form_Element_Radio('radio_form_co');
+        $eRadio->setLabel(('Vous travaillez pour : '));
+        $eRadio->addMultiOptions(array('Insset Airlines','Agence de voyage'));
+        $eRadio->setSeparator('');
+        $eRadio->setValue(0);
+        $eRadio->setAttrib('id','bt_rad');
+        
 	$eNom = new Zend_Form_Element_Text('input_user');
 	$eNom->setLabel('Nom d\'utilisateur : ');
 	
@@ -36,6 +41,7 @@
 	// ajout des elements au formulaire
 	$monform->addElement($eNom);
 	$monform->addElement($ePsw);
+        $monform->addElement($eRadio);
 	$monform->addElement($eHidden);
         $monform->addElement($eBouton);
 	

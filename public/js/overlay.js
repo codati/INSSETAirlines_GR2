@@ -32,6 +32,7 @@ function fermer() {
 function verifConnexion() {
     var username = $('#input_user').val();
     var mdp = $('#input_psw').val();
+    var radio = $('#bt_rad-element input:checked').val()
     
     if((username == "") || (mdp == ""))
     {
@@ -40,7 +41,7 @@ function verifConnexion() {
     }
     else
     {	
-        $.post("/index/verifconnexion",{user:username, pass:mdp}, 
+        $.post("/index/verifconnexion",{user:username, pass:mdp, rad:radio}, 
             function(data) 
             {
                 if(data==1)
@@ -50,7 +51,7 @@ function verifConnexion() {
                 else
                 {
                     $('#erreur_co').remove();
-                    $('#err').after('<span id="erreur_co" class="erreur">Login ou mot de passe erroné<span>');
+                    $('#err').after('<span id="erreur_co" class="erreur">Echec de connexion : Verifiez votre saisie<span>');
                 }
             });
         

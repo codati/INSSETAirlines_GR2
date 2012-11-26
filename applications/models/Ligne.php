@@ -37,7 +37,9 @@
                         ->join(array('p'=>'periodicite'),'p.idPeriode = l.idPeriodicite','nomPeriode')
                     ;
             $lignes = $this->fetchAll($req);
-            return $lignes;
+            ///Zend_Debug::dump($lignes->toArray());exit;
+            return $lignes->toArray();
+            
             
         }
         /**
@@ -50,7 +52,7 @@
                 $date = Zend_Date::now(); // date actuelle
 		$tableVol = new Table_Vol;
                 $imbrique = $this->select()->setIntegrityCheck(false)
-                ->from(array('va'=>'valoir'),'va.idVol');
+                                ->from(array('va'=>'valoir'),'va.idVol');
 		$reqVol= $tableVol->select()
                                   ->from($tableVol)
                                   ->where('idLigne = ?', $idLigne)

@@ -1,13 +1,14 @@
 <?php 
     if(is_null($this->pasCo))
     {
-        $leboutonconnexion = '<input type="button" value="Se connecter" id="bt_co_layout">';
-       
+        $leboutonconnexion = '<input type="button" value="Se connecter" id="bt_co_layout">';       
     }   
     else /// connecté
     {
         $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
-        if($espaceSession->connecte)
+        $espaceAgence = new Zend_Session_Namespace('agenceCourante');
+        
+        if(($espaceSession->connecte) || ($espaceAgence->connecte))
         {
             $leboutonconnexion = '<input type="button" value="Déconnexion" id="bt_deco_layout">';
         }      
@@ -58,9 +59,9 @@
                                         
                                         if($espaceSession->idUtilisateur == 7)
                                         {   // c'est l'admin, a virer plus tard
-                                            echo '<td class=niveau1><a href='.$this->baseUrl().'"/" title="">Trucs</a>
+                                            echo '</tr><tr><td class=niveau1><a href='.$this->baseUrl().'"/" title="">Trucs</a>
                                                    <ul class=sousmenu>
-                                                       <li class=itemSousMenu><a href="/modeleavion/ajouter">Nouveau modele d\'avion</a></li>
+                                                       <li class=itemSousMenu><a href='.$this->baseUrl().'/modeleavion/ajouter>Nouveau modele d\'avion</a></li>
                                                        <li class=itemSousMenu><a href="#">Modifier modele d\'avion</a></li>
                                                        <li class=itemSousMenu><a href="#">Nouvelle intervention</a></li>
                                                    </ul>
