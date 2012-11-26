@@ -10,25 +10,8 @@ class IndexController extends Zend_Controller_Action
     }	
     public function headerAction()
     {   
-        if(Zend_Session::namespaceIsset('utilisateurCourant'))
-        {
-             $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
-             $pasCo = $espaceSession->connecte;
-        }
-        else
-        {
-            if(Zend_Session::namespaceIsset('agenceCourante'))
-            {
-                $espaceAgence = new Zend_Session_Namespace('agenceCourante');
-                $pasCo = $espaceAgence->connecte;
-            }
-            else 
-            {
-                $pasCo = null;
-            }
-        }
-        
-        $this->view->pasCo = $pasCo;// $this->_getParam('pasCo');
+        $connecte = session_encours();
+        $this->view->pasCo = $connecte;// $this->_getParam('pasCo');
         $this->_helper->viewRenderer->setResponseSegment('header');
         $this->_helper->actionStack('footer','index','default',array());
     }
@@ -57,11 +40,10 @@ class IndexController extends Zend_Controller_Action
             $utilisateur = new Table_Utilisateur;
             $leUtilisateur = $utilisateur->login($user,$psw);
             
-            // requete recuperation des services de l'utilisateur         
              //if(is_array($leUtilisateur))
             if(!is_null($leUtilisateur))
              { 
-
+                // requete recuperation des services de l'utilisateur   
                $service = new Table_Service;  
                $sousservice = new Table_SousService;
 
@@ -94,12 +76,18 @@ class IndexController extends Zend_Controller_Action
              
              Zend_Session::namespaceUnset('utilisateurCourant');
              //Zend_Debug::dump($agence);exit;
+             $lesServicesAgences = array(
+                    'reservervol' => 'Reserver un vol',
+                    'modifier' => 'Modifier une réservation',
+                    'voir' => 'Voir ses reservations',
+                    'annuler' => 'Annuler une réservation'
+             );
+             
              $espaceAgence = new Zend_Session_Namespace('agenceCourante');
              $espaceAgence->idAgence = $agence['idAgence'];
              $espaceAgence->nomAgence = $agence['nomAgence'];
+             $espaceAgence->lesServicesAgence = $lesServicesAgences;
              $espaceAgence->connecte = true; 
-             
-             // ecrire le code pour le menu des agences              
          }
             
     }
