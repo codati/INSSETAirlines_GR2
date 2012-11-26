@@ -27,6 +27,24 @@ h2{
     font-size: 1.450em;
 }
 
+h3.echoue {
+    border : 2px solid red;
+    padding : 5px 10px;
+    background : #E8B9B3;
+    font-size : 1em;
+    color : black;
+    text-align : center;
+}
+
+h3.reussi {
+    color : black;
+    background :  #B8E8AD;
+    font-size : 1em;
+    border : 2px solid green;
+    padding : 5px 10px;
+    text-align : center;
+}
+
 #left_side
 {
     background-image: url("../../img/template/cote.png");
@@ -95,35 +113,63 @@ article {margin-bottom: 60px;}
 	text-align: center;
 }
 
-#tableau table {
-border:2px solid #6495ed;
-border-collapse:collapse;
-width:90%;
-margin:auto;
+#tableau table, .tableau table {
+	border:2px solid #6495ed;
+	border-collapse:collapse;
+	width:90%;
+	margin:auto;
 }
-#tableau thead, tfoot {
-background-color:#D0E3FA;
-border:1px solid #6495ed;
+#tableau thead, #tableau tfoot; .tableau thead, .tableau tfoot {
+	background-color:#D0E3FA;
+	border:1px solid #6495ed;
 }
-#tableau tbody {
-background-color:#FFFFFF;
-border:1px solid #6495ed;
+#tableau tbody, .tableau tbody {
+	background-color:#FFFFFF;
+	border:1px solid #6495ed;
 }
-#tableau th {
-border:1px dotted #6495ed;
-padding:5px;
-background-color:#EFF6FF;
-font-weight: bold;
+#tableau th, .tableau th {
+	border:1px dotted #6495ed;
+	padding:5px;
+	background-color:#EFF6FF;
+	font-weight: bold;
 }
-#tableau td {
-font-size:80%;
-border:1px solid #6495ed;
-padding:5px;
-text-align:center;
-line-height: 15px;
-vertical-align:middle;
+#tableau td, .tableau td {
+	font-size:80%;
+	border:1px solid #6495ed;
+	padding:5px;
+	text-align:center;
+	line-height: 15px;
+	vertical-align:middle;
 }
 
-#tableau caption {
+#tableau caption, .tableau caption {
 margin-bottom: 5px;
+}
+
+input[type=submit], button
+{
+	background-repeat: no-repeat;
+	background-position: 5px;
+	
+	padding: 5px;
+	padding-left: 23px;
+	
+	background-color: white;
+	border: 2px solid #6495ED;
+	color: #2D578E;
+	font-weight: bold;
+	
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+
+input[type=submit]:hover, button:hover {background-color: #f7f7f7;}
+
+#formtest dd,#formtest dt {
+    margin : 10px;
+}
+
+#formtest {
+    padding : 10px 0 0 25px;
 }
