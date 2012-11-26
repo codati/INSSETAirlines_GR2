@@ -19,7 +19,7 @@ class DrhController extends Zend_Controller_Action
             echo "<div class='erreur'>
                         Erreur !<br />
                         Vous n'avez pas accès à cette page, veuillez vous identifier.<br />
-                        <a href=\"".$this->view->baseUrl()."\">Retour</a>
+                        <a href=\"/\">Retour</a>
                   </div>";
         }
         
