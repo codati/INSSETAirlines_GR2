@@ -1,0 +1,29 @@
+<div id="tableau">    
+    <table>
+        <caption>Listing des Avions</caption>
+        <tr>
+            <th>Immatriculation</th>
+            <th>Etat</th>
+            <th>Heures de vols</th>
+            <th>Modèle</th>
+            <th>Action</th>
+        </tr>
+        <?php
+            $lesAvions = $this->lesAvions;
+            foreach ($lesAvions as $unAvion) 
+            {
+                echo '<tr>';
+                echo '<td>'.$unAvion["immatriculationAvion"].'</td>';
+                echo '<td>'.$unAvion["etatAvion"].'</td>';
+                echo '<td>'.$unAvion["heuresVolDerniereIntervention"].'</td>';
+                echo '<td>'.$unAvion["libelleModeleAvion"].'</td>';
+                echo '<td><a href="'.$this->baseUrl().'/maintenance/modifieravion" title="Modifier"><img src="'. $this->baseUrl() .'/img/pencil.png" /></a>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <a href="'.$this->baseUrl().'/maintenance/supprimeravion" title="Supprimer"><img src="'. $this->baseUrl() .'/img/cross.png" /></a></td>';
+                echo '</tr>';
+            }
+        ?>   
+    </table>
+    <br>
+    <a id="ajoutAvion" class="valider" type="button" href="<?php echo $this->baseUrl(); ?>/maintenance/ajouteravion">Ajouter un avion</a>
+</div>

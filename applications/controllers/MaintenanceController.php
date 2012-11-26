@@ -6,6 +6,16 @@
             $this->_helper->actionStack('header','index','default',array());
         }
         
+        public function gestionavionAction()
+        {
+            $this->_helper->actionStack('header','index','default',array());
+            
+            $Avions = new Table_Avion;
+            $lesAvions = $Avions->getAvions();      
+            
+            $this->view->lesAvions = $lesAvions;
+        }
+        
         public function ajouteravionAction() 
         {   
             $this->_helper->actionStack('header','index','default',array());
@@ -13,7 +23,6 @@
             $tabModele = new Table_ModeleAvion;
             
             $lesModeles = $tabModele->GetListLibelle();
-            //Zend_Debug::dump($lesModeles);exit;
             
             $lesOptions = array();
             
