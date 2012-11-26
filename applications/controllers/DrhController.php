@@ -12,11 +12,15 @@ class DrhController extends Zend_Controller_Action
         
         if(Services_verifAcces('Planning'))
         {
-            echo "<div class='reussi'>OUAIS TU KIFFE</div>";
+            
         }
         else
         {
-            echo "<div class='erreur'>Erreur !<br />Vous n'avez pas accès à cette page, veuillez vous identifier.<br /></div>";
+            echo "<div class='erreur'>
+                        Erreur !<br />
+                        Vous n'avez pas accès à cette page, veuillez vous identifier.<br />
+                        <a href=\"".$this->view->baseUrl()."\">Retour</a>
+                  </div>";
         }
         
         
