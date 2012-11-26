@@ -27,16 +27,8 @@ h2{
     font-size: 1.450em;
 }
 
-h3.echoue {
-    border : 2px solid red;
-    padding : 5px 10px;
-    background : #E8B9B3;
-    font-size : 1em;
-    color : black;
-    text-align : center;
-}
 
-h3.reussi {
+.reussi {
     color : black;
     background :  #B8E8AD;
     font-size : 1em;
