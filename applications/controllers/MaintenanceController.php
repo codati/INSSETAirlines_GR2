@@ -63,31 +63,34 @@
             
             $tabAvion = new Table_Avion;
             
-            $immat = $this->getRequest()->getPost('ImmatAvion');
-            $modele = $this->getRequest()->getPost('modeleAvion');
+            $AvionImmat = $this->getRequest()->getPost('ImmatAvion');
+            $AvionModele = $this->getRequest()->getPost('ModeleAvion');
             
             $espaceSession = new Zend_Session_Namespace('AjoutAvionCourant');
-            $espaceSession->ImmatAvion = $immat['ImmatAvion'];
-            $espaceSession->modeleAvion = $modele['modeleAvion'];
+            $espaceSession->ImmatAvion = $AvionImmat;
+            $espaceSession->modeleAvion = $AvionModele; 
             
-            $immatUp = strtoupper($immat);
+            $immatUp = strtoupper($AvionImmat);
 
-            if((($immatUp != null) or ($modele != null)) AND (preg_match('#^[A-Z0-9\-]+$#', $immatUp)))
+            if((($immatUp != null) or ($AvionModele != null)) AND (preg_match('#^[A-Z0-9\-]+$#', $immatUp)))
             {          
-                $ajoutsql = $tabAvion->Ajouter($immatUp, $modele);
+                $ajoutsql = $tabAvion->Ajouter($immatUp, $AvionModele);
 
                 if($ajoutsql == true)
                 {
+                    $espaceSession->ImmatAvion = "";
+                    $espaceSession->modeleAvion = ""; 
+                    
                     $message = '<h3 class="reussi">Ajout réussi</h3>';
                 }
                 else
-                {
-                    $message = '<h3 class="echoue">Ajout échoué</h3>';
+                {                  
+                    $message = '<h3 class="echec">Ajout échoué</h3>';
                 }
             }
             else
-            {
-                $message = '<h3 class="echoue">Ajout échoué, saisie invalide</h3>';
+            {                
+                $message = '<h3 class="echoue">Ajout échoué, saisie invalide<br><br>'.$AvionImmat.' n\'est pas une valeur valide</h3>';
             }
             $this->view->message = $message;
         }
