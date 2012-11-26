@@ -162,9 +162,8 @@ input[type=submit], button
 	-webkit-border-radius: 4px;
 	border-radius: 4px;
 }
-
-input[type=submit] .valider, button .valider {background-image: url("/img/accept.png"); color: green;}
-input[type=submit] .annuler, button .annuler {background-image: url("/img/cancel.png"); color: red;}
+input[type=submit].valider, button.valider {background-image: url("/img/accept.png"); color: green;}
+input[type=submit].annuler, button.annuler {background-image: url("/img/cancel.png"); color: red;}
 
 input[type=submit]:hover, button:hover {background-color: #f7f7f7;}
 

@@ -48,6 +48,7 @@
             
             $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
             $eSubmit->setLabel('Valider');
+            $eSubmit->setAttrib('class','valider');
             
             $monform->addElement($eImmatAvion);
             $monform->addElement($eModeleAvion);
