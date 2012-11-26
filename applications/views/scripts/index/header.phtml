@@ -18,8 +18,7 @@
             $espaceAgence = new Zend_Session_Namespace('agenceCourante');
             $espaceSession = null;
             $sessEnCours = 'agence';
-        }
-        
+        }        
         // verfie que la session est pas nulle et que l'on y est connecté
         // le fait sur les deux sessions possibles
         if( (!is_null($espaceSession) && ($espaceSession->connecte))
