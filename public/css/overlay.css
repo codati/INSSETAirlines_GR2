@@ -56,6 +56,11 @@
  background  : url('../img/overlay/bouton.png');
  border-radius : 10px;
  box-shadow : 2px 2px 5px black;
+ 
+ padding: 0;
+ border: 0;
+ color: black;
+ font-weight: normal;
 }
 #bt_co:hover {
  text-decoration : underline;
