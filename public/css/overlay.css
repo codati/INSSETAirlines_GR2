@@ -8,14 +8,6 @@
  box-shadow : 5px 5px 20px #ffffff;
  display : none;
 }
-.erreur {
- border : 2px solid red;
- padding : 5px 10px;
- background : #E8B9B3;
- font-size : 1em;
- color : black;
- text-align : center;
-}
 #bt_fermer {
  position : absolute;
  width : 43px;
@@ -35,8 +27,8 @@
 #form_login {
  position : absolute;
  top : 35%;
- left : 12%;
- width : 350px;
+ left : 10%;
+ width : 360px;
  background : url('../img/overlay/pixel.png') repeat;
  padding : 20px;
 }
@@ -56,6 +48,11 @@
  background  : url('../img/overlay/bouton.png');
  border-radius : 10px;
  box-shadow : 2px 2px 5px black;
+ 
+ padding: 0;
+ border: 0;
+ color: black;
+ font-weight: normal;
 }
 #bt_co:hover {
  text-decoration : underline;
@@ -75,4 +72,13 @@
 }
 #form_login > dl > dt, #form_login > dl > dd {
     float : left;    
+}
+#bt_rad-element, #bt_rad-label {
+    font-size : 0.8em;
+}
+#radio_form_co-element label{    
+    float: left;
+}
+#bt_rad-label {
+    width : auto !important;
 }

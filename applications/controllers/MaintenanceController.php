@@ -21,7 +21,12 @@
             {
                 $lesOptions[$unModele['idModeleAvion']] = $unModele['libelleModeleAvion'];
             }
-
+            
+            $espaceSession = new Zend_Session_Namespace('AjoutAvionCourant');
+            
+            $immat = $espaceSession->ImmatAvion;
+            $modele = $espaceSession->modeleAvion;
+            
             // creer un objet formulaire
             $monform = new Zend_Form;
 
@@ -32,10 +37,12 @@
             $monform->setAction($this->view->baseUrl().'/maintenance/ajoutsql');
 
             $eImmatAvion = new Zend_Form_Element_Text('ImmatAvion');
+            $eImmatAvion->setValue($immat);
             $eImmatAvion->setLabel('Immatriculation de l\'avion : ');
-            //$eImmatAvion->addValidator(Zend_Validate_Alnum());
-            
+            $eImmatAvion->setAttrib('required', 'required');
+
             $eModeleAvion = new Zend_Form_Element_Select('ModeleAvion');
+            $eModeleAvion->setValue($modele);
             $eModeleAvion->addMultiOptions($lesOptions);
             $eModeleAvion->setLabel('Modèle de l\'avion : ');
             
@@ -56,27 +63,34 @@
             
             $tabAvion = new Table_Avion;
             
-            $immat = $this->getRequest()->getPost('ImmatAvion');
-            $modele = $this->getRequest()->getPost('modeleAvion');
+            $AvionImmat = $this->getRequest()->getPost('ImmatAvion');
+            $AvionModele = $this->getRequest()->getPost('ModeleAvion');
             
-            $immatUp = strtoupper($immat);
+            $espaceSession = new Zend_Session_Namespace('AjoutAvionCourant');
+            $espaceSession->ImmatAvion = $AvionImmat;
+            $espaceSession->modeleAvion = $AvionModele; 
+            
+            $immatUp = strtoupper($AvionImmat);
 
-            if((($immatUp != null) or ($modele != null)) AND (preg_match('^[A-Z0-9\-]+$', $immatUp)))
+            if((($immatUp != null) or ($AvionModele != null)) AND (preg_match('#^[A-Z0-9\-]+$#', $immatUp)))
             {          
-                $ajoutsql = $tabAvion->Ajouter($immatUp, $modele);
+                $ajoutsql = $tabAvion->Ajouter($immatUp, $AvionModele);
 
                 if($ajoutsql == true)
                 {
+                    $espaceSession->ImmatAvion = "";
+                    $espaceSession->modeleAvion = ""; 
+                    
                     $message = '<h3 class="reussi">Ajout réussi</h3>';
                 }
                 else
-                {
+                {                  
                     $message = '<h3 class="echoue">Ajout échoué</h3>';
                 }
             }
             else
-            {
-                $message = '<h3 class="echoue">Ajout échoué, saisie invalide</h3>';
+            {                
+                $message = '<h3 class="echoue">Ajout échoué, saisie invalide<br><br>'.$AvionImmat.' n\'est pas une valeur valide</h3>';
             }
             $this->view->message = $message;
         }
