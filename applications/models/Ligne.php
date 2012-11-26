@@ -22,7 +22,11 @@
         
         /*************** Fonctions ***************/
 
-        //Renvoie toutes les lignes
+        /**
+        * @author : Piercourt Fabien
+        * Retournes toutes les lignes de la bdd
+        * @return array : Toutes les lignes
+        */
         public function getLignes()
         {            
             $req = $this->select()
@@ -36,8 +40,11 @@
             return $lignes;
             
         }
-
-        //Renvoie le nb de vols de cette ligne à venir et planifiés
+        /**
+        * @author : Piercourt Fabien
+        * Renvoie le nb de vols de cette ligne à venir et planifiés
+        * @return nb de vols 
+        */
 	public function getNbVolsDisponibles($idLigne)
 	{
                 $date = Zend_Date::now(); // date actuelle
@@ -49,10 +56,7 @@
                                   ->where('idLigne = ?', $idLigne)
                                   ->where('dateHeureDepartPrevueVol > ?', $date->getIso())
                                   ->where("idVol IN ($imbrique)")
-                        
-                        ;
-                
-                                  
+                                     ;           
 		return $reqVol->query()->rowCount();
 	}
 
