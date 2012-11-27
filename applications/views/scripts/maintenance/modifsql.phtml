@@ -1,0 +1,28 @@
+<?php
+    $espaceSession = new Zend_Session_Namespace('ModifAvionChoisi');
+            
+    $immat = $espaceSession->ImmatAvion;
+    $verifModif = $espaceSession->VerifModif;
+    
+    if($verifModif == false)
+    {
+        ?>
+            <META HTTP-EQUIV="Refresh" CONTENT="5; URL=<?php $this->baseUrl(); ?>/maintenance/modifieravion/immat/<?php echo $immat; ?>">
+        <?php
+    }
+    else
+    {
+        ?>
+            <META HTTP-EQUIV="Refresh" CONTENT="5; URL=<?php $this->baseUrl(); ?>/maintenance/gestionavion">
+        <?php
+    }
+        
+    $message = $this->message;
+    
+    echo $message;
+?>
+
+<br>
+<p>Redirection en cours... Veuillez patientez quelques secondes ou cliquez 
+    <a href="<?php $this->baseUrl(); ?>/maintenance/gestionavion">ici</a>
+</p>

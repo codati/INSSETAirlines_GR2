@@ -1,17 +1,16 @@
  #h1_dl_appli {
-    color : green;
     margin : 10px;
 }
-#div_qrcode, #h1_dl_appli  {
+#div_qrcode, #h1_dl_appli, #bg_qrcode  {
     text-align : center;
 }
-#lien_appli {
+#p_android {
+    margin-left : -100px;
+}
+
+#andro, #lien_appli {
     color : green;
 }
 #lien_appli:hover {
     text-decoration: underline;
-}
-#imgqrcode {
-    margin-top : 5px;
-    margin-left : -10px;
 }

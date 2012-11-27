@@ -86,6 +86,7 @@
 }
 #bt_co_layout, #bt_deco_layout {
  position : absolute;
+ border: 1px solid white outset;
  border-radius : 10px;
  font-size : 1.4em;
  right : 10px;
@@ -93,11 +94,17 @@
  width : 120px;
  height : 30px;
  background : url('../../img/template/bt3.png');
+ 
+ padding: 0;
+ border: 2px outset #f1f1f1;
+ color: black;
+ font-weight: normal;
 }
-#bt_co_layout:hover {
- text-decoration : underline;
- font-size : 1.3em;
- box-shadow : 2px 2px 3px black; 
+#bt_co_layout:hover, #bt_deco_layout:hover {
+ background-position :0px 4px;
+ cursor : pointer;
+ border :0;
+ box-shadow : 1px 1px 3px black inset; 
 }
 
 #message_deco {

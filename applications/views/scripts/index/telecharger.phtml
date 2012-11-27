@@ -1,10 +1,15 @@
 <div id="appli">
-    <h1 id="h1_dl_appli">Téléchargez notre application pour votre smartphone Android !</h1>
+    <h1 id="h1_dl_appli">Téléchargez notre application pour votre smartphone 
+        <span id="andro">
+             <img id="imgqrcode" src="<?php echo $this->baseUrl();?>/img/logoandroid.png" alt="Android"/>
+        </span> !</h1>
     <div id="div_qrcode">
-        <a href="<?php echo $this->baseUrl();?>/android/insset_airlines.apk" id="lien_appli">Cliquez ici</a>
+        <p id="p_android">
+        Cliquez <a href="<?php echo $this->baseUrl();?>/android/insset_airlines.apk" id="lien_appli">ici</a>
         ou scannez ce QR code :
-        <div>
-            <img id="imgqrcode" src="<?php echo $this->baseUrl();?>/img/qrcode_inssetairlines.png" alt="application android" width="200" height="200"/>
+        </p>
+        <div id="bg_qrcode">
+           <img id="imgqrcode" src="<?php echo $this->baseUrl();?>/img/android.png" alt="application android"/>
         </div>
     </div>
 </div>
