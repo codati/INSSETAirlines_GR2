@@ -24,7 +24,7 @@ h1{
 }
 
 h2{
-    font-size: 1.450em;
+    font-size: 1.250em;
 }
 
 .erreur {
@@ -40,6 +40,14 @@ h2{
     background :  #B8E8AD;
     font-size : 1em;
     border : 2px solid green;
+    padding : 5px 10px;
+    text-align : center;
+}
+.information {
+    color : black;
+    background :  #FFF168;
+    font-size : 1em;
+    border : 2px solid orange;
     padding : 5px 10px;
     text-align : center;
 }
