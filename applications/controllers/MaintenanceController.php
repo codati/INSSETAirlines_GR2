@@ -97,12 +97,12 @@
                 }
                 else
                 {                  
-                    $message = '<h3 class="echoue">Ajout échoué</h3>';
+                    $message = '<h3 class="erreur">Ajout échoué</h3>';
                 }
             }
             else
             {                
-                $message = '<h3 class="echoue">Ajout échoué, saisie invalide<br><br>'.$avionImmat.' n\'est pas une valeur valide</h3>';
+                $message = '<h3 class="erreur">Ajout échoué, saisie invalide<br><br>'.$avionImmat.' n\'est pas une valeur valide</h3>';
             }
             $this->view->message = $message;
         }
@@ -201,7 +201,7 @@
             }
             else
             {                
-                $message = '<h3 class="echoue">Modification échouée, saisie invalide<br><br>'.$newAvionImmat.' n\'est pas une valeur valide</h3>';
+                $message = '<h3 class="erreur">Modification échouée, saisie invalide<br><br>'.$newAvionImmat.' n\'est pas une valeur valide</h3>';
             }
             $this->view->message = $message;
         }
@@ -222,7 +222,7 @@
             }
             else
             {                  
-                $message = '<h3 class="echoue">Suppression échouée</h3>';
+                $message = '<h3 class="erreur">Suppression échouée</h3>';
                 $this->view->message = $message;
                 
             }
