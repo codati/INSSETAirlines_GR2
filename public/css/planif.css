@@ -1,4 +1,12 @@
-#formplanif dd, #formplanif dt {margin: 5px;}
+#formplanif dd, #formplanif dt {margin: 10px;}
 #formplanif dt {float: left; width: 260px;}
 #formplanif #sub_intervention-label {width :0;}
 #formplanif #sub_intervention { margin : 20px 0 0 20px;}
+#formplanif {
+    margin : 50px 0 0 50px;
+}
+
+#ajinter, #nvInter {
+    text-align : center;
+}
+

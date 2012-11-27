@@ -37,7 +37,7 @@ class ServicemaintenanceController extends Zend_Controller_Action
         $eTypeIntervention->setLabel('Choisir le type de l\'intervetion à effectuer :');
         
         $eSubmit = new Zend_Form_Element_Submit('sub_intervention');
-        $eSubmit->setLabel('Valider');
+        $eSubmit->setLabel('Ajouter');
         $eSubmit->setAttrib('class','valider');
         
         $formPlanif->addElements(array(

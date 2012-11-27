@@ -64,7 +64,8 @@
 .sousmenu {
     position : absolute;
     display : none;
-    background : url('../../img/overlay/pixel.png') repeat;
+    /*background : url('../../img/overlay/pixel.png') repeat;*/
+    background : #c8e0fd;
     padding : 10px;
     padding-right : 20px;
     margin-top : 10px;
