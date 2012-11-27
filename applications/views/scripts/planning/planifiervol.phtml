@@ -33,12 +33,16 @@ $CoPilote->setLabel('Co-pilote :');
 $CoPilote->addMultiOptions($this->ListeCoPilote);
 $FormPlanifier->addElement($CoPilote);
 
+$prixClass = new Zend_Form_Element_Hidden('prix_classe');
+$prixClass->setLabel('<br/><br/>Chargement des classes&nbsp;&nbsp;&nbsp;<img src="/img/loading_squares.gif" alt="Loading" />');
+$prixClass->addDecorators(array(array('Label', array('tag' => 'div', 'escape' => false))));
+$FormPlanifier->addElement($prixClass);
+
 $Submit = new Zend_Form_Element_Submit('send');
 $Submit->setLabel('Voir le récapitulatif');
 $FormPlanifier->addElement($Submit);
 
 echo $FormPlanifier;
 ?>
-
 <br/><br/>
 <div id="planning"></div>

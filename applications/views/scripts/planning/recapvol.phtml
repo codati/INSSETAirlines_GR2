@@ -1,56 +1,93 @@
-<div id="valid-formRecapPlanifier">
-	<p>Le vol a correctement été planifié.</p>
-	<a href="/planning/planifier" title="Retour au planning">Retourner au planning</a>
-</div>
-
-<div id="error-formRecapPlanifier">Une erreur s'est produite durant la planification.</div>
-
-<h2>Planification du vol #<?php echo $this->InfosVol['idVol']; ?></h2><br />
-
-Départ : <span style="font-weight: bold;"><?php echo $this->InfosVol['nomAeroportDepart']; ?></span> le <?php echo DateFormat_View($this->InfosVol['dateHeureDepartPrevueVol']); ?><br/><br/>
-Arrivé : <span style="font-weight: bold;"><?php echo $this->InfosVol['nomAeroportArrivee']; ?></span> le <?php echo DateFormat_View($this->InfosVol['dateHeureArriveePrevueVol']); ?><br/>
-<br/><br/>
-
-<div id="recapPlanning">
-	<div class="label-element">Modèle d'avion :</div>
-	<div class="value-element"><?php echo $this->modeleAvion; ?></div>
-	<div class="end_float"><br/></div>
-	
-	<div class="label-element">Avion :</div>
-	<div class="value-element"><?php echo $this->avion; ?></div>
-	<div class="end_float"><br/></div>
-	
-	<div class="label-element">Pilote :</div>
-	<div class="value-element"><?php echo $this->pilote; ?></div>
-	<div class="end_float"><br/></div>
-	
-	<div class="label-element">Co-pilote :</div>
-	<div class="value-element"><?php echo $this->copilote; ?></div>
-	<div class="end_float"><br/></div>
-</div>
-
 <?php
-$FormPlanifier = new Zend_Form();
-$FormPlanifier->setMethod('post');
-$FormPlanifier->setAttrib('id', 'form_RecapPlanifier');
-
-$FormPlanifier->addElement('hidden', 'dateDepart', array('value' => $this->dateDepart));
-$FormPlanifier->addElement('hidden', 'dateArrivee', array('value' => $this->dateArrivee));
-$FormPlanifier->addElement('hidden', 'idVol', array('value' => $this->InfosVol['idVol']));
-$FormPlanifier->addElement('hidden', 'modele', array('value' => $this->idModele));
-$FormPlanifier->addElement('hidden', 'avion', array('value' => $this->avion));
-$FormPlanifier->addElement('hidden', 'pilote', array('value' => $this->idPilote));
-$FormPlanifier->addElement('hidden', 'copilote', array('value' => $this->idCoPilote));
-
-$Submit = new Zend_Form_Element_Submit('valid');
-$Submit->setLabel('Valider');
-$FormPlanifier->addElement($Submit);
-
-$Cancel = new Zend_Form_Element_Button('cancel');
-$Cancel->setLabel('Annuler');
-$FormPlanifier->addElement($Cancel);
-
-echo $FormPlanifier;
+if($this->dejaPlanifier == true)
+{
+	echo '<div id="error-formRecapPlanifier" class="erreur" style="display:block;">';
+		echo '<p>Le vol a déjà été planifier.</p>';
+		echo '<a href="/planning/planifier" title="Retour au planning">Retourner au planning</a>';
+	echo '</div>';
+}
+else
+{
+	?>
+	<div id="valid-formRecapPlanifier" class="reussi">
+		<p>Le vol a correctement été planifié.</p>
+		<a href="/planning/planifier" title="Retour au planning">Retourner au planning</a>
+	</div>
+	
+	<div id="error-formRecapPlanifier" class="erreur">Une erreur s'est produite durant la planification.</div>
+	
+	<h2>Planification du vol #<?php echo $this->InfosVol['idVol']; ?></h2><br />
+	
+	Départ : <span style="font-weight: bold;"><?php echo $this->InfosVol['nomAeroportDepart']; ?></span> le <?php echo DateFormat_View($this->InfosVol['dateHeureDepartPrevueVol']); ?><br/><br/>
+	Arrivé : <span style="font-weight: bold;"><?php echo $this->InfosVol['nomAeroportArrivee']; ?></span> le <?php echo DateFormat_View($this->InfosVol['dateHeureArriveePrevueVol']); ?><br/>
+	<br/><br/>
+	
+	<div id="recapPlanning">
+		<div id="recapPlanning_left">
+			<div class="label-element">Modèle d'avion :</div>
+			<div class="value-element"><?php echo $this->modeleAvion; ?></div>
+			<div class="end_float"><br/></div>
+			
+			<div class="label-element">Avion :</div>
+			<div class="value-element"><?php echo $this->avion; ?></div>
+			<div class="end_float"><br/></div>
+			
+			<div class="label-element">Pilote :</div>
+			<div class="value-element"><?php echo $this->pilote; ?></div>
+			<div class="end_float"><br/></div>
+			
+			<div class="label-element">Co-pilote :</div>
+			<div class="value-element"><?php echo $this->copilote; ?></div>
+			<div class="end_float"><br/></div>
+		</div>
+		
+		<div id="recapPlanning_right">
+			<?php
+			foreach($this->lstClasses as $val)
+			{
+				echo '<div class="label-element">'.$val['nomClasse'].' :</div>';
+				echo '<div class="value-element">'.$val['value'].'€&nbsp;&nbsp;&nbsp;(nombre de place disponible : '.$val['nbPlaces'].')</div>';
+				echo '<div class="end_float"><br/></div>';
+			}
+			?>
+		</div>
+		<div class="end_float"></div>
+	</div>
+	
+	<?php
+	$FormPlanifier = new Zend_Form();
+	$FormPlanifier->setMethod('post');
+	$FormPlanifier->setAttrib('id', 'form_RecapPlanifier');
+	
+	$FormPlanifier->addElement('hidden', 'dateDepart', array('value' => $this->dateDepart));
+	$FormPlanifier->addElement('hidden', 'dateArrivee', array('value' => $this->dateArrivee));
+	$FormPlanifier->addElement('hidden', 'idVol', array('value' => $this->InfosVol['idVol']));
+	$FormPlanifier->addElement('hidden', 'modele', array('value' => $this->idModele));
+	$FormPlanifier->addElement('hidden', 'avion', array('value' => $this->avion));
+	$FormPlanifier->addElement('hidden', 'pilote', array('value' => $this->idPilote));
+	$FormPlanifier->addElement('hidden', 'copilote', array('value' => $this->idCoPilote));
+	
+	foreach($this->lstClasses as $val)
+	{
+		$FormPlanifier->addElement('hidden', 'class_'.$val['idClasse'], array('value' => $val['value']));
+		/*
+		echo '<div class="label-element">'.$val['nomClasse'].' :</div>';
+		echo '<div class="value-element">'.$val['value'].'€&nbsp;&nbsp;&nbsp;(nombre de place disponible : '.$val['nbPlaces'].')</div>';
+		echo '<div class="end_float"><br/></div>';
+		*/
+	}
+	
+	$Submit = new Zend_Form_Element_Submit('valid');
+	$Submit->setLabel('Valider');
+	$FormPlanifier->addElement($Submit);
+	
+	$Cancel = new Zend_Form_Element_Button('cancel');
+	$Cancel->setLabel('Annuler');
+	$FormPlanifier->addElement($Cancel);
+	
+	echo $FormPlanifier;
+	
+	echo '<div id="formRecapPlanifier_load-valid"></div>';
+	echo '<br/><br/><br/>';
+}
 ?>
-
-<div id="formRecapPlanifier_load-valid"></div>

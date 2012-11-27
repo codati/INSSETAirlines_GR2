@@ -41,7 +41,7 @@
 
             // parametrer le formulaire
             $monform->setMethod('post');
-            $monform->setAttrib('id','formtest');
+            $monform->setAttrib('id','formAjout');
             
             $monform->setAction($this->view->baseUrl().'/maintenance/ajoutsql');
 
@@ -133,7 +133,7 @@
 
             // parametrer le formulaire
             $monform->setMethod('post');
-            $monform->setAttrib('id','formtest');
+            $monform->setAttrib('id','formModif');
             
             $monform->setAction($this->view->baseUrl().'/maintenance/modifsql');
             

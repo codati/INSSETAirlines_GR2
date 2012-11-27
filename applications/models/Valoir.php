@@ -30,4 +30,11 @@
                          return $tarifs;
                     }
                }
+
+		public function insertPrixVol($idVol, $idClasse, $prix)
+		{
+			$data = array('idVol' => $idVol, 'idClasse' => $idClasse, 'prixUnitaire' => $prix);
+			try {$this->insert($data);}
+			catch (Zend_Db_Exception $e) {die ($e->getMessage());}
+		}
     }
