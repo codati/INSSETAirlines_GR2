@@ -111,4 +111,11 @@
             $res = $this->fetchAll($req)->toArray();
             return $res;
         }
+        public function get_lstImmatriculations()
+        {
+            $reqImmat = $this->select()
+                            ->from($this->_name,'immatriculationAvion')
+                            ;
+            return $this->fetchAll($reqImmat)->toArray();
+        }
     }    
