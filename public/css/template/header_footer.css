@@ -86,6 +86,7 @@
 }
 #bt_co_layout, #bt_deco_layout {
  position : absolute;
+ border: 1px solid white outset;
  border-radius : 10px;
  font-size : 1.4em;
  right : 10px;

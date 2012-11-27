@@ -9,7 +9,17 @@
  * @param &Zend_Date : L'instance Zend_Date de la date
  * @return string : La date au format sql
 */
-function DateFormat_SQL(&$Zend_Date) {return $Zend_Date->toString('YYYY-MM-dd HH:mm:ss');}
+function DateFormat_SQL(&$Zend_Date, $complet=true)
+{
+    if($complet == true) 
+    {
+        return $Zend_Date->toString('YYYY-MM-dd HH:mm:ss');
+    }
+    else
+    {
+        return $Zend_Date->toString('YYYY-MM-dd');
+    }
+}
  
 /**
  * Retourne la date pour l'affichage
