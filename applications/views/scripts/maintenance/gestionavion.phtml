@@ -17,9 +17,9 @@
                 echo '<td>'.$unAvion["etatAvion"].'</td>';
                 echo '<td>'.$unAvion["heuresVolDerniereIntervention"].'</td>';
                 echo '<td>'.$unAvion["libelleModeleAvion"].'</td>';
-                echo '<td><a href="'.$this->baseUrl().'/maintenance/modifieravion" title="Modifier"><img src="'. $this->baseUrl() .'/img/pencil.png" /></a>
+                echo '<td><a href="'.$this->baseUrl().'/maintenance/modifieravion/immat/'.$unAvion["immatriculationAvion"].'" title="Modifier"><img src="'. $this->baseUrl() .'/img/pencil.png" /></a>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          <a href="'.$this->baseUrl().'/maintenance/supprimeravion" title="Supprimer"><img src="'. $this->baseUrl() .'/img/cross.png" /></a></td>';
+                          <a href="'.$this->baseUrl().'/maintenance/supprimeravion/immat/'.$unAvion["immatriculationAvion"].'" title="Supprimer" onclick="return confirm(\'Etes-vous sûr de vouloir supprimer l\\\'avion '.$unAvion["immatriculationAvion"].'?\');"><img src="'. $this->baseUrl() .'/img/cross.png" /></a></td>';
                 echo '</tr>';
             }
         ?>   

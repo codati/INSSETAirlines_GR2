@@ -27,7 +27,27 @@
         public function Modifier($p_immatriculation, $p_newImmatriculation, $p_modele) {
             $data = array('immatriculationAvion' => $p_newImmatriculation, 'idModeleAvion' => $p_modele);
             $where = $this->getAdapter()->quoteInto('immatriculationAvion = ?', $p_immatriculation);
-            $this->update($data, $where);
+            try {   
+               $this->update($data, $where); 
+            }
+            catch (Exception $e)
+            {
+                return false;
+            }
+            return true;
+        }
+        
+        public function Supprimer($p_immatriculation)
+        {   
+            $where = $this->getAdapter()->quoteInto('immatriculationAvion = ?', $p_immatriculation);
+            try {   
+               $this->delete($where); 
+            }
+            catch (Exception $e)
+            {
+                return false;
+            }
+            return true;          
         }
         
         public function Reset($p_immatriculation) {                   
