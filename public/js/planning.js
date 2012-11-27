@@ -16,6 +16,13 @@ $(document).ready(function()
 	$("#form_planifier #avion-element").append('<span id="load-avion"></span>');
 	$("#form_planifier #pilote-element").append('<span id="load-pilote"></span><span id="detail_pilote">Détails des horaires du pilote</span><span id="load-detail_pilote"></span>');
 	$("#form_planifier #copilote-element").append('<span id="load-copilote"></span><span id="detail_copilote">Détails des horaires du co-pilote</span><span id="load-detail_copilote"></span>');
+	
+	if($("#form_planifier #prix_classe-element").length != 0)
+	{
+		$("#form_planifier #prix_classe-element").html("");
+		var modeleavion = $("#form_planifier #modele_avion option:selected").val();
+		$.get('/planning/formprixclasse', {idModele:modeleavion}, function(data) {$("#form_planifier #prix_classe-label").html(data);});
+	}
 
 	$("#form_planifier #modele_avion").change(function()
 	{
@@ -23,6 +30,7 @@ $(document).ready(function()
 		disabled_and_loading("avion");
 		disabled_and_loading("pilote");
 		disabled_and_loading("copilote");
+		$("#form_planifier #prix_classe-label").html('<br/><br/>Chargement des classes&nbsp;&nbsp;&nbsp;<img src="/img/loading_squares.gif" alt="Loading" />');
 
 		idmodeleavion = $("#modele_avion option:selected").val();
 		datedep = $("#dateDepart").val();
@@ -67,6 +75,9 @@ $(document).ready(function()
 				enabled_and_EndLoading("copilote");
 			});
 		});
+		
+		//Actualisation de la liste des classes pour les prix
+		$.get('/planning/formprixclasse', {idModele:idmodeleavion}, function(data) {$("#form_planifier #prix_classe-label").html(data);});
 	});
 
 	$("#form_planifier #pilote").change(function()
@@ -143,6 +154,38 @@ $(document).ready(function()
 		});
 	});
 	
+	$("#form_planifier").submit(function()
+	{
+		returnVal = true;
+		$("#form_planifier #prix_classe-label dd").each(function()
+		{
+			obj = $(this).children("input");
+			//console.log(obj);
+			
+			if($(obj).val() == "")
+			{
+				$(obj).css("border-color", "red");
+				$(this).children("p.PlanifierEmptyPrix").html("Le champ doit être rempli.");
+				returnVal = false;
+			}
+			else if(isNaN($(obj).val()))
+			{
+				$(obj).css("border-color", "red");
+				$(this).children("p.PlanifierEmptyPrix").html("Vous devez écrire un chiffre.");
+				returnVal = false;
+			}
+			else
+			{
+				$(obj).css("border-color", "#6495ED");
+				$(this).children("p.PlanifierEmptyPrix").html("");
+			}
+		});
+		
+		//console.log(returnVal);
+		//return false;
+		return returnVal;
+	});
+	
 	//Page Récapitulation du vol.
 	$("#form_RecapPlanifier").submit(function()
 	{
@@ -154,8 +197,21 @@ $(document).ready(function()
 		pilote = $("#pilote").val();
 		copilote = $("#copilote").val();
 		
+		class1 = $("#class_1").val();
+		class2 = $("#class_2").val();
+		class3 = $("#class_3").val();
+		
 		$.post('/planning/validrecap', 
-			{idVol:idvol, idModeleAvion:modeleavion, immaAvion:avion, idPilote:pilote, idCoPilote:copilote},
+			{
+				idVol:idvol,
+				idModeleAvion:modeleavion,
+				immaAvion:avion,
+				idPilote:pilote,
+				idCoPilote:copilote,
+				class_1:class1,
+				class_2:class2,
+				class_3:class3
+			},
 			function(data)
 			{
 				$("#formRecapPlanifier_load-valid").html('');
@@ -168,7 +224,6 @@ $(document).ready(function()
 				else {$("#error-formRecapPlanifier").show();}
 			}
 		);
-		
 		return false;
 	});
 	

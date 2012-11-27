@@ -100,6 +100,8 @@ class PlanningController extends Zend_Controller_Action
 				
 				if($infosVol['matriculeAvion'] == null)
 				{
+					$this->view->dejaPlanifier = false;
+					
 					$modeleAvion = $this->_getParam('modele_avion', null);
 					$avion = $this->_getParam('avion', null);
 					$pilote = $this->_getParam('pilote', null);
@@ -108,12 +110,66 @@ class PlanningController extends Zend_Controller_Action
 					if($modeleAvion == null || $avion == null || $pilote == null || $copilote == null) {exit;}
 					
 					$InfosVol = $tableVol->get_InfosVol($idVol);
+					
+					$dateDepartSQL = $InfosVol['dateHeureDepartPrevueVol'];
+					$dateArriveeSQL = $InfosVol['dateHeureArriveePrevueVol'];
 					$InfosVol['dateHeureDepartPrevueVol'] = new Zend_Date($InfosVol['dateHeureDepartPrevueVol']);
 					$InfosVol['dateHeureArriveePrevueVol'] = new Zend_Date($InfosVol['dateHeureArriveePrevueVol']);
 					
 					$tableModele = new Table_ModeleAvion();
 					$tablePilote = new Table_Pilote();
+					$tableClasse = new Table_Classe();
 					
+					//Vérifications
+					$LstModeleDepartSQL = $tableModele->get_NomModeles_PourAeroport($InfosVol['trigrammeAeDepart']);
+					$LstModeleArriveeSQL = $tableModele->get_NomModeles_PourAeroport($InfosVol['trigrammeAeArrivee']);
+					
+					foreach($LstModeleDepartSQL as $val) {$LstModeleDepart[$val['idModeleAvion']] = $val['libelleModeleAvion'];}
+					foreach($LstModeleArriveeSQL as $val) {$LstModeleArrivee[$val['idModeleAvion']] = $val['libelleModeleAvion'];}
+					
+					$LstModele = array_uintersect($LstModeleDepart, $LstModeleArrivee, 'strcasecmp');
+					$LstAvionDispo = $this->lstavionAction($modeleAvion, $dateDepartSQL, $dateArriveeSQL);
+					$LstPiloteDispo = $this->lstpiloteAction($modeleAvion, $dateDepartSQL, $dateArriveeSQL, -1);
+					$LstClasses = $tableClasse->get_LstClasses_PourModele($modeleAvion);
+					
+					$classesOk = true;
+					foreach($LstClasses as $key => $val)
+					{
+						$LstClasses[$key]['value'] = $value = $this->_getParam('class_'.$val['idClasse'], null);
+						if($value == null) {$classesOk = false;}
+					}
+					
+					/*
+					echo '<pre>';
+						var_dump($modeleAvion);
+						var_dump($LstModele);
+						var_dump($avion);
+						var_dump($LstAvionDispo);
+						var_dump($pilote);
+						var_dump($copilote);
+						var_dump($LstPiloteDispo);
+						
+						var_dump(array_key_exists($modeleAvion, $LstModele));
+						var_dump(array_key_exists($avion, $LstAvionDispo));
+						var_dump(array_key_exists($pilote, $LstPiloteDispo));
+						var_dump(array_key_exists($copilote, $LstPiloteDispo));
+						var_dump($pilote != $copilote);
+						var_dump($classesOk != false);
+					echo '</pre>';
+					exit;
+					*/
+					
+					if(
+						in_array($modeleAvion, $LstModele) AND
+						in_array($avion, $LstAvionDispo) AND
+						in_array($pilote, $LstPiloteDispo) AND
+						in_array($copilote, $LstPiloteDispo) AND
+						($pilote != $copilote) AND
+						($classesOk != false)
+					)
+					{header('Location: /planning/planifiervol/idVol/'.$idVol);}
+					
+					//Récapitulatif
 					$infosModele = $tableModele->get_libelle($modeleAvion);
 					$infosPilote = $tablePilote->get_NomPrenom($pilote);
 					$infosCoPilote = $tablePilote->get_NomPrenom($copilote);
@@ -128,6 +184,7 @@ class PlanningController extends Zend_Controller_Action
 					$this->view->idModele = $modeleAvion;
 					$this->view->idPilote = $pilote;
 					$this->view->idCoPilote = $copilote;
+					$this->view->lstClasses = $LstClasses;
 				}
 				else {$this->view->dejaPlanifier = true;}
 			}
@@ -157,9 +214,19 @@ class PlanningController extends Zend_Controller_Action
 					if($modeleAvion == null || $avion == null || $pilote == null || $copilote == null) {exit;}
 					
 					$tableAssurer = new Table_Assurer();
+					$tableValoir = new Table_Valoir();
+					$tableClasse = new Table_Classe();
+					
 					$tableAssurer->insertPilote($idVol, $pilote);
 					$tableAssurer->insertCoPilote($idVol, $copilote);
 					$tableVol->changeImmatriculation($idVol, $avion);
+					
+					$LstClasses = $tableClasse->get_LstClasses_PourModele($modeleAvion);
+					foreach($LstClasses as $val)
+					{
+						$prix = $this->_getParam('class_'.$val['idClasse'], null);
+						if($prix != null) {$tableValoir->insertPrixVol($idVol, $val['idClasse'], $prix);}
+					}
 					
 					echo '1';
 				}
@@ -207,7 +274,7 @@ class PlanningController extends Zend_Controller_Action
 			if($idModele == 0) {$idModele = $this->_getParam('idModele', null);}
 			if($dateDepart == 0) {$dateDepart = $this->_getParam('dateDepart', null);}
 			if($dateArrivee == 0) {$dateArrivee = $this->_getParam('dateArrivee', null);}
-			if($pilote == null) {$pilote = $this->_getParam('pilote', null);}
+			if($pilote == null && $pilote != -1) {$pilote = $this->_getParam('pilote', null);}
 			
 			if($idModele == null || $dateDepart == null || $dateArrivee == null) {exit;} //On vérifie qu'on a bien tout, sinon fin.
 			
@@ -218,11 +285,13 @@ class PlanningController extends Zend_Controller_Action
 			$lstPilote = array();
 			foreach($lstPiloteSQL as $val)
 			{
+				//echo $val['idPilote'].'<br/>';
 				if($pilote == null || ($pilote != null && $pilote != $val['idPilote']))
 				{
 					$lstPilote[$val['idPilote']] = $val['nomPilote'].' '.$val['prenomPilote'];
 				}
 			}
+			//var_dump($lstPilote);
 			
 			if($get == null) {return $lstPilote;}
 			else
@@ -345,6 +414,24 @@ class PlanningController extends Zend_Controller_Action
 			
 			$this->view->pilote = $infosPilote['nomPilote'].' '.$infosPilote['prenomPilote'];
 			$this->view->tableaux = $retour;
+		}
+	}
+	
+	public function formprixclasseAction()
+	{
+		if(Services_verifAcces('Planning'))
+		{
+			//On change de layout pour pas avoir le header etc
+			$layout = Zend_Layout::getMvcInstance();
+			$layout->setLayout('api');
+			
+			$idModele = $this->_getParam('idModele', null);
+			if($idModele != null)
+			{
+				$tableClasse = new Table_Classe();
+				$lstClasses = $tableClasse->get_LstClasses_PourModele($idModele);
+				$this->view->LstClasses = $lstClasses;
+			}
 		}
 	}
 }
