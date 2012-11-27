@@ -27,7 +27,27 @@
         public function Modifier($p_immatriculation, $p_newImmatriculation, $p_modele) {
             $data = array('immatriculationAvion' => $p_newImmatriculation, 'idModeleAvion' => $p_modele);
             $where = $this->getAdapter()->quoteInto('immatriculationAvion = ?', $p_immatriculation);
-            $this->update($data, $where);
+            try {   
+               $this->update($data, $where); 
+            }
+            catch (Exception $e)
+            {
+                return false;
+            }
+            return true;
+        }
+        
+        public function Supprimer($p_immatriculation)
+        {   
+            $where = $this->getAdapter()->quoteInto('immatriculationAvion = ?', $p_immatriculation);
+            try {   
+               $this->delete($where); 
+            }
+            catch (Exception $e)
+            {
+                return false;
+            }
+            return true;          
         }
         
         public function Reset($p_immatriculation) {                   
@@ -51,20 +71,20 @@
          */
         public function get_LstAvionsDispo_PourModeleEtDate($idModele, $dateDepart, $dateArrivee)
         {
-                $reqDate = $this->select()->setIntegrityCheck(false)
-                                                ->from(array('v' => 'vol'), 'COUNT(v.idVol)')
-                                                ->where('v.matriculeAvion=a.immatriculationAvion')
-                                                ->where('dateHeureDepartPrevueVol >= "'.$dateDepart.'"')
-                                                ->where('dateHeureArriveePrevueVol <= "'.$dateArrivee.'"');
+            $reqDate = $this->select()->setIntegrityCheck(false)
+                    ->from(array('v' => 'vol'), 'COUNT(v.idVol)')
+                    ->where('v.matriculeAvion=a.immatriculationAvion')
+                    ->where('dateHeureDepartPrevueVol >= "'.$dateDepart.'"')
+                    ->where('dateHeureArriveePrevueVol <= "'.$dateArrivee.'"');
 
-        $req = $this->select()->setIntegrityCheck(false)
-                                        ->from(array('a' => 'avion'), 'immatriculationAvion')
-                                        ->where('a.idModeleAvion="'.$idModele.'"')
-                                        ->where('('.new Zend_Db_Expr($reqDate).') = 0');
-                $res = $this->fetchAll($req);
-                return $res->toArray();
+            $req = $this->select()->setIntegrityCheck(false)
+                    ->from(array('a' => 'avion'), 'immatriculationAvion')
+                    ->where('a.idModeleAvion="'.$idModele.'"')
+                    ->where('('.new Zend_Db_Expr($reqDate).') = 0');
+            $res = $this->fetchAll($req);
+            return $res->toArray();
         }
-
+	
         /**
          * Récupère le nom d'un avion
          * @param int $idAvion : L'id de l'avion
@@ -72,16 +92,23 @@
          */
         public function get_immatriculation($idAvion)
         {
-                $req = $this->select()->from($this->_name, 'immatriculationAvion')->where('idAvion=?', $idAvion);
-                $res = $this->fetchRow($req)->toArray();
-                return $res['immatriculationAvion'];
+            $req = $this->select()->from($this->_name, 'immatriculationAvion')->where('idAvion=?', $idAvion);
+            $res = $this->fetchRow($req)->toArray();
+            return $res['immatriculationAvion'];
         }
-        public function get_lstImmatriculations()
+        
+        public function getAvions()
         {
-            $reqImmats = $this->select()
-                              ->from($this->_name,'immatriculationAvion')
-                              ;
-            $lesImmats = $this->fetchAll($reqImmats);
-            return $lesImmats->toArray();
+            $req = $this->select()->setIntegrityCheck(false)
+                    ->from(array('a' => $this->_name))
+                    ->join(array('m' => 'modeleavion'), 'm.idModeleAvion=a.idModeleAvion', 'libelleModeleAvion');
+            /*
+            SELECT a.*, m.libelleModeleAvion
+            FROM avion AS a
+            INNER JOIN modeleavion m
+                ON m.idModeleAvion=a.idModeleAvion
+            */
+            $res = $this->fetchAll($req)->toArray();
+            return $res;
         }
     }    
