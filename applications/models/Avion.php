@@ -113,9 +113,18 @@
         }
         public function get_lstImmatriculations()
         {
-            $reqImmat = $this->select()
+            $reqImmat = $this->select()->setIntegrityCheck(false)
                             ->from($this->_name,'immatriculationAvion')
                             ;
             return $this->fetchAll($reqImmat)->toArray();
+        }
+        
+        public function getModele($p_immatriculationAvion)
+        {
+            $req = $this->select()->setIntegrityCheck(false)
+                    ->from($this->_name,'idModeleAvion')
+                    ->where('immatriculationAvion = ?', $p_immatriculationAvion)
+                    ;
+            return $this->fetchRow($req)->toArray();
         }
     }    
