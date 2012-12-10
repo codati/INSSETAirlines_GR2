@@ -28,7 +28,6 @@
         {
             $ajout=array();
             try {
-                $ajout=array();
                 if($dateInter != null)
                 {                    
                     $data = array(

@@ -5,7 +5,7 @@ $(document).ready(function() {
    // ajoute un date picker a tous les elements dont la classe est datePick
    $(".datePick").datepicker({	
         showButtonPanel: true
-      , dateFormat: 'DD dd MM yy '
+      , dateFormat: 'DD dd MM yy'
       , dayNamesMin: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa']     			
       , dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi']
       , monthNamesShort: ['Jan','Fev','Mar','Avr','Mai','Jun','Jul','Août','Sep','Oct','Nov','Déc']
