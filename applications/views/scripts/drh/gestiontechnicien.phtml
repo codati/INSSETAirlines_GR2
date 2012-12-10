@@ -1,0 +1,30 @@
+<div id="tableau">    
+    <table>
+        <h2 id="centrer">Listing des techniciens</h2>
+        <tr>
+            <th>Matricule</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Adresse</th>
+            <th>Date de naissance</th>
+        </tr>
+        <?php
+            $lesTechs = $this->lesTechs;
+            foreach ($lesTechs as $unTech) 
+            {
+                echo '<tr>';
+                echo '<td>'.$unTech["matriculeTechnicien"].'</td>';
+                echo '<td>'.$unTech["nomTechnicien"].'</td>';
+                echo '<td>'.$unTech["prenomTechnicien"].'</td>';
+                echo '<td>'.$unTech["adresseTechnicien"].'</td>';
+                echo '<td>'.$unTech["dateNaissanceTechnicien"].'</td>';
+                echo '<td><a href="'.$this->baseUrl().'/technicien/modifiertechnicien/matricule/'.$unTech["matriculeTechnicien"].'" title="Modifier"><img src="'. $this->baseUrl() .'/img/pencil.png" /></a>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <a href="'.$this->baseUrl().'/technicien/supprimertechnicien/matricule/'.$unTech["matriculeTechnicien"].'" title="Supprimer" onclick="return confirm(\'Etes-vous sûr de vouloir supprimer le technicien '.$unTech["nomTechnicien"].' '.$unTech["prenomTechnicien"].'?\');"><img src="'. $this->baseUrl() .'/img/cross.png" /></a></td>';
+                echo '</tr>';
+            }
+        ?>   
+    </table>
+    <br>
+    <a id="ajoutTech" class="ajouter" href="<?php echo $this->baseUrl(); ?>/technicien/ajoutertechnicien">Ajouter un technicien</a>
+</div>

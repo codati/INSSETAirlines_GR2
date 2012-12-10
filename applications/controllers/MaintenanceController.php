@@ -111,6 +111,7 @@
         {
             $this->_helper->actionStack('header','index','default',array());
 
+            $tableAvion = new Table_Avion;
             $tableModele = new Table_ModeleAvion;
             
             $lesModeles = $tableModele->GetListLibelle();
@@ -124,10 +125,10 @@
             
             $espaceSession = new Zend_Session_Namespace('ModifAvionChoisi');
             
-            $immat = $espaceSession->ImmatAvion;
-            $modele = $espaceSession->ModeleAvion;
-            
             $immatAvion = $this->_getParam('immat');
+            
+            $modele = $tableAvion->getModele($immatAvion);
+            $espaceSession->oldImmat = $immatAvion;
             
             $monform = new Zend_Form;
 
@@ -141,11 +142,6 @@
             $eImmatAvion->setValue($immatAvion);
             $eImmatAvion->setLabel('Immatriculation de l\'avion : ');
             $eImmatAvion->setAttrib('readonly', 'readonly');
-            
-            $eNewImmatAvion = new Zend_Form_Element_Text('NewImmatAvion');
-            $eNewImmatAvion->setValue($immat);
-            $eNewImmatAvion->setLabel('Nouvelle immatriculation de l\'avion : ');
-            $eNewImmatAvion->setAttrib('required', 'required');
 
             $eModeleAvion = new Zend_Form_Element_Select('ModeleAvion');
             $eModeleAvion->setValue($modele);
@@ -157,7 +153,6 @@
             $eSubmit->setAttrib('class','valider');
             
             $monform->addElement($eImmatAvion);
-            $monform->addElement($eNewImmatAvion);
             $monform->addElement($eModeleAvion);
             $monform->addElement($eSubmit);       
 
@@ -169,16 +164,15 @@
             $this->_helper->actionStack('header','index','default',array());
             
             $tableAvion = new Table_Avion;
-            
-            $avionImmat = $this->getRequest()->getPost('ImmatAvion');
-            $newAvionImmat = $this->getRequest()->getPost('NewImmatAvion');
+
+            $newAvionImmat = $this->getRequest()->getPost('ImmatAvion');
             $avionModele = $this->getRequest()->getPost('ModeleAvion');
             $verifModif = false;
             
             $newImmatUp = strtoupper($newAvionImmat);
             
             $espaceSession = new Zend_Session_Namespace('ModifAvionChoisi');
-            $espaceSession->ImmatAvion = $avionImmat;
+            $avionImmat = $espaceSession->oldImmat;
             $espaceSession->ImmatAvion = $newImmatUp;
             $espaceSession->ModeleAvion = $avionModele;
             $espaceSession->VerifModif = $verifModif;
