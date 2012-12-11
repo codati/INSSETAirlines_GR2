@@ -30,7 +30,7 @@ class ServicemaintenanceController extends Zend_Controller_Action
         $eDateEffective = new Zend_Form_Element_Text('datePrevue');
         $eDateEffective->setAttrib('class','datePick');
         $eDateEffective->setLabel('Date de l\'intervention : ');
-        $eDateEffective->setAttrib('class','datePick');
+        $eDateEffective->setAttrib('readonly',true);
         
         $eTypeIntervention = new Zend_Form_Element_Select('sel_typeIntervention');
         $eTypeIntervention->addMultiOptions(array('petite'=>'Petite','grande'=>'Grande'));
@@ -57,10 +57,9 @@ class ServicemaintenanceController extends Zend_Controller_Action
         $immatAvion = $this->getRequest()->getPost('immatAvion');
         // recupere la date et la transforme en format correct pour l'insertion en bdd
         $dateInter = $this->getRequest()->getPost('datePrevue');
-        //
         if($dateInter != "")
-        {
-            $dateInter = DateFormat_SQL(new Zend_Date($dateInter),false);
+        {   
+            $dateInter = DateFormat_SQL(new Zend_Date(strtolower($dateInter),'EEEE dd MMMM YY'),false);            
         }
         else
         {
@@ -72,6 +71,10 @@ class ServicemaintenanceController extends Zend_Controller_Action
         $ajout = $tableintervention->ajouter($immatAvion, $dateInter, $typeInter);
         
         $this->view->ajout = $ajout;
+     }
+     public function dispoavionsAction()
+     {
+         
      }
 }
 ?>
