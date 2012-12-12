@@ -6,7 +6,7 @@ class DrhController extends Zend_Controller_Action
             $this->_helper->actionStack('header','index','default',array());
         }
         
-        public function gestionAction()
+        public function gestiontechnicienAction()
         {
             $this->_helper->actionStack('header','index','default',array());
             
@@ -16,7 +16,30 @@ class DrhController extends Zend_Controller_Action
             $this->view->lesTechs = $lesTechs;
         }
         
-        public function ajouterAction() 
+        public function apiAction()
+        {
+            //On change de layout : pour ne pas avoir les balide body/head etc
+            $layout = Zend_Layout::getMvcInstance();
+            $layout->setLayout('api');
+            
+            //$_GET['date']
+            $techDate = $this->_getParam('date');
+            //$techDate = $this->getRequest()->getGet('date');
+            //echo $techDate;
+            $testDate = (Zend_Date::isDate($techDate, 'YYYY-MM-dd') ? true : false);
+            
+            if($testDate == true) 
+            {
+                echo '1';
+            }
+            else 
+            {
+                echo '0';
+            }
+            exit;
+        }
+        
+        public function ajoutertechnicienAction() 
         {
             $this->_helper->actionStack('header','index','default',array());
             
@@ -34,23 +57,23 @@ class DrhController extends Zend_Controller_Action
             $monform->setMethod('post');
             $monform->setAttrib('id','formAjout');
             
-            $monform->setAction($this->view->baseUrl().'/technicien/ajoutsqltechnicien');
+            $monform->setAction($this->view->baseUrl().'/drh/ajoutsqltechnicien');
 
             $eNomTech = new Zend_Form_Element_Text('NomTech');
             $eNomTech->setValue($nom);
-            $eNomTech->setLabel('Nom du technicien : ');
+            $eNomTech->setLabel('Nom du technicien: ');
             
             $ePrenomTech = new Zend_Form_Element_Text('PrenomTech');
             $ePrenomTech->setValue($pnom);
-            $ePrenomTech->setLabel('Premom du technicien : ');
+            $ePrenomTech->setLabel('Premom du technicien: ');
             
             $eAdresseTech = new Zend_Form_Element_Text('AdresseTech');
             $eAdresseTech->setValue($adresse);
-            $eAdresseTech->setLabel('Adresse du technicien : ');
+            $eAdresseTech->setLabel('Adresse du technicien: ');
             
             $eDateTech = new Zend_Form_Element_Text('dateNaissTech');
             $eDateTech->setValue($date);
-            $eDateTech->setLabel('Date de naissance : ');
+            $eDateTech->setLabel('Date de naissance (AAAA-MM-JJ): ');
             
             $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
             $eSubmit->setLabel('Valider');
@@ -65,7 +88,7 @@ class DrhController extends Zend_Controller_Action
             $this->view->leform = $monform;
         }
         
-        public function ajoutsqlAction()
+        public function ajoutsqltechnicienAction()
         {
             $this->_helper->actionStack('header','index','default',array());
             
@@ -76,6 +99,8 @@ class DrhController extends Zend_Controller_Action
             $techAdresse = $this->getRequest()->getPost('AdresseTech');
             $techDate = $this->getRequest()->getPost('dateNaissTech');
             $verifAjout = false;
+            
+            //$techDate = DateFormat_SQL(new Zend_Date(strtolower($techDate),'EEEE dd MMMM YY'),false);
             
             $espaceSession = new Zend_Session_Namespace('AjoutTechCourant');
             $espaceSession->nom = $techNom;
@@ -114,14 +139,28 @@ class DrhController extends Zend_Controller_Action
         {
             $this->_helper->actionStack('header','index','default',array());
 
+            $tableTech = new Table_Technicien;
+            
             $espaceSession = new Zend_Session_Namespace('ModifTechnicienChoisi');
-            
-            $nom = $espaceSession->nom;
-            $pnom = $espaceSession->pnom;
-            $adresse = $espaceSession->adresse;
-            $date = $espaceSession->date;
-            
+            $test = $espaceSession->test;
             $matricule = $this->_getParam('matricule');
+            $espaceSession->matricule = $matricule;
+            $infosTech = $tableTech->getInfos($matricule);  
+            
+            if($test != "echoue")
+            {
+                $nom = $infosTech['nomTechnicien'];
+                $pnom = $infosTech['prenomTechnicien'];
+                $adresse = $infosTech['adresseTechnicien'];
+                $date = $infosTech['dateNaissanceTechnicien'];     
+            }
+            else
+            { 
+                $nom = $espaceSession->nom;
+                $pnom = $espaceSession->pnom;
+                $adresse = $espaceSession->adresse;
+                $date = $espaceSession->date;
+            }
             
             $monform = new Zend_Form;
 
@@ -129,11 +168,11 @@ class DrhController extends Zend_Controller_Action
             $monform->setMethod('post');
             $monform->setAttrib('id','formModif');
             
-            $monform->setAction($this->view->baseUrl().'/maintenance/modifsqltechnicien');
+            $monform->setAction($this->view->baseUrl().'/drh/modifsqltechnicien');
             
             $eNomTech = new Zend_Form_Element_Text('NomTech');
             $eNomTech->setValue($nom);
-            $eNomTech->setLabel('Nom du technicien : ');
+            $eNomTech->setLabel('Nom du technicien: ');
             
             $ePrenomTech = new Zend_Form_Element_Text('PrenomTech');
             $ePrenomTech->setValue($pnom);
@@ -141,11 +180,11 @@ class DrhController extends Zend_Controller_Action
             
             $eAdresseTech = new Zend_Form_Element_Text('AdresseTech');
             $eAdresseTech->setValue($adresse);
-            $eAdresseTech->setLabel('Adresse du technicien : ');
+            $eAdresseTech->setLabel('Adresse du technicien: ');
             
             $eDateTech = new Zend_Form_Element_Text('dateNaissTech');
             $eDateTech->setValue($date);
-            $eDateTech->setLabel('Date de naissance : ');
+            $eDateTech->setLabel('Date de naissance (AAAA-MM-JJ): ');
             
             $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
             $eSubmit->setLabel('Valider');
@@ -164,40 +203,47 @@ class DrhController extends Zend_Controller_Action
         {
             $this->_helper->actionStack('header','index','default',array());
             
-            $tableAvion = new Table_Avion;
+            $tableTech = new Table_Technicien;
             
-            $avionImmat = $this->getRequest()->getPost('ImmatAvion');
-            $newAvionImmat = $this->getRequest()->getPost('NewImmatAvion');
-            $avionModele = $this->getRequest()->getPost('ModeleAvion');
+            $techNom = $this->getRequest()->getPost('NomTech');
+            $techPrenom = $this->getRequest()->getPost('PrenomTech');
+            $techAdresse = $this->getRequest()->getPost('AdresseTech');
+            $techDate = $this->getRequest()->getPost('dateNaissTech');
             $verifModif = false;
             
-            $newImmatUp = strtoupper($newAvionImmat);
+            $espaceSession = new Zend_Session_Namespace('ModifTechnicienChoisi');
+            $matricule = $espaceSession->matricule;
             
-            $espaceSession = new Zend_Session_Namespace('ModifAvionChoisi');
-            $espaceSession->ImmatAvion = $avionImmat;
-            $espaceSession->ImmatAvion = $newImmatUp;
-            $espaceSession->ModeleAvion = $avionModele;
-            $espaceSession->VerifModif = $verifModif;
-
-            if((($newImmatUp != null) or ($avionModele != null)) AND (preg_match('#^[A-Z0-9\-]+$#', $newImmatUp)))
+            if(($techNom != null) or ($techPrenom != null))
             {          
-                $ajoutSql = $tableAvion->Modifier($avionImmat, $newImmatUp, $avionModele);
-                if($ajoutSql == true)
+                $modifSql = $tableTech->Modifier($matricule, $techNom, $techPrenom, $techAdresse, $techDate);
+                if($modifSql == true)
                 {
-                    $espaceSession->ImmatAvion = "";
-                    $espaceSession->ModeleAvion = ""; 
+                    $espaceSession->matricule = "";
+                    $espaceSession->nom = "";
+                    $espaceSession->pnom = "";
+                    $espaceSession->adresse = "";
+                    $espaceSession->date = "";
                     $espaceSession->VerifModif = true; 
+                    $espaceSession->test = "reussi";
                     
                     $message = '<h3 class="reussi">Modification réussie</h3>';                    
                 }
                 else
-                {                  
+                {      
+                    $espaceSession->nom = $techNom;
+                    $espaceSession->pnom = $techPrenom;
+                    $espaceSession->adresse = $techAdresse;
+                    $espaceSession->date = $techDate;
+                    $espaceSession->VerifModif = $verifModif;
+                    $espaceSession->test = "echoue";
+                    
                     $message = '<h3 class="echoue">Modification échouée</h3>';
                 }
             }
             else
             {                
-                $message = '<h3 class="erreur">Modification échouée, saisie invalide<br><br>'.$newAvionImmat.' n\'est pas une valeur valide</h3>';
+                $message = '<h3 class="erreur">Modification échouée, saisie invalide<br><br>Les valeurs saisies ne sont pas valides</h3>';
             }
             $this->view->message = $message;
         }
@@ -206,15 +252,15 @@ class DrhController extends Zend_Controller_Action
         {
             $this->_helper->actionStack('header','index','default',array());
             
-            $tableAvion = new Table_Avion;
+            $tableTech = new Table_Technicien;
             
-            $immatAvion = $this->_getParam('immat');
+            $matricule = $this->_getParam('matricule');
             
-            $supprSql = $tableAvion->Supprimer($immatAvion);
+            $supprSql = $tableTech->Supprimer($matricule);
             
             if($supprSql == true)
             {
-                $this->_helper->redirector('gestionavion', 'Maintenance', null, array());
+                $this->_helper->redirector('gestiontechnicien', 'drh', null, array());
             }
             else
             {                  
