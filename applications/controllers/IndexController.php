@@ -1,14 +1,47 @@
 <?php
 class IndexController extends Zend_Controller_Action
 {
+	public function init()
+	{
+		$this->headStyleScript = array(
+			'css' => array('nivo-slider'),
+			'js' => 'jquery.nivo.slider.pack'
+		);
+	}
+	
     public function indexAction()
     {
         $this->view->msgDeco = $this->_getParam('decoReussie');
-        $this->_helper->actionStack('header','index','default',array());
+    	$this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
     }	
     public function headerAction()
-    {   
+    {  
         $this->view->pasCo = session_encours(); // va voir si une session est en cours (agence ou insset)
+        
+        $arr = $this->_getParam('head', null);
+    	if(is_array($arr))
+		{
+			if(isset($arr['css']))
+			{
+				if(!is_array($arr['css'])) {$arr['css'] = array($arr['css']);}
+				$css = $arr['css'];
+			}
+			else {$css = null;}
+			
+			if(isset($arr['js']))
+			{
+				if(!is_array($arr['js'])) {$arr['js'] = array($arr['js']);}
+				$js = $arr['js'];
+			}
+			else {$js = null;}
+		}
+		else {$css = $js = null;}
+		
+		$layout = Zend_Layout::getMvcInstance();
+		$view = $layout->getView();
+		$view->css = $css;
+		$view->js = $js;
+		
         $this->_helper->viewRenderer->setResponseSegment('header');
         $this->_helper->actionStack('footer','index','default',array());
     }
@@ -24,7 +57,7 @@ class IndexController extends Zend_Controller_Action
      }
      public function connexionAction()
      {
-         $this->_helper->actionStack('header','index','default',array('test'=>true));  
+         $this->_helper->actionStack('header','index','default',array('test'=>true, 'head' => $this->headStyleScript));  
          
          $user = $this->getRequest()->getPost('input_user');
          $psw = md5($this->getRequest()->getPost('input_psw'));
@@ -122,7 +155,8 @@ class IndexController extends Zend_Controller_Action
     }
     public function telechargerAction()
     {
-        $this->_helper->actionStack('header','index','default',array()); 
+    	$this->headStyleScript['css'][] = 'android';
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript)); 
     }
 }
 

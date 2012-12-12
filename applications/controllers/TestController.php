@@ -1,7 +1,9 @@
 <?php
     class TestController extends Zend_Controller_Action
     {
-        public function indexAction() 
+        public function init() {$this->headStyleScript = array();}
+	
+		public function indexAction() 
         {   
             $nAvion = new Table_Avion;
             echo 'lollll!';

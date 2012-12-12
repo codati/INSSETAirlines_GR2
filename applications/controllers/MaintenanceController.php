@@ -1,14 +1,16 @@
 <?php
 class MaintenanceController extends Zend_Controller_Action
 {
-    public function indexAction() 
+    public function init() {$this->headStyleScript = array();}
+	
+	public function indexAction() 
     {   
-        $this->_helper->actionStack('header','index','default',array());
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
     }
 
     public function gestionavionAction()
     {
-        $this->_helper->actionStack('header','index','default',array());
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 
         $tableAvions = new Table_Avion;
         $lesAvions = $tableAvions->getAvions();      
@@ -18,7 +20,7 @@ class MaintenanceController extends Zend_Controller_Action
 
     public function ajouteravionAction() 
     {   
-        $this->_helper->actionStack('header','index','default',array());
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 
         $tableModele = new Table_ModeleAvion;
 
@@ -68,7 +70,7 @@ class MaintenanceController extends Zend_Controller_Action
 
     public function ajoutsqlAction()
     {
-        $this->_helper->actionStack('header','index','default',array());
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 
         $tableAvion = new Table_Avion;
 
@@ -109,7 +111,7 @@ class MaintenanceController extends Zend_Controller_Action
 
     public function modifieravionAction() 
     {
-        $this->_helper->actionStack('header','index','default',array());
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 
         $tableAvion = new Table_Avion;
         $tableModele = new Table_ModeleAvion;
@@ -161,7 +163,7 @@ class MaintenanceController extends Zend_Controller_Action
 
     public function modifsqlAction()
     {
-        $this->_helper->actionStack('header','index','default',array());
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 
         $tableAvion = new Table_Avion;
 
@@ -202,7 +204,7 @@ class MaintenanceController extends Zend_Controller_Action
 
     public function supprimeravionAction() 
     {
-        $this->_helper->actionStack('header','index','default',array());
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 
         $tableAvion = new Table_Avion;
 
@@ -224,7 +226,7 @@ class MaintenanceController extends Zend_Controller_Action
     //  viens de service maintenance controller   // 
     public function planificationAction()
     {
-        $this->_helper->actionStack('header','index','default',array());
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 
         $tabImmat = new Table_Avion;
         $lesImmats = $tabImmat->get_lstImmatriculations();
@@ -269,7 +271,7 @@ class MaintenanceController extends Zend_Controller_Action
     }
     public function ajoutinterventionAction()            
     {
-        $this->_helper->actionStack('header','index','default',array());
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 
         $immatAvion = $this->getRequest()->getPost('immatAvion');
         // recupere la date et la transforme en format correct pour l'insertion en bdd

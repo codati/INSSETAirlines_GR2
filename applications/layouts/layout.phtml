@@ -9,26 +9,31 @@
 	<link type="text/css" href="<?php echo $this->baseUrl();?>/css/template/header_footer.css" rel="stylesheet" />
 	<link type="text/css" href="<?php echo $this->baseUrl();?>/css/overlay.css" rel="stylesheet" />
 	<link type="text/css" href="<?php echo $this->baseUrl();?>/css/template/base.css" rel="stylesheet" />
-	<link type="text/css" href="<?php echo $this->baseUrl();?>/css/nivo-slider.css"rel="stylesheet" />
-	<link type="text/css" href="<?php echo $this->baseUrl();?>/css/android.css"rel="stylesheet" />
-	<link type="text/css" href="<?php echo $this->baseUrl();?>/css/planning.css"rel="stylesheet" />
     <link type="text/css" href="<?php echo $this->baseUrl();?>/css/template/jquery-ui-1.9.0.custom.css" rel="stylesheet" />
+	<!--
+	<link type="text/css" href="<?php echo $this->baseUrl();?>/css/android.css"rel="stylesheet" />
     <link type="text/css" href="<?php echo $this->baseUrl();?>/css/planif.css" rel="stylesheet" />
-    <link type="text/css" href="<?php echo $this->baseUrl();?>/css/service_exploitation.css" rel="stylesheet" />
-        <link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/planif.css" />
-        
+   -->
+	<?php
+	if(isset($this->css) && !is_null($this->css))
+	{
+		foreach($this->css as $val) {echo '<link type="text/css" href="'.$this->baseUrl().'/css/'.$val.'.css" rel="stylesheet" />';}
+	}
+	?>
+    
 	<!--		JAVASCRIPT		
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.min.js"></script>-->
-        <script type="text/javascript" src="<?php echo $this->baseUrl();?>/js/jquery.js"></script>
+    <script type="text/javascript" src="<?php echo $this->baseUrl();?>/js/jquery.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl();?>/js/overlay.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl();?>/js/menu.js"></script>
-        <script type="text/javascript" src="<?php echo $this->baseUrl();?>/js/jquery.nivo.slider.pack.js"></script>
-        <script type="text/javascript" src="<?php echo $this->baseUrl();?>/js/jquery-ui-1.9.0.custom.min.js"></script>
-        <script type="text/javascript" src="<?php echo $this->baseUrl();?>/js/planning.js"></script>
-        <script type="text/javascript" src="<?php echo $this->baseUrl();?>/js/base.js"></script>
-        <script type="text/javascript" src="<?php echo $this->baseUrl();?>/js/service_exploitation.js"></script>
-        <script type="text/javascript" src="<?php echo $this->baseUrl();?>/js/formTech.js"></script>
-        
+    <script type="text/javascript" src="<?php echo $this->baseUrl();?>/js/jquery-ui-1.9.0.custom.min.js"></script>
+    <script type="text/javascript" src="<?php echo $this->baseUrl();?>/js/base.js"></script>
+	<?php
+	if(isset($this->js) && !is_null($this->js))
+	{
+		foreach($this->js as $val) {echo '<script type="text/javascript" src="'.$this->baseUrl().'/js/'.$val.'.js"></script>';}
+	}
+	?>
 </head>
 <body>
 <?php

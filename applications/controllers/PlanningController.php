@@ -1,13 +1,21 @@
 <?php
 class PlanningController extends Zend_Controller_Action
 {
-	public function indexAction() {header('Location: /planning/planifier');}
+	public function init()
+	{
+		$this->headStyleScript = array(
+			'css' => 'planning',
+			'js' => 'planning'
+		);
+	}
+	
+    public function indexAction() {header('Location: /planning/planifier');}
 
 	public function planifierAction()
 	{
 		if(Services_verifAcces('Planning'))
 		{
-			$this->_helper->actionStack('header','index','default',array());
+			$this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 			
 			$tableVol = new Table_Vol();
 			$ListeVol = $tableVol->get_LstVolNonPlanifier(4); //Les vols non planifiés des 4 dernières semaines
@@ -38,7 +46,7 @@ class PlanningController extends Zend_Controller_Action
 			
 			if($idVol != null)
 			{
-				$this->_helper->actionStack('header','index','default',array());
+				$this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 				$this->view->idVol = $idVol;
 				
 				$tableVol = new Table_Vol();
@@ -90,7 +98,7 @@ class PlanningController extends Zend_Controller_Action
 	{
 		if(Services_verifAcces('Planning'))
 		{
-			$this->_helper->actionStack('header','index','default',array());
+			$this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 			$idVol = $this->_getParam('idVol', null);
 		
 			if($idVol != null)
