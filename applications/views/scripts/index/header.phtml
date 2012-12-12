@@ -19,7 +19,7 @@
             $espaceSession = null;
             $sessEnCours = 'agence';
         }        
-        // verfie que la session est pas nulle et que l'on y est connecté
+        // verfie que la session n'est pas nulle et que l'on y est connecté
         // le fait sur les deux sessions possibles
         if( (!is_null($espaceSession) && ($espaceSession->connecte))
                 ||  (!is_null($espaceAgence) && ($espaceAgence->connecte)))
@@ -71,17 +71,6 @@
                                                 }                                                   
                                                 echo '</ul>
                                                      </td>';
-                                            }
-
-                                            if($espaceSession->idUtilisateur == 7)
-                                            {   // c'est l'admin, a virer plus tard
-                                                echo '</tr><tr><td class=niveau1><a href='.$this->baseUrl().'"/" title="">Trucs</a>
-                                                       <ul class=sousmenu>
-                                                           <li class=itemSousMenu><a href='.$this->baseUrl().'/modeleavion/ajouter>Nouveau modele d\'avion</a></li>
-                                                           <li class=itemSousMenu><a href="#">Modifier modele d\'avion</a></li>
-                                                           <li class=itemSousMenu><a href="#">Nouvelle intervention</a></li>
-                                                       </ul>
-                                                    </td>';
                                             }
                                         }
                                     }
