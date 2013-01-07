@@ -1,14 +1,16 @@
 <?php
     class VolsController extends Zend_Controller_Action
     {
-        public function indexAction()
+        public function init() {$this->headStyleScript = array();}
+	
+		public function indexAction()
         {
-            $this->_helper->actionStack('header','index','default',array());
+            $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
         }
 
         public function consulterAction()
         {
-            $this->_helper->actionStack('header','index','default',array());
+            $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
             
             /*On récupère, puis renvoie l'id de la ligne passé dans le lien*/
             $idLigne = $this->_getParam('idligne');

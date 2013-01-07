@@ -176,5 +176,35 @@
             $where = $this->getAdapter()->quoteInto('idVol = ?', $idVol);
             $this->update($data, $where);
 		}
+		
+		/**
+		 * Retourne la liste des vols d'une ligne
+		 * @param int $idLigne
+		 * @param bool $orderDESC
+		 */
+		public function get_lstVol_EncoursEtAVenir_ligne($idLigne, $orderDESC)
+		{
+			$dateAct = new Zend_Date;
+			$dateActSql = DateFormat_SQL($dateAct);
+			$date24h = $dateAct->subHour(24);
+			$date24Sql = DateFormat_SQL($dateAct);
+			
+			$req = $this->select()
+						->from($this->_name)
+						->where('idLigne=?', $idLigne)
+						->where('IF(dateHeureDepartEffectiveVol = "", dateHeureDepartPrevueVol >= "'.$date24Sql.'", dateHeureDepartPrevueVol >= "'.$dateActSql.'")');
+
+			if($orderDESC == true) {$req->order('dateHeureDepartPrevueVol DESC');}
+			else {$req->order('dateHeureDepartPrevueVol ASC');}
+			
+			return $this->fetchAll($req)->toArray();
+		}
+		
+		public function editRemarque($idVol, $remarque)
+		{
+			$data = array('remarqueVol' => $remarque);
+			$where = $this->getAdapter()->quoteInto('idVol=?', $idVol);
+			$this->update($data, $where);
+		}
     }
 ?>
