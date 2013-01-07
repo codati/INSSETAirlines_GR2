@@ -4,6 +4,25 @@
         protected $_name = 'technicien';
         protected $_primary = 'matriculeTechnicien';
         
+        public function login($pseudo, $pass)
+        {
+            $reqTech = $this->select()
+                            ->from($this->_name, array('*'))
+                            ->where('pseudoTechnicien = ?', $pseudo)
+                            ->where('mdpTechnicien = ?', $pass)
+                            ;
+            $leTech = $this->fetchRow($reqTech);            
+            
+            if(!is_null($leTech))
+            {
+                $leTech = $leTech->toArray();
+                return $leTech['matriculeTechnicien'];
+            }
+            else 
+            {
+                return null;
+            }
+        }
         public function getTechs()
         {
             $req = $this->select()->setIntegrityCheck(false)

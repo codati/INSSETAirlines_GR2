@@ -16,7 +16,8 @@ require_once 'Zend/Application.php';
 
 // on lance la session
 require_once 'Zend/Session.php';
-Zend_Session::start();
+//Zend_Session::start();
+//Zend_Session::setOptions(array('strict' => 'on'));
 
 require_once(APPLICATION_PATH.'/functions/inclus.php');
 

@@ -52,4 +52,22 @@
             }
             return $ajout;
         }
+        public function getLesInterventions($matriculeTech)
+        {
+            try {
+            $reqInter = $this->select()
+                            ->setIntegrityCheck(false)
+                            ->from($this->_name, '*')
+                            ->join(array('p'=>'proceder'),'p.numeroIntervention = intervention.numeroIntervention')
+                            ->where('p.matriculeTechnicien = ?', $matriculeTech)
+                            ;
+            $lesInters = $this->fetchAll($reqInter)->toArray();
+            Zend_Debug::dump($lesInters);
+            exit;
+            }
+            catch (Exception $e)
+            {
+                 Zend_Debug::dump($e);exit;
+            }
+        }
     }
