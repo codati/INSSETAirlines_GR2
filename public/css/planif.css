@@ -10,3 +10,30 @@
     text-align : center;
 }
 
+#techs {
+    float: left;
+    margin : 10px 100px 0 20px;
+}
+#techs label {
+    margin-left : 10px;
+}
+#techs .optional {
+    font-weight : bold;
+    margin-bottom : 5px;
+    display : block;
+    margin-left : 0;
+}
+#formplanif .zend_form dt {
+    margin-top : 10px;
+}
+#formplanif .zend_form dd {
+    margin-top : 5px;
+}
+#area_taf {
+    height : 150px;
+}
+#Ajouter-element {
+    text-align : center;
+    clear : both;
+    margin-top : -10px !important;
+}

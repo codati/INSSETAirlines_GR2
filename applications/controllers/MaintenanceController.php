@@ -1,9 +1,11 @@
 <?php
 class MaintenanceController extends Zend_Controller_Action
 {
-    public function init() {$this->headStyleScript = array();}
-	
-	public function indexAction() 
+    public function init() {
+        $this->headStyleScript = array('css'=>'planif');
+        
+    }
+    public function indexAction() 
     {   
         $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
     }
@@ -236,12 +238,31 @@ class MaintenanceController extends Zend_Controller_Action
         {
             $optionsImmat[$uneImmat["immatriculationAvion"]] = $uneImmat["immatriculationAvion"];            
         }
+        
+        $tabTech = new Table_Technicien;
+        $lesTechs = $tabTech->getTechs();
+        
+        $nomTech = array();
+        foreach($lesTechs as $unTech)
+        {
+            $nomTech[$unTech['matriculeTechnicien']] = $unTech['nomTechnicien'].' '.$unTech['prenomTechnicien'];
+        }
 
         $formPlanif = new Zend_Form();
         $formPlanif->setMethod('post');
         $formPlanif->setAction('/maintenance/ajoutintervention');
         $formPlanif->setAttrib('id','formplanif');
 
+        $eNomTech = new Zend_Form_Element_MultiCheckbox('sel_nomTech');
+        $eNomTech->addMultiOptions($nomTech);
+        $eNomTech->setLabel('Technicien(s) : ');
+        $eNomTech->setDecorators(array(
+            'ViewHelper',
+            'Errors',
+            'Label',
+            array('HtmlTag', array('tag'=>'div', 'id'=>'techs'))
+        ));
+        
         $eImmatAvion = new Zend_Form_Element_Select('immatAvion');
         $eImmatAvion->addMultiOptions($optionsImmat);
         $eImmatAvion->setLabel('Immatriculation de l\'avion : ');
@@ -254,15 +275,20 @@ class MaintenanceController extends Zend_Controller_Action
         $eTypeIntervention = new Zend_Form_Element_Select('sel_typeIntervention');
         $eTypeIntervention->addMultiOptions(array('petite'=>'Petite','grande'=>'Grande'));
         $eTypeIntervention->setLabel('Choisir le type de l\'intervetion à effectuer :');
+        
+        $eTaf = new Zend_Form_Element_Textarea('area_taf');
+        $eTaf->setLabel('Decrire le travail à effectuer : ');
 
         $eSubmit = new Zend_Form_Element_Submit('sub_intervention');
-        $eSubmit->setLabel('Ajouter');
+        $eSubmit->setName('Ajouter');
         $eSubmit->setAttrib('class','valider');
 
         $formPlanif->addElements(array(
+            $eNomTech,
             $eImmatAvion,
             $eDateEffective,
             $eTypeIntervention,
+            $eTaf,
             $eSubmit
          ));
 
@@ -273,6 +299,8 @@ class MaintenanceController extends Zend_Controller_Action
     {
         $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 
+        $lesTechniciens = $this->getRequest()->getPost('sel_nomTech');
+        //Zend_Debug::dump($matriculeTechnicien);exit;
         $immatAvion = $this->getRequest()->getPost('immatAvion');
         // recupere la date et la transforme en format correct pour l'insertion en bdd
         $dateInter = $this->getRequest()->getPost('datePrevue');
@@ -285,10 +313,27 @@ class MaintenanceController extends Zend_Controller_Action
             $dateInter = null;
         }
         $typeInter = $this->getRequest()->getPost('sel_typeIntervention');
-
+        $taf = $this->getRequest()->getPost('area_taf');
+        
         $tableintervention = new Table_Intervention;
-        $ajout = $tableintervention->ajouter($immatAvion, $dateInter, $typeInter);
+        $ajout = $tableintervention->ajouter($immatAvion, $dateInter, $typeInter,$taf);
 
+        $idDernierIntervention = $tableintervention->dernierAjout();
+        // ajouter ligne dans proceder
+        $tableProceder = new Table_Proceder;
+        if(!empty($lesTechniciens))
+        {
+            foreach($lesTechniciens as $unTech)
+            {
+                $tableProceder->creer($unTech, $idDernierIntervention);
+            }
+        }
+        else 
+        {
+            $ajout['class'] = 'erreur';
+            $ajout['message'] = 'Vous n\'avez pas saisi de technicien';
+        }
+        
         $this->view->ajout = $ajout;
      }
 }

@@ -24,7 +24,7 @@
             $this->insert($data);
         }*/
         // creer une intervention de type $typeInter sur l'avion $immatAvion a la date Prevue $dateInter
-        public function ajouter($immatAvion, $dateInter,$typeInter)
+        public function ajouter($immatAvion, $dateInter,$typeInter, $taf)
         {
             $ajout=array();
             try {
@@ -33,7 +33,8 @@
                     $data = array(
                         'immatriculationAvion' => $immatAvion,
                         'datePrevueIntervention' => $dateInter,
-                        'typeIntervention' => $typeInter
+                        'typeIntervention' => $typeInter,
+                        'taf' => $taf
                     );
                     $this->insert($data);
                     $ajout['message'] = 'Intervention créée';
@@ -69,5 +70,10 @@
             {
                  Zend_Debug::dump($e);exit;
             }
+            return $lesInters;
+        }
+        public function dernierAjout()
+        {
+            return $this->getAdapter()->lastInsertId();
         }
     }

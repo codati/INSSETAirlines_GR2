@@ -30,8 +30,7 @@
                     ;
             
             return $this->fetchAll($req)->toArray();
-        }
-        
+        }        
         public function Ajouter($p_nomTech, $p_prenomTech, $p_adresseTech, $p_dateNaissTech) 
         {     
             $data = array('nomTechnicien' => $p_nomTech, 'prenomTechnicien' => $p_prenomTech, 'adresseTechnicien' => $p_adresseTech, 'dateNaissanceTechnicien' => $p_dateNaissTech);

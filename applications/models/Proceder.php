@@ -16,5 +16,10 @@
                     'refTableClass' => 'Table_Technicien'
                     )
             );
+        
+        public function creer($matriculeTechnicien, $numIntervention)
+        {
+            $this->insert(array('numeroIntervention' => $numIntervention, 'matriculeTechnicien' => $matriculeTechnicien));
+        }
 
     }

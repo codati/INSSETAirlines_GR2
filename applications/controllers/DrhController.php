@@ -281,7 +281,7 @@ class DrhController extends Zend_Controller_Action
         {   
             $this->_helper->actionStack('header','index','default',array());
 
-            if(Services_verifAcces('Planning'))
+            if(Services_verifAcces('DRH'))
             {
 
             }

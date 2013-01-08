@@ -159,25 +159,22 @@ class ApiController extends Zend_Controller_Action
         public function getinterventionsAction()
         {
             $idSession = $this->_getParam('idSession', 0);
-            
             Zend_Session::setId($idSession);
+            
             $sessionTechnicien = new Zend_Session_Namespace('technicien');
             
             if(!is_null($sessionTechnicien->matriculeTech))
             {
-                
                 $tableIntervention = new Table_Intervention;
-                $tableIntervention->getLesInterventions($sessionTechnicien->matriculeTech);
+                $InfosRetour['data'] = $tableIntervention->getLesInterventions($sessionTechnicien->matriculeTech);                
+                $InfosRetour['erreur'] = 0;  
                 
-                
-                echo $sessionTechnicien->matriculeTech;
             }
             else 
             {
-                echo 'pas de session de recup';
+                $InfosRetour['data'] = 'Session invalide';
+                $InfosRetour['erreur'] = 1;
             }
-            exit;
-            
-            
+            $this->view->infosInterventions = Zend_Json::encode($InfosRetour);
         }
 }
