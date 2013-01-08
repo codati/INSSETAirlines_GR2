@@ -223,29 +223,33 @@ class DrhController extends Zend_Controller_Action
             
             if(($techNom != null) or ($techPrenom != null))
             {          
-                $modifSql = $tableTech->Modifier($matricule, $techNom, $techPrenom, $techAdresse, $techDate);
-                if($modifSql == true)
+                if($matricule != "")
                 {
-                    $espaceSession->matricule = "";
-                    $espaceSession->nom = "";
-                    $espaceSession->pnom = "";
-                    $espaceSession->adresse = "";
-                    $espaceSession->date = "";
-                    $espaceSession->VerifModif = true; 
-                    $espaceSession->test = "reussi";
-                    
-                    $message = '<h3 class="reussi">Modification réussie</h3>';                    
+                    $modifSql = $tableTech->Modifier($matricule, $techNom, $techPrenom, $techAdresse, $techDate);
+                    if($modifSql == true)
+                    {
+                        $espaceSession->matricule = "";
+                        $espaceSession->nom = "";
+                        $espaceSession->pnom = "";
+                        $espaceSession->adresse = "";
+                        $espaceSession->date = "";
+                        $espaceSession->verifModif = true; 
+                        $espaceSession->test = "reussi";
+
+                        $message = '<h3 class="reussi">Modification réussie</h3>';                    
+                    }
                 }
                 else
                 {      
+                    $espaceSession->matricule = $matricule;
                     $espaceSession->nom = $techNom;
                     $espaceSession->pnom = $techPrenom;
                     $espaceSession->adresse = $techAdresse;
                     $espaceSession->date = $techDate;
-                    $espaceSession->VerifModif = $verifModif;
+                    $espaceSession->verifModif = $verifModif;
                     $espaceSession->test = "echoue";
                     
-                    $message = '<h3 class="echoue">Modification échouée</h3>';
+                    $message = '<h3 class="erreur">Modification échouée</h3>';
                 }
             }
             else
@@ -255,6 +259,7 @@ class DrhController extends Zend_Controller_Action
             $this->view->message = $message;
         }
         
+        // Abandon de la fonction
         public function supprimertechnicienAction() 
         {
             $this->_helper->actionStack('header','index','default',array());

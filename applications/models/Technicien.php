@@ -35,11 +35,13 @@
             }
             catch (Exception $e)
             {
+                Zend_Debug::dump($e);exit;
                 return false;
             }
             return true;
         }
         
+        // Abandon de la fonction
         public function Supprimer($p_matricule)
         {   
             $where = $this->getAdapter()->quoteInto('matriculeTechnicien = ?', $p_matricule);
@@ -48,6 +50,7 @@
             }
             catch (Exception $e)
             {
+                Zend_Debug::dump($e);exit;
                 return false;
             }
             return true;          

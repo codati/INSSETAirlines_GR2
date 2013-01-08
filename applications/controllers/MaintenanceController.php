@@ -201,7 +201,8 @@ class MaintenanceController extends Zend_Controller_Action
         }
         $this->view->message = $message;
     }
-
+    
+    // Abandon de la fonction
     public function supprimeravionAction() 
     {
         $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));

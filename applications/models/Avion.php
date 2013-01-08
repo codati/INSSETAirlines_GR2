@@ -45,6 +45,7 @@
             }
             catch (Exception $e)
             {
+                //Zend_Debug::dump($e);exit;
                 return false;
             }
             return true;          

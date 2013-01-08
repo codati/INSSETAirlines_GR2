@@ -1,8 +1,8 @@
 <?php
-    $espaceSession = new Zend_Session_Namespace('ModifTechChoisi');
+    $espaceSession = new Zend_Session_Namespace('ModifTechnicienChoisi');
             
-    $matricule = $espaceSession->matriculeTech;
-    $verifModif = $espaceSession->VerifModif;
+    $matricule = $espaceSession->matricule;
+    $verifModif = $espaceSession->verifModif;
     
     if($verifModif == false)
     {
