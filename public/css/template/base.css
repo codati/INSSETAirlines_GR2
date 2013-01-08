@@ -52,9 +52,9 @@ h2#centrer {
 }
 .information {
     color : black;
-    background :  #FFF168;
+    background :  #D0EBFE;
     font-size : 1em;
-    border : 2px solid orange;
+    border : 2px solid blue;
     padding : 5px 10px;
     text-align : center;
 }
