@@ -280,6 +280,8 @@ class DrhController extends Zend_Controller_Action
         public function habilitationAction() 
         {   
           $this->_helper->actionStack('header','index','default',array());
+          
+          $this->view->message = $this->_helper->FlashMessenger->getMessages();
 
           $formHabiliter = new Zend_Form();
           // parametrer le formulaire
@@ -337,6 +339,8 @@ class DrhController extends Zend_Controller_Action
              if (empty($dateValidite))
              {
                   $message='<div class="erreur">Erreur ! Vous n\'avez pas saisi de date.</div>';
+                  
+                  
              }
              else
              {
@@ -372,10 +376,9 @@ class DrhController extends Zend_Controller_Action
                          $message = '<div class="reussi">Le brevet de ce pilote a bien été créé.</div>';
                     }             
              }
-
-             //envoi du message a la vue
-             $this->view->message = $message;
-             
+               $this->_helper->FlashMessenger($message);
+               $redirector = $this->_helper->getHelper('Redirector');
+               $redirector->gotoUrl($this->view->baseUrl('/drh/habilitation'));             
         }
 
 }
