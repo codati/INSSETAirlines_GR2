@@ -167,12 +167,39 @@ class ApiController extends Zend_Controller_Action
             {
                 $tableIntervention = new Table_Intervention;
                 $InfosRetour['data'] = $tableIntervention->getLesInterventions($sessionTechnicien->matriculeTech);                
-                $InfosRetour['erreur'] = 0;  
-                
+                $InfosRetour['erreur'] = 0;                
             }
             else 
             {
                 $InfosRetour['data'] = 'Session invalide';
+                $InfosRetour['erreur'] = 1;
+            }
+            $this->view->infosInterventions = Zend_Json::encode($InfosRetour);
+        }
+        public function modifierAction()
+        {
+            $idSession = $this->_getParam('idSession', 0);
+            $numIntervention = $this->_getParam('numeroIntervention', 0);
+            $tacheEff = $this->_getParam('tacheEff', 0);
+            $remarques = $this->_getParam('remarques', 0);
+            Zend_Session::setId($idSession);            
+            
+            $sessionTechnicien = new Zend_Session_Namespace('technicien');
+            
+            if(!is_null($sessionTechnicien->matriculeTech))
+            {
+                $tableProceder = new Table_Proceder;
+                $donnees = array(
+                    'numeroIntervention' => $numIntervention,
+                    'matriculeTechnicien' => $sessionTechnicien->matriculeTech,
+                    'tacheEffectuee' => $tacheEff,
+                    'remarquesIntervention' => $remarques
+                );
+                $tableProceder->modifier($donnees);
+                $InfosRetour['erreur'] = 0;  
+            }
+            else 
+            {
                 $InfosRetour['erreur'] = 1;
             }
             $this->view->infosInterventions = Zend_Json::encode($InfosRetour);

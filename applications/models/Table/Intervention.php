@@ -58,13 +58,15 @@
             try {
             $reqInter = $this->select()
                             ->setIntegrityCheck(false)
-                            ->from($this->_name, '*')
+                            ->from($this->_name, 'numeroIntervention, immatriculationAvion, datePrevueIntervention, typeIntervention, taf')
                             ->join(array('p'=>'proceder'),'p.numeroIntervention = intervention.numeroIntervention')
                             ->where('p.matriculeTechnicien = ?', $matriculeTech)
+                            ->where('dateEffectiveIntervention is null')
+                            ->order('datePrevueIntervention')
                             ;
             $lesInters = $this->fetchAll($reqInter)->toArray();
-            Zend_Debug::dump($lesInters);
-            exit;
+            //Zend_Debug::dump($lesInters);
+            //exit;
             }
             catch (Exception $e)
             {

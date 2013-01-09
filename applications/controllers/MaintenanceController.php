@@ -2,8 +2,7 @@
 class MaintenanceController extends Zend_Controller_Action
 {
     public function init() {
-        $this->headStyleScript = array('css'=>'planif');
-        
+        $this->headStyleScript = array('css'=>'planif');        
     }
     public function indexAction() 
     {   
