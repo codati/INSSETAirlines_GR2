@@ -348,11 +348,8 @@ class DrhController extends Zend_Controller_Action
                     $dateValidite = DateFormat_SQL(new Zend_Date(strtolower($dateValidite),'EEEE dd MMMM YY'),false);
 
                     $tBreveter = new Table_Breveter;
-                    //On regarde si le brevet existe déjà
-                    $existeBrevet = $tBreveter->existeBrevet($idPilote, $idModeleAvion);
-
-                    //Si il existe, on met a jour sa date de validite
-                    if ($existeBrevet == true)
+                    //Si le brevet existe, on met a jour sa date de validite
+                    if ($tBreveter->existeBrevet($idPilote, $idModeleAvion))
                     {
                          $donneesBrevet = array(
                                 'dateValiditeBrevet' => $dateValidite
