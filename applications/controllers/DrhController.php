@@ -333,39 +333,46 @@ class DrhController extends Zend_Controller_Action
              $idPilote = $this->getRequest()->getPost('sel_pilote');
              $idModeleAvion = $this->getRequest()->getPost('sel_modele');
              $dateValidite = $this->getRequest()->getPost('date');
-             //Mise au format sql de la date
-             $dateValidite = DateFormat_SQL(new Zend_Date(strtolower($dateValidite),'EEEE dd MMMM YY'),false);
-
              
-             $tBreveter = new Table_Breveter;
-             //On regarde si le brevet existe déjà
-             $existeBrevet = $tBreveter->existeBrevet($idPilote, $idModeleAvion);
-             
-             //Si il existe, on met a jour sa date de validite
-             if ($existeBrevet == true)
+             if (empty($dateValidite))
              {
-                  $donneesBrevet = array(
-                         'dateValiditeBrevet' => $dateValidite
-                  );
-                  $where[] = $tBreveter->getAdapter()->quoteInto('idPilote = ?', $idPilote);
-                  $where[] = $tBreveter->getAdapter()->quoteInto('idModeleAvion = ?', $idModeleAvion);
-                  $tBreveter->update($donneesBrevet, $where);
-                  
-                  $message = '<div class="reussi">La date de validité du brevet de ce pilote a bien été modifiée.</div>';
+                  $message='<div class="erreur">Erreur ! Vous n\'avez pas saisi de date.</div>';
              }
-             //Sinon, on créer une nouvelle ligne dans la table breveter
              else
              {
-                  $donneesBreveter = array(
-                      'idPilote' => $idPilote,
-                      'idModeleAvion' => $idModeleAvion,
-                      'dateValiditeBrevet' => $dateValidite
-                  );
-                  
-                  $tBreveter->insert($donneesBreveter);
-                  $message = '<div class="reussi">Le brevet de ce pilote a bien été créé.</div>';
+                    //Mise au format sql de la date
+                    $dateValidite = DateFormat_SQL(new Zend_Date(strtolower($dateValidite),'EEEE dd MMMM YY'),false);
+
+                    $tBreveter = new Table_Breveter;
+                    //On regarde si le brevet existe déjà
+                    $existeBrevet = $tBreveter->existeBrevet($idPilote, $idModeleAvion);
+
+                    //Si il existe, on met a jour sa date de validite
+                    if ($existeBrevet == true)
+                    {
+                         $donneesBrevet = array(
+                                'dateValiditeBrevet' => $dateValidite
+                         );
+                         $where[] = $tBreveter->getAdapter()->quoteInto('idPilote = ?', $idPilote);
+                         $where[] = $tBreveter->getAdapter()->quoteInto('idModeleAvion = ?', $idModeleAvion);
+                         $tBreveter->update($donneesBrevet, $where);
+
+                         $message = '<div class="reussi">La date de validité du brevet de ce pilote a bien été modifiée.</div>';
+                    }
+                    //Sinon, on créer une nouvelle ligne dans la table breveter
+                    else
+                    {
+                         $donneesBreveter = array(
+                             'idPilote' => $idPilote,
+                             'idModeleAvion' => $idModeleAvion,
+                             'dateValiditeBrevet' => $dateValidite
+                         );
+
+                         $tBreveter->insert($donneesBreveter);
+                         $message = '<div class="reussi">Le brevet de ce pilote a bien été créé.</div>';
+                    }             
              }
-             
+
              //envoi du message a la vue
              $this->view->message = $message;
              

@@ -17,6 +17,12 @@
             );
         
         //FONCTIONS
+        /**
+         * Vérifie si le budget existe, renvoie true si oui, false si non
+         * @param int $idPilote
+         * @param int $idModeleAvion
+         * @return bool
+         */
         public function existeBrevet($idPilote, $idModeleAvion)
         {
                return ((bool)$this->find($idPilote, $idModeleAvion)->toArray());
