@@ -17,31 +17,31 @@ class IndexController extends Zend_Controller_Action
     public function headerAction()
     {  
         $this->view->pasCo = session_encours(); // va voir si une session est en cours (agence ou insset)
-        
+
         $arr = $this->_getParam('head', null);
     	if(is_array($arr))
-		{
-			if(isset($arr['css']))
-			{
-				if(!is_array($arr['css'])) {$arr['css'] = array($arr['css']);}
-				$css = $arr['css'];
-			}
-			else {$css = null;}
-			
-			if(isset($arr['js']))
-			{
-				if(!is_array($arr['js'])) {$arr['js'] = array($arr['js']);}
-				$js = $arr['js'];
-			}
-			else {$js = null;}
-		}
-		else {$css = $js = null;}
-		
-		$layout = Zend_Layout::getMvcInstance();
-		$view = $layout->getView();
-		$view->css = $css;
-		$view->js = $js;
-		
+        {
+            if(isset($arr['css']))
+            {
+                if(!is_array($arr['css'])) {$arr['css'] = array($arr['css']);}
+                $css = $arr['css'];
+            }
+            else {$css = null;}
+
+            if(isset($arr['js']))
+            {
+                if(!is_array($arr['js'])) {$arr['js'] = array($arr['js']);}
+                $js = $arr['js'];
+            }
+            else {$js = null;}
+        }
+        else {$css = $js = null;}
+
+        $layout = Zend_Layout::getMvcInstance();
+        $view = $layout->getView();
+        $view->css = $css;
+        $view->js = $js;
+
         $this->_helper->viewRenderer->setResponseSegment('header');
         $this->_helper->actionStack('footer','index','default',array());
     }
@@ -51,8 +51,11 @@ class IndexController extends Zend_Controller_Action
     }
      public function logoutAction()
      {
-         Zend_Session::namespaceUnset('utilisateurCourant');
-         Zend_Session::namespaceUnset('agenceCourante');
+        if(session_encours())
+        {
+            Zend_Session::namespaceUnset('utilisateurCourant');
+            Zend_Session::namespaceUnset('agenceCourante');
+        }
          $this->_helper->actionStack('index','index','default',array('decoReussie'=>'Déconnexion réussie'));       
      }
      public function connexionAction()
@@ -63,6 +66,7 @@ class IndexController extends Zend_Controller_Action
          $psw = md5($this->getRequest()->getPost('input_psw'));
          $radio = $this->getRequest()->getPost('radio_form_co'); // 0 => insset, 1 => agence
          
+         try {
          if($radio == 0) /// utilisateur de l'insset
          {
              // connecte l'utilisateur
@@ -89,7 +93,7 @@ class IndexController extends Zend_Controller_Action
                    $tabSousServices[] = $sousservice->getLesSousServices($unService['idService']);
                 }      
                 // deconnecte une agence, au cas ou...
-                 Zend_Session::namespaceUnset('agenceCourante');
+                // Zend_Session::namespaceUnset('agenceCourante');
                  
                  // crée la session de l'utilisateur et ajoute des données nécéssaires
                  $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
@@ -121,6 +125,11 @@ class IndexController extends Zend_Controller_Action
              $espaceAgence->nomAgence = $agence['nomAgence'];
              $espaceAgence->lesServicesAgence = $lesServicesAgences;
              $espaceAgence->connecte = true; 
+         }
+         }
+         catch (Exception $e)
+         {
+             echo $e->getMessage();exit;
          }
             
     }

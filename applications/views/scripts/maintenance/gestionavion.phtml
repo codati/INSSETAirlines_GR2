@@ -17,9 +17,9 @@
                 echo '<td>'.$unAvion["etatAvion"].'</td>';
                 echo '<td>'.$unAvion["heuresVolDerniereIntervention"].'</td>';
                 echo '<td>'.$unAvion["libelleModeleAvion"].'</td>';
-                echo '<td><a href="'.$this->baseUrl().'/maintenance/modifieravion/immat/'.$unAvion["immatriculationAvion"].'" title="Modifier"><img src="'. $this->baseUrl() .'/img/pencil.png" /></a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          <a href="'.$this->baseUrl().'/maintenance/supprimeravion/immat/'.$unAvion["immatriculationAvion"].'" title="Supprimer" onclick="return confirm(\'Etes-vous sûr de vouloir supprimer l\\\'avion '.$unAvion["immatriculationAvion"].'?\');"><img src="'. $this->baseUrl() .'/img/cross.png" /></a></td>';
+                echo '<td>
+                    <a href="'.$this->baseUrl().'/maintenance/modifieravion/immat/'.$unAvion["immatriculationAvion"].'" title="Modifier"><img src="'. $this->baseUrl() .'/img/pencil.png" /></a>';
+                echo '</td>';
                 echo '</tr>';
             }
         ?>   
@@ -27,3 +27,5 @@
     <br>
     <a id="ajoutAvion" class="ajouter" type="button" href="<?php echo $this->baseUrl(); ?>/maintenance/ajouteravion">Ajouter un avion</a>
 </div>
+
+<!--<a href="'.$this->baseUrl().'/maintenance/supprimeravion/immat/'.$unAvion["immatriculationAvion"].'" title="Supprimer" onclick="return confirm(\'Etes-vous sûr de vouloir supprimer l\\\'avion '.$unAvion["immatriculationAvion"].'?\');"><img src="'. $this->baseUrl() .'/img/cross.png" /></a></td>';-->

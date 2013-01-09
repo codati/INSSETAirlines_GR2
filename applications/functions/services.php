@@ -10,16 +10,15 @@
  */
 function Services_verifAcces($nomService)
 {
-	if(Zend_Session::isStarted())
-	{
-		$espaceSession = new Zend_Session_Namespace('utilisateurCourant');
-		
-		if(isset($espaceSession->lesServicesUtilisateur))
-		{
-			if(in_array($nomService, $espaceSession->lesServicesUtilisateur)) {return true;}
-		}
-	}
-	
-	return false;
+    if(session_encours())
+    {
+        $espaceSession = new Zend_Session_Namespace('utilisateurCourant');
+
+        if(isset($espaceSession->lesServicesUtilisateur))
+        {
+                if(in_array($nomService, $espaceSession->lesServicesUtilisateur)) {return true;}
+        }	
+    }
+    return false;
 }
 	

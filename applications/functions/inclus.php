@@ -4,6 +4,7 @@
  */
 
 require_once(APPLICATION_PATH.'/functions/date.php'); //Les dates
-require_once(APPLICATION_PATH.'/functions/services.php'); //Les services
 require_once(APPLICATION_PATH.'/functions/sessions.php'); //Les sessions
+require_once(APPLICATION_PATH.'/functions/services.php'); //Les services
+
 ?>

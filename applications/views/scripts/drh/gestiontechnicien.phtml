@@ -19,9 +19,9 @@
                 echo '<td>'.$unTech["prenomTechnicien"].'</td>';
                 echo '<td>'.$unTech["adresseTechnicien"].'</td>';
                 echo '<td>'.$unTech["dateNaissanceTechnicien"].'</td>';
-                echo '<td><a href="'.$this->baseUrl().'/drh/modifiertechnicien/matricule/'.$unTech["matriculeTechnicien"].'" title="Modifier"><img src="'. $this->baseUrl() .'/img/pencil.png" /></a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          <a href="'.$this->baseUrl().'/drh/supprimertechnicien/matricule/'.$unTech["matriculeTechnicien"].'" title="Supprimer" onclick="return confirm(\'Etes-vous sûr de vouloir supprimer le technicien '.$unTech["nomTechnicien"].' '.$unTech["prenomTechnicien"].'?\');"><img src="'. $this->baseUrl() .'/img/cross.png" /></a></td>';
+                echo '<td>
+                    <a href="'.$this->baseUrl().'/drh/modifiertechnicien/matricule/'.$unTech["matriculeTechnicien"].'" title="Modifier"><img src="'. $this->baseUrl() .'/img/pencil.png" /></a>';
+                echo '</td>';
                 echo '</tr>';
             }
         ?>   

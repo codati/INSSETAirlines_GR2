@@ -130,4 +130,78 @@ class ApiController extends Zend_Controller_Action
 		//Envoi à la vue
 		$this->view->json = $json;
 	}
+        public function renvoicodeAction()
+        {
+            $user = $this->getRequest()->getPost('user');
+            $pass = $this->getRequest()->getPost('pass');
+            
+            $tableTech = new Table_Technicien;
+            //$tech  = $tableTech->login($user, $pass);
+            $tech  = $tableTech->login('lefebvre-catherine', md5('lefebvre'));
+            
+            if(!is_null($tech))
+            {       
+                $sessionTechnicien = new Zend_Session_Namespace('technicien');
+                $sessionTechnicien->matriculeTech = $tech;
+                $InfosRetour['data'] = Zend_Session::getId();
+                $InfosRetour['erreur'] = 0;  
+            }
+            else 
+            {
+                $InfosRetour['data'] = 'Erreur de saisie';
+                $InfosRetour['erreur'] = 1;
+            }
+            $json = Zend_Json::encode($InfosRetour);
+
+            //Envoi à la vue
+            $this->view->json = $json;
+        }
+        public function getinterventionsAction()
+        {
+            $idSession = $this->_getParam('idSession', 0);
+            Zend_Session::setId($idSession);
+            
+            $sessionTechnicien = new Zend_Session_Namespace('technicien');
+            
+            if(!is_null($sessionTechnicien->matriculeTech))
+            {
+                $tableIntervention = new Table_Intervention;
+                $InfosRetour['data'] = $tableIntervention->getLesInterventions($sessionTechnicien->matriculeTech);                
+                $InfosRetour['erreur'] = 0;                
+            }
+            else 
+            {
+                $InfosRetour['data'] = 'Session invalide';
+                $InfosRetour['erreur'] = 1;
+            }
+            $this->view->infosInterventions = Zend_Json::encode($InfosRetour);
+        }
+        public function modifierAction()
+        {
+            $idSession = $this->_getParam('idSession', 0);
+            $numIntervention = $this->_getParam('numeroIntervention', 0);
+            $tacheEff = $this->_getParam('tacheEff', 0);
+            $remarques = $this->_getParam('remarques', 0);
+            Zend_Session::setId($idSession);            
+            
+            $sessionTechnicien = new Zend_Session_Namespace('technicien');
+            
+            if(!is_null($sessionTechnicien->matriculeTech))
+            {
+                $tableProceder = new Table_Proceder;
+                $donnees = array(
+                    'numeroIntervention' => $numIntervention,
+                    'matriculeTechnicien' => $sessionTechnicien->matriculeTech,
+                    'tacheEffectuee' => $tacheEff,
+                    'remarquesIntervention' => $remarques
+                );
+                $tableProceder->modifier($donnees);
+                $InfosRetour['erreur'] = 0;  
+            }
+            else 
+            {
+                $InfosRetour['erreur'] = 1;
+            }
+            $this->view->infosInterventions = Zend_Json::encode($InfosRetour);
+        }
 }
