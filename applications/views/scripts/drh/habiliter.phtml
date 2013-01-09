@@ -3,10 +3,9 @@
 
      if(Services_verifAcces('DRH'))
      {
-          echo '<p>Pour ajouter ou modifier un brevet d\'un pilote, remplissez le formulaire ci-dessous.</p><br /><div class="information">Si le brevet du pilote existe déjà, la date de validité sera modifiée. Sinon, un nouveau brevet sera créé.</div><br />';
-          
-          echo $this->formHabiliter; 
-          
+          echo $this->message;
+          echo '<center><a href="'.$this->baseUrl().'/drh/habilitation">Retour</a></center>';
+
      }
      else
      {
