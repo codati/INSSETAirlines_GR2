@@ -152,6 +152,7 @@ class DrhController extends Zend_Controller_Action
             $test = $espaceSession->test;
             $matricule = $this->_getParam('matricule');
             $espaceSession->matricule = $matricule;
+//            Zend_Debug::dump($espaceSession->matricule);exit;
             $infosTech = $tableTech->getInfos($matricule);  
             
             if($test != "echoue")
@@ -216,14 +217,14 @@ class DrhController extends Zend_Controller_Action
             $techPrenom = $this->getRequest()->getPost('PrenomTech');
             $techAdresse = $this->getRequest()->getPost('AdresseTech');
             $techDate = $this->getRequest()->getPost('dateNaissTech');
-            $verifModif = false;
             
             $espaceSession = new Zend_Session_Namespace('ModifTechnicienChoisi');
             $matricule = $espaceSession->matricule;
-            
-            if(($techNom != null) or ($techPrenom != null))
+//            Zend_Debug::dump($matricule);exit;
+            if(!empty($techNom) &&  !empty($techPrenom))
             {          
                 $modifSql = $tableTech->Modifier($matricule, $techNom, $techPrenom, $techAdresse, $techDate);
+               // Zend_Debug::dump($modifSql);exit;
                 if($modifSql == true)
                 {
                     $espaceSession->matricule = "";
@@ -231,7 +232,7 @@ class DrhController extends Zend_Controller_Action
                     $espaceSession->pnom = "";
                     $espaceSession->adresse = "";
                     $espaceSession->date = "";
-                    $espaceSession->VerifModif = true; 
+                    $espaceSession->verifModif = true; 
                     $espaceSession->test = "reussi";
                     
                     $message = '<h3 class="reussi">Modification réussie</h3>';                    
@@ -242,14 +243,15 @@ class DrhController extends Zend_Controller_Action
                     $espaceSession->pnom = $techPrenom;
                     $espaceSession->adresse = $techAdresse;
                     $espaceSession->date = $techDate;
-                    $espaceSession->VerifModif = $verifModif;
+                    
                     $espaceSession->test = "echoue";
                     
                     $message = '<h3 class="echoue">Modification échouée</h3>';
                 }
             }
             else
-            {                
+            {            
+                 $espaceSession->verifModif = false;   
                 $message = '<h3 class="erreur">Modification échouée, saisie invalide<br><br>Les valeurs saisies ne sont pas valides</h3>';
             }
             $this->view->message = $message;
@@ -277,6 +279,7 @@ class DrhController extends Zend_Controller_Action
             }
         }
         
+        //Fab
         public function habilitationAction() 
         {   
           $this->_helper->actionStack('header','index','default',array());
@@ -327,6 +330,7 @@ class DrhController extends Zend_Controller_Action
             
         }
         
+        //Fab
         public function habiliterAction()
         {
              $this->_helper->actionStack('header','index','default',array());
@@ -376,6 +380,19 @@ class DrhController extends Zend_Controller_Action
                $this->_helper->FlashMessenger($message);
                $redirector = $this->_helper->getHelper('Redirector');
                $redirector->gotoUrl($this->view->baseUrl('/drh/habilitation'));             
+        }
+        
+        //Fab
+        public function personaviguantAction()
+        {
+            $this->_helper->actionStack('header','index','default',array());
+            
+            $tPilote = new Table_Pilote;
+            $lesPilotes = $tPilote->fetchAll()->toArray();
+
+            //envoi des pilotes a la vue
+            $this->view->lesPilotes = $lesPilotes;
+        
         }
 
 }
