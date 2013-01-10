@@ -24,7 +24,7 @@
             $this->insert($data);
         }*/
         // creer une intervention de type $typeInter sur l'avion $immatAvion a la date Prevue $dateInter
-        public function ajouter($immatAvion, $dateInter,$typeInter)
+        public function ajouter($immatAvion, $dateInter,$typeInter, $taf)
         {
             $ajout=array();
             try {
@@ -33,7 +33,8 @@
                     $data = array(
                         'immatriculationAvion' => $immatAvion,
                         'datePrevueIntervention' => $dateInter,
-                        'typeIntervention' => $typeInter
+                        'typeIntervention' => $typeInter,
+                        'taf' => $taf
                     );
                     $this->insert($data);
                     $ajout['message'] = 'Intervention créée';
@@ -51,5 +52,30 @@
                 $ajout['class'] = 'erreur';
             }
             return $ajout;
+        }
+        public function getLesInterventions($matriculeTech)
+        {
+            try {
+            $reqInter = $this->select()
+                            ->setIntegrityCheck(false)
+                            ->from($this->_name, 'numeroIntervention, immatriculationAvion, datePrevueIntervention, typeIntervention, taf')
+                            ->join(array('p'=>'proceder'),'p.numeroIntervention = intervention.numeroIntervention')
+                            ->where('p.matriculeTechnicien = ?', $matriculeTech)
+                            ->where('dateEffectiveIntervention is null')
+                            ->order('datePrevueIntervention')
+                            ;
+            $lesInters = $this->fetchAll($reqInter)->toArray();
+            //Zend_Debug::dump($lesInters);
+            //exit;
+            }
+            catch (Exception $e)
+            {
+                 Zend_Debug::dump($e);exit;
+            }
+            return $lesInters;
+        }
+        public function dernierAjout()
+        {
+            return $this->getAdapter()->lastInsertId();
         }
     }

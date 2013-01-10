@@ -1,0 +1,22 @@
+<h1>Modifier une ligne</h1>
+<?php
+    // affiche le message s'il y en a un
+    if (!empty($this->message))
+    {
+        echo $this->message[0]; 
+    }
+    // si on a trouvé une ligne
+    if($this->laLigne)
+    {
+        echo '<p>Vous modifiez la ligne : '.$this->laLigne['depart'].' -> '.$this->laLigne['arrivee'].'</p>'; 
+      
+        // on affiche le formulaire de modification de ligne
+        echo $this->formModif;
+    }
+    else
+    {
+        // message d'erreur, ligne non trouvée
+        echo '<p>Cette ligne n\'existe pas. Veuillez vérifier les entrées</p>';
+    }
+?>
+    <a href="/directionstrategique/ajouterligne" class="retour" id="ret">Retour</a>

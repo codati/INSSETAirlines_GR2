@@ -7,8 +7,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	}
 	protected function _initSession()
 	{
-		$session = new Zend_Session_Namespace('inssetAirlines',true);
-		return $session;
+		//$session = new Zend_Session_Namespace('inssetAirlines',false);
+                //Zend_Session::start();
+		//return $session;
 	}
 	protected function _initConfig()
 	{
@@ -21,10 +22,16 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             Zend_Db_Table_Abstract::setDefaultAdapter($db);
             Zend_Registry::set('db',$db);
 	}
+        protected function _initLoader()
+        {
+            require_once 'Zend/Loader/Autoloader.php';
+            $autoloader = Zend_Loader_Autoloader::getInstance();
+            $autoloader->setFallbackAutoloader(true);
+        }
 	
 	/**
 	 * Charge tous les modèles du projet automatiquement.
-	 */
+	
 	protected function _initModel()
 	{
 		//On ajoute une ressource à l'autoloader pointant vers le dossier Application
@@ -43,5 +50,5 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 				'namespace' => 'Table'
 			)
 		));
-	}
+	} */
 }
