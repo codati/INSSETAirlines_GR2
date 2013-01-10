@@ -28,6 +28,7 @@
         
 	$eNom = new Zend_Form_Element_Text('input_user');
 	$eNom->setLabel('Nom d\'utilisateur : ');
+        $eNom->setValue('admin');   // <- virer ca a la fin
 	
 	$ePsw = new Zend_Form_Element_Password('input_psw');
 	$ePsw->setLabel('Mot de passe : ');

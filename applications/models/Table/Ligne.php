@@ -39,8 +39,44 @@
             $lignes = $this->fetchAll($req);
             ///Zend_Debug::dump($lignes->toArray());exit;
             return $lignes->toArray();
-            
-            
+        }
+        /**
+         * @author Kevin Verschaeve
+         * Renvoi les infos sur une ligne dont l'id est passé en parametre
+         * @return une ligne
+         */
+        public function getUneLigne($idLigne)
+        {
+            $req = $this->select()
+                        ->setIntegrityCheck(false)
+                        ->from(array('l'=>'ligne'),array('*'))
+                        ->join(array('a'=>'aeroport'),'a.trigrammeAeroport = l.trigrammeAeroportDepart','a.nomAeroport as depart')
+                        ->join(array('ae'=>'aeroport'),'ae.trigrammeAeroport = l.trigrammeAeroportArrivee','ae.nomAeroport as arrivee')
+                        ->join(array('p'=>'periodicite'),'p.idPeriode = l.idPeriodicite','nomPeriode')
+                        ->where('idLigne = ?', $idLigne)
+                    ;
+            $res = $this->fetchRow($req);
+            if($res)
+            {
+                return $res->toArray();
+            }
+            else
+            {
+                return null;
+            }
+        }
+        
+        public function getPeriodiciteLigne($idLigne)
+        {
+            $req = $this->select()
+                        ->setIntegrityCheck(false)
+                        ->from($this->_name,'idPeriodicite')
+                        //->join(array('p'=>'periodicite'),'p.idPeriode = ligne.idPeriodicite','nomPeriode')
+                        ->where('idLigne = ?', $idLigne)
+                    ;
+            $res = $this->_db->fetchOne($req);
+            return $res;
+            //Zend_Debug::dump($res);exit;return $res;
         }
         /**
         * @author : Piercourt Fabien
@@ -61,6 +97,39 @@
                                      ;           
 		return $reqVol->query()->rowCount();
 	}
-
+        public function existeLigne($trigDepart, $trigArrivee)
+        {
+            $req = $this->select()
+                        ->from($this->_name,'*')
+                        ->where('trigrammeAeroportDepart = ?', $trigDepart)
+                        ->where('trigrammeAeroportArrivee = ?', $trigArrivee)
+                        ;
+            $res = $this->fetchAll($req)->toArray();
+            $nbRes = count($res);
+            if($nbRes > 1)
+            {
+                return true;
+            }
+            else
+            {
+                if($nbRes == 1)
+                {
+                    return $this->fetchRow($req)->toArray();
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        public function ajouter($donnees)
+        {
+            $this->insert($donnees);
+        }
+        public function modifier($idPeriode, $idLigne)
+        {
+            $where = $this->getAdapter()->quoteInto('idLigne = ?', $idLigne);
+            $this->update(array('idPeriodicite' => $idPeriode), $where);
+        }
     }
 ?>

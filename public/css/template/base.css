@@ -273,3 +273,11 @@ select
     padding : 10px;
     text-align: center;
 }
+#ret {
+    margin-left: 20px;
+    padding: 8px 8px 8px 25px;
+    position: absolute;
+}
+#Modifier-element {
+        float : left;
+}
