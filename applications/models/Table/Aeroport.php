@@ -4,12 +4,12 @@
         protected $_name = 'aeroport';
         protected $_primary = 'trigrammeAeroport';
         
-        public function getTrigrammes()
+        public function getAeroports()
         {
             $req = $this->select()
-                        ->from($this->_name,'trigrammeAeroport')
+                        ->from($this->_name,array('trigrammeAeroport', 'nomAeroport'))
                 ;
-            $res = $this->_db->fetchCol($req);
+            $res = $this->fetchAll($req)->toArray();
             return $res;
         }
     }

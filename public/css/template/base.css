@@ -165,7 +165,7 @@ article {margin-bottom: 60px;}
 margin-bottom: 5px;
 }
 
-input[type=submit], input[type=button], button, a[type=button], .valider,.ajouter, .retour {
+input[type=submit], input[type=button], button, .bouton, .valider, .ajouter, .retour {
     background-repeat: no-repeat;
     background-position: 5px;
 
@@ -193,7 +193,7 @@ input[type=text], input[type=number]
     padding: 2px 5px;
 }
 
-a[type=button] {
+.bouton {
     padding : 10px;
     padding-left: 33px;
     text-decoration: none;
@@ -219,6 +219,11 @@ input[type=submit].annuler, button.annuler {
     background-repeat:  no-repeat;
 }
 
+.gestion {
+    background-image: url('/img/cog.png');
+    background-repeat:  no-repeat;
+}
+
 input[type=submit]:hover, input[type=button]:hover, button:hover, .valider:hover, .retour:hover {
     background-color: #f7f7f7;
 }
@@ -226,6 +231,11 @@ input[type=submit]:hover, input[type=button]:hover, button:hover, .valider:hover
 #ajoutAvion {
     position: absolute;
     right: 58.5px;  
+}
+
+#gestionModele {
+    position: absolute;
+    right: 235.5px;  
 }
 
 #ajoutTech {
@@ -278,4 +288,12 @@ select
 #formAjout, #formModif{
     padding : 10px;
     text-align: center;
+}
+#ret {
+    margin-left: 20px;
+    padding: 8px 8px 8px 25px;
+    position: absolute;
+}
+#Modifier-element {
+        float : left;
 }

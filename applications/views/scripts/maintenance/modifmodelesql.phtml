@@ -1,0 +1,26 @@
+<?php
+    $espaceSession = new Zend_Session_Namespace('ModifModeleChoisi');    
+    $idModele = $espaceSession->idModeleModif;
+    $verifModif = $espaceSession->VerifModifModel;
+    
+    if($verifModif == false)
+    {
+        ?>
+            <META HTTP-EQUIV="Refresh" CONTENT="5; URL=<?php $this->baseUrl(); ?>/maintenance/modifiermodele/idModele/<?php echo $idModele; ?>">
+        <?php
+    }
+    else
+    {
+        ?>
+            <META HTTP-EQUIV="Refresh" CONTENT="5; URL=<?php $this->baseUrl(); ?>/maintenance/gestionmodele">
+        <?php
+    }
+        
+    $message = $this->message;
+    echo $message;
+?>
+
+<br>
+<p>Redirection en cours... Veuillez patientez quelques secondes ou cliquez 
+    <a href="<?php $this->baseUrl(); ?>/maintenance/gestionmodele">ici</a>
+</p>
