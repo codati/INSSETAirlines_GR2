@@ -4,6 +4,7 @@ class DrhController extends Zend_Controller_Action
     public function init()
     {
     	$this->headStyleScript = array(
+               'css' => 'personaviguant',
 			'js' => 'formTech'
 		);
 	}
@@ -387,9 +388,30 @@ class DrhController extends Zend_Controller_Action
         {
             $this->_helper->actionStack('header','index','default',array());
             
+            //On récupère tous les pilotes
             $tPilote = new Table_Pilote;
             $lesPilotes = $tPilote->fetchAll()->toArray();
+            
+            //formulaire d'ajout de pilote
+          $formHabiliter = new Zend_Form();
+          // parametrer le formulaire
+          $formHabiliter->setMethod('post');
+          $formHabiliter->setAttrib('id','formHabiliter');
+          $formHabiliter->setAction($this->view->baseUrl().'/drh/habiliter');
 
+          
+          
+          $eDate = new Zend_Form_Element_Text('date');
+          $eDate->setAttrib('class', 'datePick');
+          $eDate->setLabel('Date de validité du brevet :');
+          $eDate->setAttrib('readonly', true);
+          
+          $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
+          $eSubmit->setLabel('Valider');
+          $eSubmit->setAttrib('class','valider');
+          
+          $formHabiliter->addElements(array ($eDate, $eSubmit));
+          $this->view->formHabiliter = $formHabiliter;
             //envoi des pilotes a la vue
             $this->view->lesPilotes = $lesPilotes;
         

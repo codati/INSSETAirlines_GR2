@@ -1,0 +1,29 @@
+/* 
+    Document   : personaviguant
+    Created on : 10 janv. 2013, 14:00:33
+    Author     : fabien
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+#formNouveauPilote {
+    display:none;
+    position:absolute;
+    top:150px;
+    left:400px;
+    background : white;
+    padding : 10px;
+    border : 10px solid #4D4D4D;
+    border-radius : 15px;
+    z-index: 101;
+}
+
+#bt_close, #bt_close:hover {
+     position : absolute;
+     width : 43px;
+     height : 40px;
+     background : url('../img/overlay/bt_fermer.png');
+     right : -1px;
+     top : -6px;
+     cursor:pointer;
+}
