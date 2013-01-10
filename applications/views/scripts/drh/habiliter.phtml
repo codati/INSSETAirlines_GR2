@@ -1,0 +1,19 @@
+<h1>Breveter un pilote</h1><br />
+<?php
+
+     if(Services_verifAcces('DRH'))
+     {
+          echo $this->message;
+          echo '<center><a href="'.$this->baseUrl().'/drh/habilitation">Retour</a></center>';
+
+     }
+     else
+     {
+         echo '<div class="erreur">
+                     Erreur !<br />
+                     Vous n\'avez pas accès à cette page, veuillez vous identifier.<br />
+                     <a href=\'/\'>Retour</a>
+               </div>';
+     }
+?>
+

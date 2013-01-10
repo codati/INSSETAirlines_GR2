@@ -2,27 +2,32 @@
     $espaceSession = new Zend_Session_Namespace('ModifTechnicienChoisi');
             
     $matricule = $espaceSession->matricule;
-    $verifModif = $espaceSession->verifModif;
     
+    $verifModif = $espaceSession->verifModif;
+    //Zend_Debug::dump($verifModif) ;exit;
+     $message = $this->message;
+
+     echo $message;
     if($verifModif == false)
     {
         ?>
-            <META HTTP-EQUIV="Refresh" CONTENT="5; URL=<?php $this->baseUrl(); ?>/drh/modifiertechnicien/matricule/<?php echo $matricule; ?>">
+          <META HTTP-EQUIV="Refresh" CONTENT="5; URL=<?php $this->baseUrl(); ?>/drh/modifiertechnicien/matricule/<?php echo $matricule; ?>">
+          <br>
+          <p>Redirection en cours... Veuillez patientez quelques secondes ou cliquez 
+              <a href="<?php $this->baseUrl(); ?>/drh/modifiertechnicien/matricule/<?php echo $matricule; ?>">ici</a>
+          </p>
         <?php
     }
     else
     {
         ?>
-            <META HTTP-EQUIV="Refresh" CONTENT="5; URL=<?php $this->baseUrl(); ?>/drh/gestiontechnicien">
+          <META HTTP-EQUIV="Refresh" CONTENT="5; URL=<?php $this->baseUrl(); ?>/drh/gestiontechnicien">
+          <br>
+          <p>Redirection en cours... Veuillez patientez quelques secondes ou cliquez 
+              <a href="<?php $this->baseUrl(); ?>/drh/gestiontechnicien">ici</a>
+          </p>
         <?php
     }
         
-    $message = $this->message;
-    
-    echo $message;
-?>
 
-<br>
-<p>Redirection en cours... Veuillez patientez quelques secondes ou cliquez 
-    <a href="<?php $this->baseUrl(); ?>/drh/gestiontechnicien">ici</a>
-</p>
+?>

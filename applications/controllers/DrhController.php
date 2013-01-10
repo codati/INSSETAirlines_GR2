@@ -152,6 +152,7 @@ class DrhController extends Zend_Controller_Action
             $test = $espaceSession->test;
             $matricule = $this->_getParam('matricule');
             $espaceSession->matricule = $matricule;
+//            Zend_Debug::dump($espaceSession->matricule);exit;
             $infosTech = $tableTech->getInfos($matricule);  
             
             if($test != "echoue")
@@ -216,50 +217,46 @@ class DrhController extends Zend_Controller_Action
             $techPrenom = $this->getRequest()->getPost('PrenomTech');
             $techAdresse = $this->getRequest()->getPost('AdresseTech');
             $techDate = $this->getRequest()->getPost('dateNaissTech');
-            $verifModif = false;
             
             $espaceSession = new Zend_Session_Namespace('ModifTechnicienChoisi');
             $matricule = $espaceSession->matricule;
-            
-            if(($techNom != null) or ($techPrenom != null))
+//            Zend_Debug::dump($matricule);exit;
+            if(!empty($techNom) &&  !empty($techPrenom))
             {          
-                if($matricule != "")
+                $modifSql = $tableTech->Modifier($matricule, $techNom, $techPrenom, $techAdresse, $techDate);
+               // Zend_Debug::dump($modifSql);exit;
+                if($modifSql == true)
                 {
-                    $modifSql = $tableTech->Modifier($matricule, $techNom, $techPrenom, $techAdresse, $techDate);
-                    if($modifSql == true)
-                    {
-                        $espaceSession->matricule = "";
-                        $espaceSession->nom = "";
-                        $espaceSession->pnom = "";
-                        $espaceSession->adresse = "";
-                        $espaceSession->date = "";
-                        $espaceSession->verifModif = true; 
-                        $espaceSession->test = "reussi";
-
-                        $message = '<h3 class="reussi">Modification réussie</h3>';                    
-                    }
+                    $espaceSession->matricule = "";
+                    $espaceSession->nom = "";
+                    $espaceSession->pnom = "";
+                    $espaceSession->adresse = "";
+                    $espaceSession->date = "";
+                    $espaceSession->verifModif = true; 
+                    $espaceSession->test = "reussi";
+                    
+                    $message = '<h3 class="reussi">Modification réussie</h3>';                    
                 }
                 else
                 {      
-                    $espaceSession->matricule = $matricule;
                     $espaceSession->nom = $techNom;
                     $espaceSession->pnom = $techPrenom;
                     $espaceSession->adresse = $techAdresse;
                     $espaceSession->date = $techDate;
-                    $espaceSession->verifModif = $verifModif;
+                    
                     $espaceSession->test = "echoue";
                     
-                    $message = '<h3 class="erreur">Modification échouée</h3>';
+                    $message = '<h3 class="echoue">Modification échouée</h3>';
                 }
             }
             else
-            {                
+            {            
+                 $espaceSession->verifModif = false;   
                 $message = '<h3 class="erreur">Modification échouée, saisie invalide<br><br>Les valeurs saisies ne sont pas valides</h3>';
             }
             $this->view->message = $message;
         }
         
-        // Abandon de la fonction
         public function supprimertechnicienAction() 
         {
             $this->_helper->actionStack('header','index','default',array());
@@ -282,22 +279,120 @@ class DrhController extends Zend_Controller_Action
             }
         }
         
+        //Fab
         public function habilitationAction() 
         {   
+          $this->_helper->actionStack('header','index','default',array());
+          
+          $this->view->message = $this->_helper->FlashMessenger->getMessages();
+
+          $formHabiliter = new Zend_Form();
+          // parametrer le formulaire
+          $formHabiliter->setMethod('post');
+          $formHabiliter->setAttrib('id','formHabiliter');
+          $formHabiliter->setAction($this->view->baseUrl().'/drh/habiliter');
+
+          //On récupère tous les pilotes
+          $tPilote = new Table_Pilote;
+          $pilotes = $tPilote->fetchAll()->toArray();
+          foreach ($pilotes as $unPilote)
+          {
+               $lesPilotes[$unPilote['idPilote']] = $unPilote['nomPilote'].' '.$unPilote['prenomPilote'];
+          }
+          //Zend_Debug::dump($lePilote);exit;
+          $ePilote = new Zend_Form_Element_Select('sel_pilote');
+          $ePilote->addMultiOptions($lesPilotes);
+          $ePilote->setLabel('Pilote :');
+          
+          //On récupère tous les modèles d'avion
+          $tModeleAvion = new Table_ModeleAvion;
+          $modelesavion = $tModeleAvion->fetchAll()->toArray();
+          foreach ($modelesavion as $unModele)
+          {
+               $lesModeles[$unModele['idModeleAvion']] = $unModele['libelleModeleAvion'];
+          }
+          //Zend_Debug::dump($lesModeles);exit;
+          $eModele = new Zend_Form_Element_Select('sel_modele');
+          $eModele->addMultiOptions($lesModeles);
+          $eModele->setLabel('Modèle d\'avion :');
+          
+          $eDate = new Zend_Form_Element_Text('date');
+          $eDate->setAttrib('class', 'datePick');
+          $eDate->setLabel('Date de validité du brevet :');
+          $eDate->setAttrib('readonly', true);
+          
+          $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
+          $eSubmit->setLabel('Valider');
+          $eSubmit->setAttrib('class','valider');
+          
+          $formHabiliter->addElements(array ($ePilote, $eModele, $eDate, $eSubmit));
+          $this->view->formHabiliter = $formHabiliter;
+            
+        }
+        
+        //Fab
+        public function habiliterAction()
+        {
+             $this->_helper->actionStack('header','index','default',array());
+             
+             //on récupère les données du formulaire
+             $idPilote = $this->getRequest()->getPost('sel_pilote');
+             $idModeleAvion = $this->getRequest()->getPost('sel_modele');
+             $dateValidite = $this->getRequest()->getPost('date');
+             
+             if (empty($dateValidite))
+             {
+                  $message='<div class="erreur">Erreur ! Vous n\'avez pas saisi de date.</div>';
+                  
+                  
+             }
+             else
+             {
+                    //Mise au format sql de la date
+                    $dateValidite = DateFormat_SQL(new Zend_Date(strtolower($dateValidite),'EEEE dd MMMM YY'),false);
+
+                    $tBreveter = new Table_Breveter;
+                    //Si le brevet existe, on met a jour sa date de validite
+                    if ($tBreveter->existeBrevet($idPilote, $idModeleAvion))
+                    {
+                         $donneesBrevet = array(
+                                'dateValiditeBrevet' => $dateValidite
+                         );
+                         $where[] = $tBreveter->getAdapter()->quoteInto('idPilote = ?', $idPilote);
+                         $where[] = $tBreveter->getAdapter()->quoteInto('idModeleAvion = ?', $idModeleAvion);
+                         $tBreveter->update($donneesBrevet, $where);
+
+                         $message = '<div class="reussi">La date de validité du brevet de ce pilote a bien été modifiée.</div>';
+                    }
+                    //Sinon, on créer une nouvelle ligne dans la table breveter
+                    else
+                    {
+                         $donneesBreveter = array(
+                             'idPilote' => $idPilote,
+                             'idModeleAvion' => $idModeleAvion,
+                             'dateValiditeBrevet' => $dateValidite
+                         );
+
+                         $tBreveter->insert($donneesBreveter);
+                         $message = '<div class="reussi">Le brevet de ce pilote a bien été créé.</div>';
+                    }             
+             }
+               $this->_helper->FlashMessenger($message);
+               $redirector = $this->_helper->getHelper('Redirector');
+               $redirector->gotoUrl($this->view->baseUrl('/drh/habilitation'));             
+        }
+        
+        //Fab
+        public function personaviguantAction()
+        {
             $this->_helper->actionStack('header','index','default',array());
+            
+            $tPilote = new Table_Pilote;
+            $lesPilotes = $tPilote->fetchAll()->toArray();
 
-            if(Services_verifAcces('DRH'))
-            {
-
-            }
-            else
-            {
-                echo "<div class='erreur'>
-                            Erreur !<br />
-                            Vous n'avez pas accès à cette page, veuillez vous identifier.<br />
-                            <a href=\"/\">Retour</a>
-                      </div>";
-            }
+            //envoi des pilotes a la vue
+            $this->view->lesPilotes = $lesPilotes;
+        
         }
 
 }
