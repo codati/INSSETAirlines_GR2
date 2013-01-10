@@ -1,0 +1,22 @@
+<?php
+    $espaceSession = new Zend_Session_Namespace('AjoutModeleAvion');
+    $verifAjout = $espaceSession->VerifAjoutModel;
+    if($verifAjout == false)
+    {
+       $link = $this->baseUrl().'/maintenance/ajoutermodeleavion';
+    }
+    else
+    {
+        $link = $this->baseUrl().'/maintenance/gestionmodele';
+    }
+?>
+    <META HTTP-EQUIV="Refresh" CONTENT="5; URL=<?php echo $link; ?>">
+<?php
+    $message = $this->message;
+    echo $message;
+?>
+
+<br>
+<p>Redirection en cours... Veuillez patientez quelques secondes ou cliquez 
+    <a href="<?php echo $link; ?>">ici</a>
+</p>
