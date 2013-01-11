@@ -172,5 +172,10 @@ class IndexController extends Zend_Controller_Action
     {
         $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
     }
+    
+    public function contactAction()
+    {
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+    }
 }
 
