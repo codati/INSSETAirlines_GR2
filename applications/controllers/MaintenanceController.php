@@ -548,4 +548,14 @@ class MaintenanceController extends Zend_Controller_Action
         }
         $this->view->message = $message;
     }
+    
+    public function gestionrevisionAction()
+    {
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+
+        $tableModele = new Table_ModeleAvion;
+        $lesModeles = $tableModele->getLesModeles();      
+        //Zend_Debug::dump($lesModeles);exit;
+        $this->view->lesModeles= $lesModeles;
+    }
 }

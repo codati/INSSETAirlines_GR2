@@ -1,0 +1,32 @@
+<div id="tableau">    
+    <table>
+        <h2 id="centrer">Listing des Avions</h2>
+        <tr>
+            <th>Immatriculation</th>
+            <th>Etat</th>
+            <th>Heures de vols</th>
+            <th>Modèle</th>
+            <th>Modifier</th>
+        </tr>
+        <?php
+            $lesAvions = $this->lesAvions;
+            foreach ($lesAvions as $unAvion) 
+            {
+                echo '<tr>';
+                echo '<td>'.$unAvion["immatriculationAvion"].'</td>';
+                echo '<td>'.$unAvion["etatAvion"].'</td>';
+                echo '<td>'.$unAvion["heuresVolDerniereIntervention"].'</td>';
+                echo '<td>'.$unAvion["libelleModeleAvion"].'</td>';
+                echo '<td>
+                    <a href="'.$this->baseUrl().'/maintenance/modifieravion/immat/'.$unAvion["immatriculationAvion"].'" title="Modifier"><img src="'. $this->baseUrl() .'/img/pencil.png" /></a>';
+                echo '</td>';
+                echo '</tr>';
+            }
+        ?>   
+    </table>
+    <br>
+    <a id="gestionModele" class="bouton gestion" href="<?php echo $this->baseUrl(); ?>/maintenance/gestionmodele">Gérer les modèles</a>
+    <a id="ajoutAvion" class="bouton ajouter" href="<?php echo $this->baseUrl(); ?>/maintenance/ajouteravion">Ajouter un avion</a>
+</div>
+
+<!--<a href="'.$this->baseUrl().'/maintenance/supprimeravion/immat/'.$unAvion["immatriculationAvion"].'" title="Supprimer" onclick="return confirm(\'Etes-vous sûr de vouloir supprimer l\\\'avion '.$unAvion["immatriculationAvion"].'?\');"><img src="'. $this->baseUrl() .'/img/cross.png" /></a></td>';-->

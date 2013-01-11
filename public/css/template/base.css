@@ -19,17 +19,31 @@
 a, a:hover, a:visited {color: #2d578e; text-decoration: none;}
 a:hover {text-decoration: underline;}
 
-h1{
+h1 {
     font-size: 1.750em;
 }
 
-h2{
+h2 {
     font-size: 1.250em;
 }
 
 h2#centrer {
     text-align: center;
     margin : 10px;
+}
+
+h3 {
+    padding-left: 15px;
+    margin: 10px;
+    font-size: 1.1em;
+}
+
+div #mention p {
+    text-align: justify;
+}
+
+div #mention a {
+    text-decoration : underline;
 }
 
 .erreur {

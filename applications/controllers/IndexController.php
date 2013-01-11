@@ -167,5 +167,10 @@ class IndexController extends Zend_Controller_Action
     	$this->headStyleScript['css'][] = 'android';
         $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript)); 
     }
+    
+    public function mentionAction()
+    {
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+    }
 }
 
