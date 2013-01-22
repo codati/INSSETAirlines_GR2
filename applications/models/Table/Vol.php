@@ -207,11 +207,12 @@
                 $this->update($data, $where);
             }
             
-            public function retard()
+            public function GetVolRetardataire()
             {
                 $req = $this->select()->setIntegrityCheck(false)
-                            ->from($this->_name)
-                            ->where('dateHeureArriveeEffectiveVol > dateHeureArriveePrevueVol');
+                        ->from($this->_name)
+                        ->where('dateHeureArriveeEffectiveVol > dateHeureArriveePrevueVol')
+                        ;
                 
                 return $this->fetchAll($req)->toArray();
             }

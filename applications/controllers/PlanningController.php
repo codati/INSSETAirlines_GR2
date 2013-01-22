@@ -448,7 +448,7 @@ class PlanningController extends Zend_Controller_Action
             $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
             
             $tableVol = new Table_Vol();
-            $retards = $tableVol->retard();
+            $retards = $tableVol->GetVolRetardataire();
             
             $this->view->retards = $retards;
         }

@@ -548,4 +548,14 @@ class MaintenanceController extends Zend_Controller_Action
         }
         $this->view->message = $message;
     }
+    
+    public function dispoavionsAction()
+    {
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        
+        $tableAvion = new Table_Avion();
+        $avionsDispo = $tableAvion->GetAvionsDispo();
+        
+        $this->view->avionsDispo = $avionsDispo;
+    }
 }

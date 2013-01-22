@@ -1,0 +1,21 @@
+<div id="tableau">    
+    <table>
+        <h2 id="centrer">Listing des Avions</h2>
+        <tr>
+            <th>Immatriculation</th>
+            <th>Heures de vols</th>
+            <th>Modèle</th>
+        </tr>
+        <?php
+            $lesAvions = $this->avionsDispo;
+            foreach ($lesAvions as $unAvion) 
+            {
+                echo '<tr>';
+                echo '<td>'.$unAvion["immatriculationAvion"].'</td>';
+                echo '<td>'.$unAvion["heuresVolDerniereIntervention"].'</td>';
+                echo '<td>'.$unAvion["libelleModeleAvion"].'</td>';
+                echo '</tr>';
+            }
+        ?>   
+    </table>
+</div>
