@@ -16,6 +16,7 @@ class DirectionstrategiqueController extends Zend_Controller_Action
     {
     	$this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
     }	
+    
     public function ajouterligneAction()
     {
         $this->_helper->actionStack('header','index','default',array('test'=>true, 'head' => $this->headStyleScript));  
