@@ -442,4 +442,14 @@ class PlanningController extends Zend_Controller_Action
 			}
 		}
 	}
+        
+        public function retardAction()
+        {
+            $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+            
+            $tableVol = new Table_Vol();
+            $retards = $tableVol->retard();
+//            Zend_Debug::dump($retards);exit;
+            $this->view->retards = $retards;
+        }
 }

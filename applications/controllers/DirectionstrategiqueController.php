@@ -64,8 +64,6 @@ class DirectionstrategiqueController extends Zend_Controller_Action
        // $form->setTrigrammes($trigs);
        // $form->setPeriodicite($newPeriodicites);
        // $form->init();
-        
-        
     }
 }
 
