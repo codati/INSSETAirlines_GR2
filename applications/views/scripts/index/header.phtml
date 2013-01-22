@@ -21,8 +21,7 @@
         }        
         // verfie que la session n'est pas nulle et que l'on y est connecté
         // le fait sur les deux sessions possibles
-        if( (!is_null($espaceSession) && ($espaceSession->connecte))
-                ||  (!is_null($espaceAgence) && ($espaceAgence->connecte)))
+        if(session_encours())
         {
             $leboutonconnexion = '<input type="button" value="Déconnexion" id="bt_deco_layout">';
         }      

@@ -2,7 +2,13 @@
 class MaintenanceController extends Zend_Controller_Action
 {
     public function init() {
-        $this->headStyleScript = array('css'=>'planif');        
+        $this->headStyleScript = array('css'=>'planif');      
+        
+        if(!session_encours())
+        {
+            $redirector = $this->_helper->getHelper('Redirector');
+            $redirector->gotoUrl($this->view->baseUrl());  
+        }
     }
     public function indexAction() 
     {   

@@ -7,6 +7,12 @@ class PlanningController extends Zend_Controller_Action
 			'css' => 'planning',
 			'js' => 'planning'
 		);
+                
+                if(!session_encours())
+                {
+                    $redirector = $this->_helper->getHelper('Redirector');
+                    $redirector->gotoUrl($this->view->baseUrl());  
+                }
 	}
 	
     public function indexAction() {header('Location: /planning/planifier');}

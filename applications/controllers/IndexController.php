@@ -7,6 +7,12 @@ class IndexController extends Zend_Controller_Action
 			'css' => array('nivo-slider'),
 			'js' => 'jquery.nivo.slider.pack'
 		);
+                
+                if(!session_encours())
+                {
+                    $redirector = $this->_helper->getHelper('Redirector');
+                    $redirector->gotoUrl($this->view->baseUrl());  
+                }
 	}
 	
     public function indexAction()
