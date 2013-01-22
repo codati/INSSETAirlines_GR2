@@ -449,7 +449,7 @@ class PlanningController extends Zend_Controller_Action
             
             $tableVol = new Table_Vol();
             $retards = $tableVol->retard();
-//            Zend_Debug::dump($retards);exit;
+            
             $this->view->retards = $retards;
         }
 }
