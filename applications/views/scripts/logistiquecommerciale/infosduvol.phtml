@@ -1,0 +1,21 @@
+<div id="tableau">    
+    <table>
+        <h2 id="centrer">Listing des modèles</h2>
+        <tr>
+            <th>Libelle</th>
+            <th>Decollage</th>
+            <th>Atterissage</th>
+            <th>Rayon d'action</th>
+            <th>Modifier</th>
+        </tr>
+        <?php
+            $infosVol = $this->infosVol;
+            echo '<tr>';
+            echo '<td>'.$infosVol["libelleModeleAvion"].'</td>';
+            echo '<td>'.$infosVol["longueurDecollage"].'</td>';
+            echo '<td>'.$infosVol["longueurAtterrissage"].'</td>';
+            echo '<td>'.$infosVol["rayonAction"].'</td>';
+            echo '</tr>';
+        ?>   
+    </table>
+</div>

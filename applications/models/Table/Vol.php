@@ -63,9 +63,7 @@
 
             return $resInfo_vol->toArray();
         }
-        
-       
-                
+             
         public function get_InfosVol($idVol)
             {
                     //On fait la requete pour r�cuperer les infos de la réservation

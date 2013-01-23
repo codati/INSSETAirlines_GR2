@@ -295,11 +295,11 @@ select
     padding : 10px 0 0 25px;
 }
 
-#formModif dd,#formModif dt, #formAjout dd,#formAjout dt {
+#formModif dd,#formModif dt, #formAjout dd,#formAjout dt, #formSaisie dd, #formSaisie dt {
     margin : 10px;
 }
 
-#formAjout, #formModif{
+#formAjout, #formModif, #formSaisie{
     padding : 10px;
     text-align: center;
 }
