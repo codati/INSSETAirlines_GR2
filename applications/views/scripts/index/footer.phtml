@@ -1,6 +1,6 @@
                             </section>				
                                 <footer>
-					<p>Insset-Airline &copy; <?php echo date('Y'); ?></p><br/>
+					<p>Insset-Airline &copy; 2012-<?php echo date('Y'); ?></p><br/>
 					<p><a href="">Mentions légales</a> - <a href="">Nous contacter</a> - <a href="">Plan du site</a></p>
 				</footer>
 			</div>
@@ -28,7 +28,6 @@
         
 	$eNom = new Zend_Form_Element_Text('input_user');
 	$eNom->setLabel('Nom d\'utilisateur : ');
-        $eNom->setValue('admin');   // <- virer ca a la fin
 	
 	$ePsw = new Zend_Form_Element_Password('input_psw');
 	$ePsw->setLabel('Mot de passe : ');

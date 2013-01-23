@@ -5,7 +5,13 @@ class MaintenanceController extends Zend_Controller_Action
         $this->headStyleScript = array(
             'css'=>'planif',
             'js'=>'gestionrevision'
-            );        
+            );             
+        
+        if(!session_encours())
+        {
+            $redirector = $this->_helper->getHelper('Redirector');
+            $redirector->gotoUrl($this->view->baseUrl());  
+        }
     }
     public function indexAction() 
     {   
@@ -49,7 +55,7 @@ class MaintenanceController extends Zend_Controller_Action
         $monform->setMethod('post');
         $monform->setAttrib('id','formAjout');
 
-        $monform->setAction($this->view->baseUrl().'/maintenance/ajoutsql');
+        $monform->setAction($this->view->baseUrl().'/maintenance/ajoutavionsql');
 
         $eImmatAvion = new Zend_Form_Element_Text('ImmatAvion');
         $eImmatAvion->setValue($immat);
@@ -80,16 +86,15 @@ class MaintenanceController extends Zend_Controller_Action
 
         $avionImmat = $this->getRequest()->getPost('ImmatAvion');
         $avionModele = $this->getRequest()->getPost('ModeleAvion');
-        $verifAjout = false;
 
         $espaceSession = new Zend_Session_Namespace('AjoutAvionCourant');
         $espaceSession->ImmatAvion = $avionImmat;
         $espaceSession->ModeleAvion = $avionModele; 
-        $espaceSession->VerifAjout = $verifAjout;
+        $espaceSession->VerifAjoutAvion = false;
 
         $immatUp = strtoupper($avionImmat);
 
-        if((($immatUp != null) or ($avionModele != null)) AND (preg_match('#^[A-Z0-9\-]+$#', $immatUp)))
+        if((($immatUp != "") OR ($avionModele != "")) OR (preg_match('#^[A-Z0-9\-]+$#', $immatUp)))
         {          
             $ajoutsql = $tableAvion->Ajouter($immatUp, $avionModele);
 
@@ -97,7 +102,7 @@ class MaintenanceController extends Zend_Controller_Action
             {
                 $espaceSession->ImmatAvion = "";
                 $espaceSession->ModeleAvion = ""; 
-                $espaceSession->VerifAjout = true; 
+                $espaceSession->VerifAjoutAvion = true; 
 
                 $message = '<h3 class="reussi">Ajout réussi</h3>';
             }
@@ -108,7 +113,7 @@ class MaintenanceController extends Zend_Controller_Action
         }
         else
         {                
-            $message = '<h3 class="erreur">Ajout échoué, saisie invalide<br><br>'.$avionImmat.' n\'est pas une valeur valide</h3>';
+            $message = '<h3 class="erreur">Ajout échoué, saisie invalide<br><br>Il faut remplir tous les champs de manière correcte</h3>';
         }
         $this->view->message = $message;
     }
@@ -142,7 +147,7 @@ class MaintenanceController extends Zend_Controller_Action
         $monform->setMethod('post');
         $monform->setAttrib('id','formModif');
 
-        $monform->setAction($this->view->baseUrl().'/maintenance/modifsql');
+        $monform->setAction($this->view->baseUrl().'/maintenance/modifavionsql');
 
         $eImmatAvion = new Zend_Form_Element_Text('ImmatAvion');
         $eImmatAvion->setValue($immatAvion);
@@ -164,8 +169,7 @@ class MaintenanceController extends Zend_Controller_Action
 
         $this->view->leform = $monform;
     }
-
-    public function modifsqlAction()
+    public function modifavionsqlAction()
     {
         $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 
@@ -173,7 +177,6 @@ class MaintenanceController extends Zend_Controller_Action
 
         $newAvionImmat = $this->getRequest()->getPost('ImmatAvion');
         $avionModele = $this->getRequest()->getPost('ModeleAvion');
-        $verifModif = false;
 
         $newImmatUp = strtoupper($newAvionImmat);
 
@@ -181,16 +184,16 @@ class MaintenanceController extends Zend_Controller_Action
         $avionImmat = $espaceSession->oldImmat;
         $espaceSession->ImmatAvion = $newImmatUp;
         $espaceSession->ModeleAvion = $avionModele;
-        $espaceSession->VerifModif = $verifModif;
+        $espaceSession->VerifModifAvion = false;
 
-        if((($newImmatUp != null) or ($avionModele != null)) AND (preg_match('#^[A-Z0-9\-]+$#', $newImmatUp)))
+        if((($newImmatUp != "") AND ($avionModele != "")) AND (preg_match('#^[A-Z0-9\-]+$#', $newImmatUp)))
         {          
             $ajoutSql = $tableAvion->Modifier($avionImmat, $newImmatUp, $avionModele);
             if($ajoutSql == true)
             {
                 $espaceSession->ImmatAvion = "";
                 $espaceSession->ModeleAvion = ""; 
-                $espaceSession->VerifModif = true; 
+                $espaceSession->VerifModifAvion = true; 
 
                 $message = '<h3 class="reussi">Modification réussie</h3>';                    
             }
@@ -339,6 +342,11 @@ class MaintenanceController extends Zend_Controller_Action
         
         $this->view->ajout = $ajout;
      }
+     //
+     //
+     //
+     //
+     
      public function gestionrevisionAction()
      {
          $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
@@ -369,4 +377,228 @@ class MaintenanceController extends Zend_Controller_Action
          
          
      }
+     
+    public function gestionmodeleAction()
+    {
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+
+        $tableModele = new Table_ModeleAvion;
+        $lesModeles = $tableModele->getLesModeles();      
+        //Zend_Debug::dump($lesModeles);exit;
+        $this->view->lesModeles= $lesModeles;
+    }
+     
+     public function ajoutermodeleavionAction()
+     {
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        
+        $espaceSession = new Zend_Session_Namespace('AjoutAvionCourant');
+
+        $libelleModele = $espaceSession->libelleModele;
+        $longDecollage = $espaceSession->longDecollage;
+        $longAtterrissage = $espaceSession->longAtterrissage;
+        $rayonAction = $espaceSession->rayonAction;
+
+        // creer un objet formulaire
+        $monform = new Zend_Form;
+
+        // parametrer le formulaire
+        $monform->setMethod('post');
+        $monform->setAttrib('id','formAjout');
+
+        $monform->setAction($this->view->baseUrl().'/maintenance/ajoutmodelesql');
+        
+        $eLibelleModele = new Zend_Form_Element_Text('libelleModeleAvion');
+        $eLibelleModele->setValue($libelleModele);
+        $eLibelleModele->setLabel('Libellé du modèle : ');
+        $eLibelleModele->setAttrib('required', 'required');
+        
+        $eLongDecollage = new Zend_Form_Element_Text('longueurDecollage');
+        $eLongDecollage->setValue($longDecollage);
+        $eLongDecollage->setLabel('Longueur afin de décoller : ');
+        
+        $eLongAtterrissage = new Zend_Form_Element_Text('longueurAtterrissage');
+        $eLongAtterrissage->setValue($longAtterrissage);
+        $eLongAtterrissage->setLabel('Longueur néccessaire pour atterrir : ');
+        
+        $eRayonAction = new Zend_Form_Element_Text('rayonAction');
+        $eRayonAction->setValue($rayonAction);
+        $eRayonAction->setLabel('Rayon d\'action : ');
+
+        $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
+        $eSubmit->setLabel('Valider');
+        $eSubmit->setAttrib('class','valider');
+
+        $monform->addElement($eLibelleModele);
+        $monform->addElement($eLongDecollage);
+        $monform->addElement($eLongAtterrissage);
+        $monform->addElement($eRayonAction);
+        $monform->addElement($eSubmit);       
+
+        $this->view->leform = $monform;
+    }
+
+    public function ajoutmodelesqlAction()
+    {
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+
+        $tableModele = new Table_ModeleAvion;
+
+        $libelleModele = $this->getRequest()->getPost('libelleModeleAvion');
+        $longDecollage = $this->getRequest()->getPost('longueurDecollage');
+        $longAtterrissage = $this->getRequest()->getPost('longueurAtterrissage');
+        $rayonAction = $this->getRequest()->getPost('rayonAction');
+
+        $espaceSession = new Zend_Session_Namespace('AjoutModeleAvion');
+        $espaceSession->libelleModele = $libelleModele;
+        $espaceSession->longDecollage = $longDecollage;
+        $espaceSession->longAtterrissage = $longAtterrissage;
+        $espaceSession->rayonAction = $rayonAction;
+        $espaceSession->VerifAjoutModel = false;
+        
+        if($libelleModele != "")
+        {          
+            $ajoutsql = $tableModele->Ajouter($longDecollage, $longAtterrissage, $rayonAction, $libelleModele);
+
+            if($ajoutsql == true)
+            {
+                $espaceSession->libelleModele = "";
+                $espaceSession->longDecollage = "";
+                $espaceSession->longAtterrissage = "";
+                $espaceSession->rayonAction = "";
+                $espaceSession->VerifAjoutModel = true; 
+
+                $message = '<h3 class="reussi">Ajout réussi</h3>';
+            }
+            else
+            {                  
+                $message = '<h3 class="erreur">Ajout échoué</h3>';
+            }
+        }
+        else
+        {                
+            $message = '<h3 class="erreur">Ajout échoué, saisie invalide<br><br>'.$libelleModele.' n\'a pas été saisie</h3>';
+        }
+        $this->view->message = $message;
+    }
+    
+    public function modifiermodeleAction() 
+    {
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+
+        $espaceSession = new Zend_Session_Namespace('ModifModeleChoisi');
+        
+        $tableModele = new Table_ModeleAvion;
+        $idModele = $this->_getParam('idModele');
+        $espaceSession->idModeleModif = $idModele;
+        
+        $leModele = $tableModele->getModeleById($idModele);
+        //Zend_Debug::dump($leModele);exit;
+        //Zend_Debug::dump($espaceSession->verifModif);exit;
+        if(($espaceSession->VerifModifModel == true) OR ($espaceSession->VerifModifModel == ""))
+        {
+            $libelleModele = $leModele["libelleModeleAvion"];
+            $longDecollage = $leModele["longueurDecollage"];
+            $longAtterrissage = $leModele["longueurAtterrissage"];
+            $rayonAction = $leModele["rayonAction"];
+        }
+        else
+        {
+            $libelleModele = $espaceSession->libelleModele;
+            $longDecollage = $espaceSession->longDecollage;
+            $longAtterrissage = $espaceSession->longAtterrissage;
+            $rayonAction = $espaceSession->rayonAction;
+        }
+        
+        $monform = new Zend_Form;
+
+        // parametrer le formulaire
+        $monform->setMethod('post');
+        $monform->setAttrib('id','formModif');
+
+        $monform->setAction($this->view->baseUrl().'/maintenance/modifmodelesql');
+
+        $eLibelleModele = new Zend_Form_Element_Text('libelleModeleAvion');
+        $eLibelleModele->setValue($libelleModele);
+        $eLibelleModele->setLabel('Libellé du modèle : ');
+        $eLibelleModele->setAttrib('required', 'required');
+        
+        $eLongDecollage = new Zend_Form_Element_Text('longueurDecollage');
+        $eLongDecollage->setValue($longDecollage);
+        $eLongDecollage->setLabel('Longueur afin de décoller : ');
+        
+        $eLongAtterrissage = new Zend_Form_Element_Text('longueurAtterrissage');
+        $eLongAtterrissage->setValue($longAtterrissage);
+        $eLongAtterrissage->setLabel('Longueur néccessaire pour atterrir : ');
+        
+        $eRayonAction = new Zend_Form_Element_Text('rayonAction');
+        $eRayonAction->setValue($rayonAction);
+        $eRayonAction->setLabel('Rayon d\'action : ');
+
+        $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
+        $eSubmit->setLabel('Valider');
+        $eSubmit->setAttrib('class','valider');
+
+        $monform->addElement($eLibelleModele);
+        $monform->addElement($eLongDecollage);
+        $monform->addElement($eLongAtterrissage);
+        $monform->addElement($eRayonAction);
+        $monform->addElement($eSubmit);       
+
+        $this->view->leform = $monform;
+    }
+
+    public function modifmodelesqlAction()
+    {
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+
+        $tableModele = new Table_ModeleAvion;
+
+        $libelleModele = $this->getRequest()->getPost('libelleModeleAvion');
+        $longueurModele = $this->getRequest()->getPost('longueurDecollage');
+        $longueurAtterrissage = $this->getRequest()->getPost('longueurAtterrissage');
+        $rayonAction = $this->getRequest()->getPost('rayonAction');
+
+        $espaceSession = new Zend_Session_Namespace('ModifModeleChoisi');
+        $idModele = $espaceSession->idModeleModif;
+        $espaceSession->libelleModele = $libelleModele;
+        $espaceSession->longDecollage = $longueurModele;
+        $espaceSession->longAtterrissage = $longueurAtterrissage;
+        $espaceSession->rayonAction = $rayonAction;
+        $espaceSession->VerifModifModel = false;
+
+        if($libelleModele != "")
+        {          
+            $ajoutSql = $tableModele->Modifier($idModele, $longueurModele, $longueurAtterrissage, $rayonAction, $libelleModele);
+            if($ajoutSql == true)
+            {
+                $espaceSession->libelleModele = "";
+                $espaceSession->longModele = "";
+                $espaceSession->longAtterrissage = "";
+                $espaceSession->rayonAction = "";
+                $espaceSession->VerifModifModel = true;
+
+                $message = '<h3 class="reussi">Modification réussie</h3>';                    
+            }
+            else
+            {                  
+                $message = '<h3 class="echoue">Modification échouée</h3>';
+            }
+        }
+        else
+        {                
+            $message = '<h3 class="erreur">Modification échouée, saisie invalide<br><br>'.$libelleModele.' ne peut être vide</h3>';
+        }
+        $this->view->message = $message;
+    }
+    
+    public function dispoavionsAction()
+    {
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        
+        $tableAvion = new Table_Avion();
+        $avionsDispo = $tableAvion->GetAvionsDispo();
+        
+        $this->view->avionsDispo = $avionsDispo;
+    }
 }

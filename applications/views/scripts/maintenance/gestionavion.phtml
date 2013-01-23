@@ -6,7 +6,7 @@
             <th>Etat</th>
             <th>Heures de vols</th>
             <th>Modèle</th>
-            <th>Action</th>
+            <th>Modifier</th>
         </tr>
         <?php
             $lesAvions = $this->lesAvions;
@@ -25,7 +25,8 @@
         ?>   
     </table>
     <br>
-    <a id="ajoutAvion" class="ajouter" type="button" href="<?php echo $this->baseUrl(); ?>/maintenance/ajouteravion">Ajouter un avion</a>
+    <a id="gestionModele" class="bouton gestion" href="<?php echo $this->baseUrl(); ?>/maintenance/gestionmodele">Gérer les modèles</a>
+    <a id="ajoutAvion" class="bouton ajouter" href="<?php echo $this->baseUrl(); ?>/maintenance/ajouteravion">Ajouter un avion</a>
 </div>
 
 <!--<a href="'.$this->baseUrl().'/maintenance/supprimeravion/immat/'.$unAvion["immatriculationAvion"].'" title="Supprimer" onclick="return confirm(\'Etes-vous sûr de vouloir supprimer l\\\'avion '.$unAvion["immatriculationAvion"].'?\');"><img src="'. $this->baseUrl() .'/img/cross.png" /></a></td>';-->

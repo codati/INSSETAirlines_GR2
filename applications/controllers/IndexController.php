@@ -167,5 +167,42 @@ class IndexController extends Zend_Controller_Action
     	$this->headStyleScript['css'][] = 'android';
         $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript)); 
     }
+    
+    public function mentionAction()
+    {
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+    }
+    
+    public function contactAction()
+    {
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+    }
+    
+    public function consulterAction()
+    {
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        
+        $tableLigne = new Table_Ligne;
+        $lignes = $tableLigne->getLignes();
+        $this->view->lignes= $lignes;
+        
+        $nbVolsLigne = array();
+        foreach ($lignes as $ligne)
+        {
+           $nbVolsLigne[$ligne['idLigne']] = $tableLigne->getNbVolsDisponibles($ligne['idLigne']);
+        }
+        $this->view->nbVolsLigne = $nbVolsLigne;
+
+    }
+    
+    public function retardAction()
+    {
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+
+        $tableVol = new Table_Vol();
+        $retards = $tableVol->GetVolRetardataire();
+
+        $this->view->retards = $retards;
+    }
 }
 

@@ -21,8 +21,7 @@
         }        
         // verfie que la session n'est pas nulle et que l'on y est connecté
         // le fait sur les deux sessions possibles
-        if( (!is_null($espaceSession) && ($espaceSession->connecte))
-                ||  (!is_null($espaceAgence) && ($espaceAgence->connecte)))
+        if(session_encours())
         {
             $leboutonconnexion = '<input type="button" value="Déconnexion" id="bt_deco_layout">';
         }      
@@ -81,10 +80,10 @@
                                     }
                                     else // menu public
                                     {
-                                       echo '<td><a href='.$this->baseUrl().'"/lignes/consulter" title="">Consulter le catalogue</a></td>';
+                                       echo '<td><a href='.$this->baseUrl().'"/index/consulter" title="">Consulter le catalogue</a></td>';
                                        echo '<td><a href="/" title="">Offres promotionnelles</a></td>';
-                                       echo '<td><a href="/" title="">Informations retards</a></td>';
-                                       echo '<td><a href="/" title="">Contact</a></td>';
+                                       echo '<td><a href="'.$this->baseUrl().'/index/retard" title="">Informations retards</a></td>';
+                                       echo '<td><a href="'.$this->baseUrl().'/index/contact" title="">Contact</a></td>';
                                        echo '<td><a href="/index/telecharger" title="">Téléchargement</a></td>';
                                     }                                  
                                     

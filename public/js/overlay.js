@@ -3,12 +3,15 @@ $(document).ready(function() {
     $('#bt_fermer').click(function () {
         fermer()
     });
-    $('#bglayer').click(function() {
+    $('#bt_close').click(function () {
+        fermer()
+    });
+    $('.bglayer').click(function() {
        fermer(); 
     });
     $('#bt_co_layout').click(function() {
         $('#erreur_co').remove();
-        $('#bglayer').show();
+        $('.bglayer').show();
         $('#overlay').fadeIn(1000);
         $('#input_psw').focus(); // remettre #input_user a la fin
     });
@@ -26,7 +29,8 @@ $(document).ready(function() {
 
 function fermer() {    
     $('#overlay').hide();
-    $('#bglayer').fadeOut(1000);
+    $('#formNouveauPilote').hide();
+    $('.bglayer').fadeOut(1000);
 }
 
 function verifConnexion() {

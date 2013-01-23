@@ -8,7 +8,7 @@ class AgenceController extends Zend_Controller_Action
                 'css' => 'service_commercial',
                 'js' => array('agence','service_exploitation')
             );
-    }	
+    }	    
     /**
      * appelle l'action de serviceexploitation controller en passant un parametre qui permet la modif et l'ajout de code
      */

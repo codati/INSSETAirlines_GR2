@@ -1,13 +1,33 @@
 <?php
 class DirectionstrategiqueController extends Zend_Controller_Action 
 {
-    public function init() {$this->headStyleScript = array();}
-	
-    public function indexAction()
+    public function init() 
     {
-    	$this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
-    }	
-    public function ajouterligneAction()
+        $this->headStyleScript = array('css' => 'directionstrategique', 'js' => 'directionstrategique');
+    
+        if(!session_encours())
+        {
+            $redirector = $this->_helper->getHelper('Redirector');
+            $redirector->gotoUrl($this->view->baseUrl());  
+        }
+    }
+	
+    public function indexAction() {$this->_helper->redirector('volscatalogue','directionstrategique');}
+	
+	public function volscatalogueAction()
+	{
+		$this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+		
+		$tableLigne = new Table_Ligne;
+		$lignes = $tableLigne->getLignes();
+		$this->view->lignes = $lignes;
+		
+		$nbVolsLigne = array();
+		foreach ($lignes as $ligne) {$nbVolsLigne[$ligne['idLigne']] = $tableLigne->getNbVolsDisponibles($ligne['idLigne']);}
+		$this->view->nbVolsLigne = $nbVolsLigne;
+	}
+	
+	public function ajouterligneAction()
     {
         $this->_helper->actionStack('header','index','default',array('test'=>true, 'head' => $this->headStyleScript));  
         
@@ -64,9 +84,27 @@ class DirectionstrategiqueController extends Zend_Controller_Action
        // $form->setTrigrammes($trigs);
        // $form->setPeriodicite($newPeriodicites);
        // $form->init();
-        
-        
     }
+	
+	public function voirligneAction()
+	{
+		$idLigne = $this->_getParam('ligne', null);
+		
+		if($idLigne != null)
+		{
+			
+		}
+	}
+	
+	public function modifierligneAction()
+	{
+		
+	}
+	
+	public function supprimerligneAction()
+	{
+		
+	}
 }
 
 ?>

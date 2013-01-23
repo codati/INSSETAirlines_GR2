@@ -3,8 +3,28 @@
     {
         protected $_name = 'modeleavion';
         protected $_primary = 'idModeleAvion';
+        
+        public function getLesModeles()
+        {
+            $req = $this->select()->setIntegrityCheck(false)
+                    ->from($this->_name)
+                    ->order("libelleModeleAvion");
 
-     /**
+            $res = $this->fetchAll($req)->toArray();
+            //Zend_Debug::dump($res);exit;
+            return $res;
+        }
+        
+        public function getModeleById($p_idModele)
+        {
+            $req = $this->select()->setIntegrityCheck(false)
+                    ->from($this->_name)
+                    ->where('idModeleAvion = ?', $p_idModele)
+                    ;
+            return $this->fetchRow($req)->toArray();
+        }
+        
+        /**
          * Récupère la liste de tous les noms de modèle d'avions pour aéroport
          * @param string $TriAeroport : Le trigramme de l'aéroport
          * @return array : Le résultat de la requête
@@ -37,5 +57,34 @@
             $laListe = $this->select()->from(array('modeleavion'), array('idModeleAvion','libelleModeleAvion'));
 
             return $this->fetchAll($laListe)->toArray();
+        }
+        
+        public function Ajouter($p_longueurDecollage, $p_longueurAtterissage, $p_rayonAction, $p_libelleModele)
+        {
+            $data = array('longueurDecollage' => $p_longueurDecollage, 'longueurAtterrissage' => $p_longueurAtterissage, 'rayonAction' => $p_rayonAction, 'libelleModeleAvion' => $p_libelleModele);
+            try {                
+                $this->insert($data);
+            }
+            catch (Exception $e)
+            {
+                Zend_Debug::dump($e);exit;
+                return false;
+            }
+            return true;
+        }
+        
+        public function Modifier($p_idModele, $p_longueurDecollage, $p_longueurAtterissage, $p_rayonAction, $p_libelleModele) 
+        {
+            $data = array('longueurDecollage' => $p_longueurDecollage, 'longueurAtterrissage' => $p_longueurAtterissage, 'rayonAction' => $p_rayonAction, 'libelleModeleAvion' => $p_libelleModele);
+            $where = $this->getAdapter()->quoteInto('idModeleAvion = ?', $p_idModele);
+            try {   
+               $this->update($data, $where); 
+            }
+            catch (Exception $e)
+            {
+                Zend_Debug::dump($e);exit;
+                return false;
+            }
+            return true;
         }
     }
