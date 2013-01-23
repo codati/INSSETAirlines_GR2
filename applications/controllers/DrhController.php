@@ -15,7 +15,7 @@ class DrhController extends Zend_Controller_Action
         
         public function gestiontechnicienAction()
         {
-            $this->_helper->actionStack('header','index','default',array());
+            $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
             
             $tableTech = new Table_Technicien;
             $lesTechs = $tableTech->getTechs();      

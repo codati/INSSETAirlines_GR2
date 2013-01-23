@@ -1,0 +1,52 @@
+.reserver {
+     background-color: white;
+    border: 2px solid #6495ED;
+    color: #2D578E;
+    font-weight: bold;
+
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    padding : 5px;
+}
+.td_place input {
+    width:50px;    
+}
+.tableau .td_place {
+    border-right: none;
+}
+.tableau .td_img {
+    border-left : none;
+}
+.td_img img {
+    cursor : pointer;
+}
+#msg_resa, .res_places  {
+    position : absolute;
+}
+#info_places, #span_expired {
+    display: none; 
+    position: absolute;
+    background : white;
+    border : 1px solid #6495ED;
+    padding : 3px 5px 3px 5px;
+    font-weight:  normal;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius : 3px;   
+}
+#img_info:hover + #info_places {
+    display: block;
+}
+.bt_nbPlaces, .input_nbPlaces {
+    padding : 1px !important;
+    border : 1px solid #6495ED !important;
+}
+.input_nbPlaces {    
+    border : 1px solid #6495ED;
+    width : 50px;
+    margin-right: 5px;
+}
+#img_expired:hover + #span_expired {
+    display : block;
+}

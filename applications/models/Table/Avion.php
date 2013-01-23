@@ -125,6 +125,6 @@
                     ->from($this->_name,'idModeleAvion')
                     ->where('immatriculationAvion = ?', $p_immatriculationAvion)
                     ;
-            return $this->fetchRow($req)->toArray();
+            return $this->_db->fetchOne($req);
         }
     }    

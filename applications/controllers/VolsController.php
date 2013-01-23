@@ -3,7 +3,7 @@
     {
         public function init() {$this->headStyleScript = array();}
 	
-		public function indexAction()
+        public function indexAction()
         {
             $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
         }

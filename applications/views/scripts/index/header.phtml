@@ -35,9 +35,7 @@
         <div id="right_side">
             <div id="contenu">
                <!-- <input type="button" value="Se connecter" id="bt_co_layout">-->
-                <?php
-                    echo $leboutonconnexion;
-                ?>
+                <?php echo $leboutonconnexion; ?>
                     <header>
                         <div id="banniere">
                             <div id="banniere_nuage"><a href="<?php $this->baseUrl();?>/" title="Accueil"><img src="<?php echo $this->BaseUrl();?>/img/template/logo.png" alt="Insset Airline" class="head_logo"/></a></div>
@@ -78,7 +76,7 @@
                                     {
                                         foreach ($espaceAgence->lesServicesAgence as $lienService => $unServiceAgence)
                                         {
-                                            echo '<td><a href="/reservation/'.$lienService.'">'.$unServiceAgence.'</a></td>';
+                                            echo '<td><a href="/agence/'.$lienService.'">'.$unServiceAgence.'</a></td>';
                                         }
                                     }
                                     else // menu public

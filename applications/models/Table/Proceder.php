@@ -26,7 +26,7 @@
             $where[] = $this->getAdapter()->quoteInto('numeroIntervention = ?', $donnees['numeroIntervention']);
             $where[]= $this->getAdapter()->quoteInto('matriculeTechnicien = ?', $donnees['matriculeTechnicien']);
             //Zend_Debug::dump($where2);exit;
-            echo $this->update(array(
+            $this->update(array(
                     'tacheEffectuee' => $donnees['tacheEffectuee'],
                     'remarquesIntervention' => $donnees['remarquesIntervention']
                 ),$where);

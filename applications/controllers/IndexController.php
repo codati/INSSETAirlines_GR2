@@ -1,14 +1,13 @@
 <?php
 class IndexController extends Zend_Controller_Action
 {
-	public function init()
-	{
-		$this->headStyleScript = array(
-			'css' => array('nivo-slider'),
-			'js' => 'jquery.nivo.slider.pack'
-		);
-	}
-	
+    public function init()
+    {
+            $this->headStyleScript = array(
+                    'css' => array('nivo-slider'),
+                    'js' => 'jquery.nivo.slider.pack'
+            );
+    }	
     public function indexAction()
     {
         $this->view->msgDeco = $this->_getParam('decoReussie');
@@ -110,13 +109,14 @@ class IndexController extends Zend_Controller_Action
              $tableAgence = new Table_Agence;
              $agence = $tableAgence->login($user,$psw);
              
-             Zend_Session::namespaceUnset('utilisateurCourant');
+             if(session_encours())
+             {
+                Zend_Session::namespaceUnset('utilisateurCourant');
+             }
              // pour ajouter une action aux agences, ajouter une valeur dans le tableau
              $lesServicesAgences = array(
-                    'reservervol' => 'Reserver un vol',
-                    'modifier' => 'Modifier une réservation',
-                    'voir' => 'Voir ses reservations',
-                    'annuler' => 'Annuler une réservation'
+                    'reservations' => 'Reserver des places sur un vol',
+                    'gererresas' => 'Gerer mes réservations',
              );
              
              // crée la session de l'agence et ajoute des données nécéssaires
@@ -129,7 +129,7 @@ class IndexController extends Zend_Controller_Action
          }
          catch (Exception $e)
          {
-             echo $e->getMessage();exit;
+             Zend_Debug::dump($e);exit;
          }
             
     }

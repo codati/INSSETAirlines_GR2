@@ -164,6 +164,18 @@
 			$res = $this->fetchAll($req);
 			return $res->toArray();
 		}
+                /**
+                 * retourne (seulement) le matricule de l'avion pour un vol
+                 * @param integer $idVol
+                 * @return string matricule de l'avion
+                 */
+                public function getMatriculeAvionVol($idVol)
+                {
+                    $req = $this->select()
+                                ->from($this->_name, 'matriculeAvion')
+                                ->where('idVol = ?', $idVol);
+                    return $this->_db->fetchOne($req);
+                }
 		
 		/**
 		 * Change l'immatriculation de l'avion d'un vol
@@ -172,9 +184,9 @@
 		 */
 		public function changeImmatriculation($idVol, $newImmatriculation)
 		{
-			$data = array('matriculeAvion' => $newImmatriculation);
-            $where = $this->getAdapter()->quoteInto('idVol = ?', $idVol);
-            $this->update($data, $where);
+                    $data = array('matriculeAvion' => $newImmatriculation);
+                    $where = $this->getAdapter()->quoteInto('idVol = ?', $idVol);
+                    $this->update($data, $where);
 		}
 		
 		/**

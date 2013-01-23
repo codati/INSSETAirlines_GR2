@@ -3,12 +3,8 @@
     {
         public function init() {$this->headStyleScript = array();}
 	
-		public function indexAction() 
-        {   
-            $nAvion = new Table_Avion;
-            echo 'lollll!';
-
-            //$nAvion->Ajouter('TEST4', '2');
-            $nAvion->Modifier('TEST', 'newTest', '2');
-        }
-    }
+        public function indexAction() 
+        {
+            echo 'ya plus rien d\'interressant a voir ici !';
+        }        
+}
