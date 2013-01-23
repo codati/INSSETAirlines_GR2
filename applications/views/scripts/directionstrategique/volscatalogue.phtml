@@ -1,0 +1,37 @@
+<h1>Vols du catalogue</h1><br />
+
+<br />
+<input type="button" class="ajouter" id="AjouterLigne" value="Ajouter une ligne" />
+<br /><br /><br />
+
+<div id='tableau'>
+    <table>
+        <tr>
+            <th>Aéroport de départ</th>
+            <th>Aéroport d'arrivée</th>
+            <th>Périodicité du vol</th>
+            <th>Actions</th>
+        </tr>
+        <?php
+        	$cntLigne = count($this->lignes);
+			
+			if($cntLigne > 0)
+			{
+				foreach ($this->lignes as $ligne) 
+				{
+					echo '<tr>';
+					echo '<td>'.$ligne['depart'] .'<br>(' . $ligne['trigrammeAeroportDepart'] . ')</td>';
+					echo '<td>'.$ligne['arrivee'] .'<br>(' . $ligne['trigrammeAeroportArrivee'] . ')</td>';
+					echo '<td>'. $ligne['nomPeriode'] .'</td>';
+					echo '<td id="'.$ligne['idLigne'].'">';
+						echo '<img src="'.$this->baseUrl('/img/zoom.png').'" alt="Voir les vols" class="viewLigne" title="Voir les vols de la ligne" />';
+						echo '&nbsp;&nbsp;';
+						echo '<img src="'.$this->baseUrl('/img/pencil.png').'" alt="Modifier" class="modifLigne" title="Modifier la ligne"/>';
+					echo '</td>';
+					echo '</tr>';
+				}
+			}
+			else {echo '<tr><td colspan="5">Aucune Ligne</td></tr>';}
+        ?>
+    </table>
+</div>
