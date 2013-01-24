@@ -131,6 +131,9 @@ class IndexController extends Zend_Controller_Action
          {
              echo $e->getMessage();exit;
          }
+         
+         $redirector = $this->_helper->getHelper('Redirector');
+         $redirector->gotoUrl($this->view->baseUrl());
             
     }
     public function verifconnexionAction()

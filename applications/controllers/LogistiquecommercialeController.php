@@ -44,11 +44,18 @@ class LogistiquecommercialeController extends Zend_Controller_Action
         $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 
         $tableVol = new Table_Vol();
-
+        $tableEscale = new Table_Escale();
+        $tableReservation = new Table_Reservation();
+        
         $idVol = $this->getRequest()->getPost('idVol');
 
         $infosVol = $tableVol->get_InfosVol($idVol);
-        
+        $infosEscale = $tableEscale->get_InfosEscales($idVol);
+        $infosRepas = $tableReservation->GetNbTypeRepasParReservationEtParVol($idVol);
+
+        //Zend_Debug::dump($infosRepas);exit;
         $this->view->infosVol = $infosVol;
+        $this->view->infosEscale = $infosEscale;
+        $this->view->infosRepas = $infosRepas;
     }
 }
