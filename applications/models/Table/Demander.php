@@ -65,11 +65,13 @@
             try {
             $req = $this->select()->setIntegrityCheck(false)
                         ->from(array('d'=>$this->_name), '*')
-                        ->join(array('r'=>'reservation'),'r.idReservation = d.idReservation', array('idClasse', 'idVol'))
+                        ->join(array('r'=>'reservation'),'r.idReservation = d.idReservation', array('idClasse', 'idVol','idTypeRepas'))
                         ->join(array('c'=>'classe'), 'r.idClasse = c.idClasse', 'nomClasse')
+                        ->join(array('tp'=>'typerepas'), 'r.idTypeRepas = tp.idTypeRepas', 'nomTypeRepas')
                         ->where('idAgence = ?', $idAgence)
                         ->order('idReservation ASC')
                     ;
+            //echo $req->assemble();exit;
             return $this->fetchAll($req)->toArray();
             }
             catch(Exception $e)

@@ -10,12 +10,6 @@ class DrhController extends Zend_Controller_Action
         
         if(!session_encours())
         {
-            $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
-            
-            $tableTech = new Table_Technicien;
-            $lesTechs = $tableTech->getTechs();      
-            
-            $this->view->lesTechs = $lesTechs;
             $redirector = $this->_helper->getHelper('Redirector');
             $redirector->gotoUrl($this->view->baseUrl());  
         }
@@ -38,7 +32,7 @@ class DrhController extends Zend_Controller_Action
 
     public function apiAction()
     {
-        //On change de layout : pour ne pas avoir les balide body/head etc
+        //On change de layout : pour ne pas avoir les balises body/head etc
         $layout = Zend_Layout::getMvcInstance();
         $layout->setLayout('api');
 
@@ -398,35 +392,68 @@ class DrhController extends Zend_Controller_Action
     //Fab
     public function personaviguantAction()
     {
-        $this->_helper->actionStack('header','index','default',array());
+          $this->_helper->actionStack('header','index','default',array());
 
-        //On récupère tous les pilotes
-        $tPilote = new Table_Pilote;
-        $lesPilotes = $tPilote->fetchAll()->toArray();
+          //On récupère tous les pilotes
+          $tPilote = new Table_Pilote;
+          $lesPilotes = $tPilote->fetchAll()->toArray();
+          //envoi des pilotes a la vue
+          $this->view->lesPilotes = $lesPilotes;
 
-        //formulaire d'ajout de pilote
-      $formHabiliter = new Zend_Form();
-      // parametrer le formulaire
-      $formHabiliter->setMethod('post');
-      $formHabiliter->setAttrib('id','formHabiliter');
-      $formHabiliter->setAction($this->view->baseUrl().'/drh/habiliter');
+          //formulaire d'ajout de pilote
+          $formNouveauPilote = new Zend_Form();
+          // parametrer le formulaire
+          $formNouveauPilote->setMethod('post');
+          $formNouveauPilote->setAction($this->view->baseUrl().'/drh/ajouterpilote');
 
+          $eNom = new Zend_Form_Element_Text('NomPilote');
+          $eNom->setLabel('Nom du pilote : ');
 
+          $ePrenom = new Zend_Form_Element_Text('PrenomPilote');
+          $ePrenom->setLabel('Premom du pilote : ');
 
-      $eDate = new Zend_Form_Element_Text('date');
-      $eDate->setAttrib('class', 'datePick');
-      $eDate->setLabel('Date de validité du brevet :');
-      $eDate->setAttrib('readonly', true);
+          $eAdresse = new Zend_Form_Element_Text('AdressePilote');
+          $eAdresse->setLabel('Adresse du pilote : ');
 
-      $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
-      $eSubmit->setLabel('Valider');
-      $eSubmit->setAttrib('class','valider');
+          $eDate = new Zend_Form_Element_Text('dateNaissPilote');
+          $eDate->setLabel('Date de naissance (AAAA-MM-JJ) : ');
 
-      $formHabiliter->addElements(array ($eDate, $eSubmit));
-      $this->view->formHabiliter = $formHabiliter;
-        //envoi des pilotes a la vue
-        $this->view->lesPilotes = $lesPilotes;
+          $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
+          $eSubmit->setLabel('Valider');
+          $eSubmit->setAttrib('class','valider');
 
+          $formNouveauPilote->addElements(array ($eNom, $ePrenom, $eAdresse, $eDate, $eSubmit));
+          $this->view->formNouveauPilote = $formNouveauPilote;
+    }
+    //Fab
+    public function ajouterpiloteAction()
+    {
+         $this->_helper->actionStack('header','index','default',array());
+
+         $tPilote = new Table_Pilote();
+         
+         $nom = $this->getRequest()->getPost('NomPilote');
+         $prenom = $this->getRequest()->getPost('PrenomPilote');
+         $adresse = $this->getRequest()->getPost('AdressePilote');
+         $dateNais = $this->getRequest()->getPost('dateNaissPilote');
+         
+         if (empty($nom) && empty($prenom) && empty($adresse) && empty($dateNais))
+         {
+              $message = '<div class="erreur">Erreur ! Veuillez remplir tous les champs.</div>';
+         }
+         else
+         {
+              $donneesPilote = array(
+                  'prenomPilote' => $prenom,
+                  'nomPilote' => $nom,
+                  'adressePilote' => $adresse,
+                  'dateNaissancePilote' => $dateNais                                
+              );
+              
+              $tPilote->insert($donneesPilote);
+              $message = '<div class="reussi">Le pilote a bien été créé.</div>';
+         }
+         $this->view->message = $message;
     }
 }
 

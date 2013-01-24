@@ -21,16 +21,18 @@ class AgenceController extends Zend_Controller_Action
      * @param int $idVol : id du vol
      * @param int $nbPlaces : nombre de places a jouter, modifier
      * @param int $classe : classe pour laquelle modifier
+     * @param int $typeRepas : type de repas
      * @param bool $passe : si false, on vient de modifierAction()
      * @return message de confirmation ou d'erreur
      */
-    public function reserverAction($idVol =0, $nbPlaces = 0, $classe =0, $passe =true)
+    public function reserverAction($idVol =0, $nbPlaces = 0, $classe =0,$typeRepas =7, $passe =true)
     { 
         if($passe)
         {
             $idVol = $this->_getParam('idVol');
             $nbPlaces = $this->_getParam('nbPlaces');
             $classe = $this->_getParam('classe');
+            $typeRepas = $this->_getParam('typeRepas');
         }
         $espaceAgence = new Zend_Session_Namespace('agenceCourante');
         $idAgence = $espaceAgence->idAgence;
@@ -64,7 +66,7 @@ class AgenceController extends Zend_Controller_Action
             {
                 // get la reservation avec le vol et la classe
                 $tableResa = new Table_Reservation;
-                $idResaVol = $tableResa->getIdResaVol($idVol, $classe);
+                $idResaVol = $tableResa->getIdResaVol($idVol, $classe, $typeRepas);
                 
                 if($classe == 2) // premiere classe, avec id 2...
                 {
@@ -104,7 +106,7 @@ class AgenceController extends Zend_Controller_Action
                         else
                         {
                             // la demande n'existe pas, on la créée
-                            $this->creerDemande($idAgence, $idResaVol, $nbPlaces);
+                            $this->creerDemande($idAgence, $idResaVol, $nbPlaces, $typeRepas);
                         }
                         echo '<p class="reussi">Vous avez réservé '.$nbPlaces.' place(s) pour le vol n°'.$idVol.' en '.$libClasse.'.<br>
                             Réservation N° : '.$idResaVol.'
@@ -114,15 +116,10 @@ class AgenceController extends Zend_Controller_Action
                 }
                 else // aucune reservation, il faut en creer une
                 {
-                    /*
-                    * /!\ typeRepas = 7
-                    * met en "normal" par defaut
-                    * voir s'il ne faut pas le faire en dynamique
-                    */
                     $donnees = array(
                        'idClasse' => $classe,
                        'idVol' => $idVol,
-                       'idTypeRepas' => '7'
+                       'idTypeRepas' => $typeRepas
                     );
                     $tableResa->nouvelleResa($donnees); // créé une reservation
 
@@ -130,7 +127,7 @@ class AgenceController extends Zend_Controller_Action
                     $idResa = $tableResa->getAdapter()->lastInsertId();
 
                     // créé la demande de place sur cette reservation
-                    $this->creerDemande($idAgence, $idResa, $nbPlaces);
+                    $this->creerDemande($idAgence, $idResa, $nbPlaces, $typeRepas);
                     echo '<p class="reussi">Vous avez réservé '.$nbPlaces.' place(s) pour le vol n°'.$idVol.' en '.$libClasse.'.<br>
                             Réservation N° : '.$idResa.'
                         </p>';
@@ -150,7 +147,7 @@ class AgenceController extends Zend_Controller_Action
      * @param int $idResaVol : id de la reservation
      * @param int $nbPlaces : le nombre de places a ajouter
      */
-    private function creerDemande($idAgence, $idResaVol, $nbPlaces)
+    private function creerDemande($idAgence, $idResaVol, $nbPlaces, $typeRepas)
     {
         $donnees =array(
             'idAgence' => $idAgence, // changer lagence 

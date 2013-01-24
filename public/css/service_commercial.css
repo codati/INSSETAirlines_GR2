@@ -24,7 +24,7 @@
 #msg_resa, .res_places  {
     position : absolute;
 }
-#info_places, #span_expired {
+.info_places, #span_expired {
     display: none; 
     position: absolute;
     background : white;
@@ -35,7 +35,10 @@
     -webkit-border-radius: 3px;
     border-radius : 3px;   
 }
-#img_info:hover + #info_places {
+.info_places {
+    right : 0;
+}
+#img_info:hover + .info_places {
     display: block;
 }
 .bt_nbPlaces, .input_nbPlaces {
@@ -49,4 +52,10 @@
 }
 #img_expired:hover + #span_expired {
     display : block;
+}
+#lst_vol .tableau {
+    width : 97%;
+}
+.tr_cached {
+    display :none;
 }

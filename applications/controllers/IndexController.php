@@ -125,6 +125,9 @@ class IndexController extends Zend_Controller_Action
              $espaceAgence->lesServicesAgence = $lesServicesAgences;
              $espaceAgence->connecte = true; 
          }
+         
+         $redirector = $this->_helper->getHelper('Redirector');
+         $redirector->gotoUrl($this->view->baseUrl());
             
     }
     public function verifconnexionAction()

@@ -1,0 +1,94 @@
+<?php
+    $infosVol = $this->infosVol;
+    $infosEscale = $this->infosEscale;
+?>
+<div id="tableau">    
+    <table>
+        <h2 id="centrer">Informations du vol <?php echo $infosVol["idVol"]; ?></h2>
+        <tr>
+            <th rowspan="2">Informations principales</th>
+            <th>Heure de départ</th>
+            <th>Aéroport d'embarquement</th>
+            <th>Pays d'embarquement</th>
+            <th>Heure d'arrivée</th>
+            <th>Aéroport de débarquement</th>
+            <th>Pays d'embarquement</th>
+        </tr>
+        <?php
+//            Zend_Debug::dump($infosVol);Zend_Debug::dump($infosEscale);
+            
+            if($infosVol['nbEscale'] > 0)
+            {
+                $rowspan = 2 + count($infosEscale);
+            }
+            else
+            {
+                $rowspan = 1;
+            }
+            
+            echo '<tr>';
+            echo '<td>'.$infosVol["dateHeureDepartPrevueVol"].'</td>';
+            echo '<td>'.$infosVol["nomAeroportDepart"].'<br>Aéroport de '.$infosVol["villeDepart"].'</td>';
+            echo '<td>'.$infosVol["paysDepart"].'</td>';
+            echo '<td>'.$infosVol["dateHeureArriveePrevueVol"].'</td>';
+            echo '<td>'.$infosVol["nomAeroportArrivee"].'<br>Aéroport de '.$infosVol["villeArrivee"].'</td>';
+            echo '<td>'.$infosVol["paysArrivee"].'</td>';
+            echo '</tr>';
+            
+            if($infosVol['nbEscale'] > 0)
+            {
+                ?>
+                <tr>
+                    <th>Escale</th>
+                    <th>Heure d'arrivée</th>
+                    <th>Aéroport</th>
+                    <th>Pays</th>
+                    <th>Heure de départ</th>
+                    <th colspan='2'>Remarque sur le vol</th>
+                </tr>
+                <?php
+                
+                $j = 1;
+                for($i = 0 ; $i <= ($infosVol['nbEscale']-1) ; $i++)
+                {
+                    echo '<tr>';
+                    echo '<td>N°'.$j.'</td>';
+                    echo '<td>'.$infosEscale[$i]["datehDepartPrevueEscale"].'</td>';
+                    echo '<td>'.$infosEscale[$i]["nomAeroport"].'<br>Aéroport de '.$infosEscale[$i]["nomVille"].'</td>';
+                    echo '<td>'.$infosEscale[$i]["nomPays"].'</td>';
+                    echo '<td>'.$infosEscale[$i]["datehArriveePrevueEscale"].'</td>';
+                    $j++;
+                    if($j == 1)
+                    {
+                        echo '<td colspan='.$infosVol['nbEscale'].'>'.$infosVol["remarqueVol"].'</td>';
+                    }
+                    echo '</tr>';
+                }   
+            }
+            else
+            {
+                echo '<tr><th>Remarque sur le vol</th><td colspan="6">'.$infosVol["remarqueVol"].'</td></tr>';
+            }
+        ?>   
+    </table>
+</div>
+<br>
+<div id="tableau">    
+    <table>
+        <tr>
+            <th>Type de repas</th>
+            <th>Nombre de réservations</th>
+        </tr>
+        <?php
+            $infosRepas = $this->infosRepas;
+            foreach ($infosRepas as $unRepas) 
+            {
+                echo '<tr>';
+                echo '<td>'.$unRepas["nomTypeRepas"].'</td>';
+                echo '<td>'.$unRepas["nbPlaces"].'</td>';
+                echo '</tr>';
+            }
+        ?>   
+    </table>
+    <br>
+</div>
