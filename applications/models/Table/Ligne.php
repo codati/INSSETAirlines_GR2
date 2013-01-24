@@ -131,5 +131,26 @@
             $where = $this->getAdapter()->quoteInto('idLigne = ?', $idLigne);
             $this->update(array('idPeriodicite' => $idPeriode), $where);
         }
+		
+		/**
+		 * Retourne les infos sur la ligne
+		 * @author Vermeulen Maxime
+		 * @param int $idLigne : L'id de la ligne
+		 * @return array : Les infos sur la ligne
+		 */
+		public function getInfoLigne($idLigne)
+		{
+			$req = $this->select()->setIntegrityCheck(false)
+                        ->from(array('l'=>'ligne'))
+                        ->join(array('a'=>'aeroport'),'a.trigrammeAeroport = l.trigrammeAeroportDepart','a.nomAeroport as depart')
+                        ->join(array('ae'=>'aeroport'),'ae.trigrammeAeroport = l.trigrammeAeroportArrivee','ae.nomAeroport as arrivee')
+                        ->join(array('p'=>'periodicite'),'p.idPeriode = l.idPeriodicite','nomPeriode')
+						->where('l.idLigne=?',$idLigne);
+			
+			try {$res = $this->fetchRow($req);}
+			catch (Zend_Db_Exception $e) {die ($e->getMessage());}
+			
+			return $res->toArray();
+		}
     }
 ?>

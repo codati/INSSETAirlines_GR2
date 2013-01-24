@@ -260,4 +260,38 @@
                 
                 return $this->fetchAll($req)->toArray();
             }
+			
+			public function get_AllVol_PourLigne($idLigne, $limit=array(), $returnReq=false)
+			{
+				//On fait la requete pour récuperer les infos de la réservation
+				$reqNbEscales = $this->select()->setIntegrityCheck(false);
+				$reqNbEscales->from('escale', 'COUNT(numeroEscale)')
+							 ->where('idVol=v.idVol');
+				
+				$reqInfo_vol = $this->select()->setIntegrityCheck(false);
+				$reqInfo_vol->from(array('v' => 'vol'), 
+									array(
+										'idVol', 
+										'remarqueVol', 
+										'dateHeureDepartEffectiveVol',
+										'dateHeureDepartPrevueVol',
+										'dateHeureArriveeEffectiveVol',
+										'dateHeureArriveePrevueVol',
+										'nbEscale' => '('.new Zend_Db_Expr($reqNbEscales).')'
+									))
+							
+							->where('v.idLigne='.$idLigne)
+							->order('v.dateHeureDepartPrevueVol DESC');
+				
+				if($returnReq == false)
+				{
+					if(count($limit) > 0) {$reqInfo_vol->limit($limit[1], $limit[0]);}
+					
+					try {$resInfo_vol = $this->fetchAll($reqInfo_vol);}
+					catch (Zend_Db_Exception $e) {die ($e->getMessage());}
+					
+					return $resInfo_vol->toArray();
+				}
+				else {return $reqInfo_vol;}
+			}
     }

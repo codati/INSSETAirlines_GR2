@@ -1,0 +1,79 @@
+<?php
+echo '<h1>Vols de la ligne '.stripslashes($this->infosLigne['depart']).' vers '.stripslashes($this->infosLigne['arrivee']).'</h1><br />';
+echo '<input type="hidden" id="idLigne" value="'.$this->infosLigne['idLigne'].'" />';
+?>
+
+<br />
+<input type="button" class="ajouter" id="AjouterVol" value="Ajouter une ligne" />
+<br /><br /><br />
+
+<table class="tableau">
+	<tr>
+		<th>Départ prévu</th>
+		<th>Départ effectif</th>
+		<th>Arrivée prévue</th>
+		<th>Arrivée effectif</th>
+		<th>Nombre d'escale</th>
+		<th>Actions</th>
+	</tr>
+	<?php
+	$cnt = count($this->lstVol);
+	
+	if($cnt > 0)
+	{
+		foreach($this->lstVol as $val)
+		{
+			echo '<tr id="'.$val['idVol'].'" class="lstvol">';
+				echo '<td>'.$val['DepartPrevu'].'</td>';
+				echo '<td>'.$val['DepartEffectif'].'</td>';
+				echo '<td>'.$val['ArriveePrevu'].'</td>';
+				echo '<td>'.$val['ArriveeEffectif'].'</td>';
+				echo '<td>'.$val['nbEscale'].'</td>';
+				echo '<td>';
+					echo '<img src="'.$this->baseUrl('/img/pencil.png').'" alt="Modifier" class="modifVol" title="Modifier le vol"/>';
+					echo '&nbsp;&nbsp;';
+					echo '<img src="'.$this->baseUrl('/img/page_copy.png').'" alt="Dupliquer le vol" class="copyVol" title="Dupliquer le vol" />';
+				echo '</td>';
+			echo '</tr>';
+		}
+	}
+	else {echo '<tr><td colspan="6">Aucun vol sur cette ligne.</td></tr>';}
+
+echo '</table><br/>';
+echo $this->paginator;
+
+if($cnt > 0)
+{
+	foreach($this->lstVol as $val)
+	{
+		$infosEscale = $val['infosEscale'];
+		
+		echo '<div id="escale_'.$val['idVol'].'" class="bulle_escale">';
+			if(count($infosEscale) > 0)
+			{
+				$i = 1;
+				$max = count($infosEscale);
+				
+				foreach($infosEscale as $escale)
+				{
+					$arrivee = $escale['datehArriveePrevueEscale'];
+					$depart = $escale['datehDepartPrevueEscale'];
+					if(!empty($escale['datehArriveeEffectiveEscale'])) {$arrivee = $escale['datehArriveeEffectiveEscale'];}
+					if(!empty($escale['datehDepartEffectiveEscale'])) {$depart = $escale['datehDepartEffectiveEscale'];}
+					
+					echo '<div class="nomAero">'.$escale['nomAeroport'].'</div><br/>';
+					echo '<span>Arrivée : '.$arrivee.'</span><br/>';
+					echo '<span>Départ : '.$depart.'</span><br/>';
+					
+					if($i != $max)
+					{
+						echo '<hr/>';
+						$i++;
+					}
+				}
+			}
+			else {echo 'Aucune escale.';}
+		echo '</div>';
+	}
+}
+?>
