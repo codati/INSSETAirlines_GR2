@@ -1,0 +1,43 @@
+<h1>Gestion du personnel naviguant</h1><br /><br />
+<a class="ajouter" href="#" onclick="afficherForm()">NOUVEAU PILOTE</a><br /><br />
+<div id="tableau">    
+    <table>
+        <caption>Liste des pilotes</caption>
+        <tr>
+            <th>Id</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Adresse</th>
+            <th>Date de naissance</th>
+            <th>Action</th>
+        </tr>
+        <?php
+            $lesPilotes = $this->lesPilotes;
+            $locale = new Zend_Locale('fr_FR');
+            foreach ($lesPilotes as $unPilote) 
+            {
+                $unPilote["dateNaissancePilote"] = new Zend_Date($unPilote["dateNaissancePilote"],false, $locale);  
+                echo '<tr>';
+                echo '<td>'.$unPilote["idPilote"].'</td>';
+                echo '<td>'.$unPilote["nomPilote"].'</td>';
+                echo '<td>'.$unPilote["prenomPilote"].'</td>';
+                echo '<td>'.$unPilote["adressePilote"].'</td>';
+                echo '<td>'.$unPilote["dateNaissancePilote"]->toString('dd MMMM yyyy').'</td>';
+                echo '<td>
+                    <a href="'.$this->baseUrl().'/drh/modifierpilote/id/'.$unPilote["idPilote"].'" title="Modifier le pilote"><img src="'. $this->baseUrl() .'/img/pencil.png" /></a>';
+                echo '</td>';
+                echo '</tr>';
+            }
+        ?>   
+    </table>
+</div>
+
+<div id="formNouveauPilote">
+     <div id="bt_close"></div>
+     <h2>Ajouter un pilote</h2><br />
+     <p>Pour ajouter un pilote, remplissez en entier le formulaire suivant :</p><br />
+     <?php 
+          echo $this->formNouveauPilote;  
+     ?>
+</div>
+<div class="bglayer"></div>

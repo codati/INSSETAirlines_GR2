@@ -5,11 +5,6 @@ class VolsController extends Zend_Controller_Action
     {
         $this->headStyleScript = array();
 
-        if(!session_encours())
-        {
-            $redirector = $this->_helper->getHelper('Redirector');
-            $redirector->gotoUrl($this->view->baseUrl());  
-        }
     }
     public function indexAction()
     {
