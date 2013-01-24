@@ -107,4 +107,36 @@
                 Zend_Debug::dump($e);
             }
         }
+        
+        public function getIdResaVol($idVol, $classe, $idTypeRepas)
+                {
+                    $req = $this->select()
+                                ->from($this->_name, 'idReservation')
+                                ->where('idVol = ?', $idVol)
+                                ->where('idClasse = ?', $classe)
+                                ->where('idTypeRepas = ?', $idTypeRepas)
+                                ;
+                    
+                    $res = $this->_db->fetchOne($req);
+                    return isset($res) ? $res : NULL;
+                }
+                public function nouvelleResa($donnees)
+                {
+                    $this->insert($donnees);
+                }
+           
+        public function getVolEtClasse($idResa)
+        {
+            $req = $this->select()
+                        ->from($this->_name, array('idClasse','idVol'))
+                        ->where('idReservation = ?',$idResa)
+                    ;
+            
+            return $this->_db->fetchRow($req);
+        }
+        public function supprimerReservation($idResa)
+        {
+            $where = $this->getAdapter()->quoteInto('idReservation = ?', $idResa);
+            $this->delete($where);
+        }
     }
