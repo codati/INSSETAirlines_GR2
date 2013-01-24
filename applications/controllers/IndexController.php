@@ -65,7 +65,6 @@ class IndexController extends Zend_Controller_Action
          $psw = md5($this->getRequest()->getPost('input_psw'));
          $radio = $this->getRequest()->getPost('radio_form_co'); // 0 => insset, 1 => agence
          
-         try {
          if($radio == 0) /// utilisateur de l'insset
          {
              // connecte l'utilisateur
@@ -126,11 +125,6 @@ class IndexController extends Zend_Controller_Action
              $espaceAgence->lesServicesAgence = $lesServicesAgences;
              $espaceAgence->connecte = true; 
          }
-         }
-         catch (Exception $e)
-         {
-             Zend_Debug::dump($e);exit;
-         }
             
     }
     public function verifconnexionAction()
@@ -181,7 +175,6 @@ class IndexController extends Zend_Controller_Action
     public function consulterAction()
     {
         $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
-        
         $tableLigne = new Table_Ligne;
         $lignes = $tableLigne->getLignes();
         $this->view->lignes= $lignes;
