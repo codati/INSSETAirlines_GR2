@@ -26,8 +26,11 @@ function DateFormat_SQL(&$Zend_Date, $complet=true)
  * @param &Zend_Date : L'instance Zend_Date de la date
  * @param bool [opt] : Pour tout afficher ou non. Si non on affiche pas les heures/minutes. Par défault on affiche tout.
 */
-function DateFormat_View(&$Zend_Date, $complet=true)
+function DateFormat_View(&$Zend_Date, $complet=true, $jour=true)
 {
-	if($complet == true) {return $Zend_Date->toString('EEEE dd MMMM YYYY à HH:mm');}
-	else {return $Zend_Date->toString('EEEE dd MMMM YYYY');}
+	$formatJour = '';
+	if($jour == true) {$formatJour = 'EEEE ';}
+	
+	if($complet == true) {return $Zend_Date->toString($formatJour.'dd MMMM YYYY à HH:mm');}
+	else {return $Zend_Date->toString($formatJour.'dd MMMM YYYY');}
 } 
