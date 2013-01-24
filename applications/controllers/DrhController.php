@@ -386,34 +386,38 @@ class DrhController extends Zend_Controller_Action
         //Fab
         public function personaviguantAction()
         {
-            $this->_helper->actionStack('header','index','default',array());
+          $this->_helper->actionStack('header','index','default',array());
             
-            //On récupère tous les pilotes
-            $tPilote = new Table_Pilote;
-            $lesPilotes = $tPilote->fetchAll()->toArray();
+          //On récupère tous les pilotes
+          $tPilote = new Table_Pilote;
+          $lesPilotes = $tPilote->fetchAll()->toArray();
             
-            //formulaire d'ajout de pilote
-          $formHabiliter = new Zend_Form();
+          //formulaire d'ajout de pilote
+          $formNouveauPilote = new Zend_Form();
           // parametrer le formulaire
-          $formHabiliter->setMethod('post');
-          $formHabiliter->setAttrib('id','formHabiliter');
-          $formHabiliter->setAction($this->view->baseUrl().'/drh/habiliter');
+          $formNouveauPilote->setMethod('post');
+          $formNouveauPilote->setAction($this->view->baseUrl().'/drh/nouveaupilote');
 
-          
-          
-          $eDate = new Zend_Form_Element_Text('date');
-          $eDate->setAttrib('class', 'datePick');
-          $eDate->setLabel('Date de validité du brevet :');
-          $eDate->setAttrib('readonly', true);
+          $eNomPilote = new Zend_Form_Element_Text('nomPilote');
+          $eNomPilote->setLabel('Nom du pilote : ');
+
+          $ePrenomPilote = new Zend_Form_Element_Text('prenomPilote');
+          $ePrenomPilote->setLabel('Premom du pilote : ');
+
+          $eAdressePilote = new Zend_Form_Element_Text('adressePilote');
+          $eAdressePilote->setLabel('Adresse du pilote : ');
+
+          $eDateNaissPilote = new Zend_Form_Element_Text('dateNaissPilote');
+          $eDateNaissPilote->setLabel('Date de naissance (AAAA-MM-JJ) :');
           
           $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
           $eSubmit->setLabel('Valider');
           $eSubmit->setAttrib('class','valider');
           
-          $formHabiliter->addElements(array ($eDate, $eSubmit));
-          $this->view->formHabiliter = $formHabiliter;
-            //envoi des pilotes a la vue
-            $this->view->lesPilotes = $lesPilotes;
+          $formNouveauPilote->addElements(array ($eNomPilote, $ePrenomPilote, $eDateNaissPilote, $eAdressePilote, $eSubmit));
+          $this->view->formNouveauPilote = $formNouveauPilote;
+          //envoi des pilotes a la vue
+          $this->view->lesPilotes = $lesPilotes;
         
         }
 

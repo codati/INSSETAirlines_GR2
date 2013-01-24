@@ -10,7 +10,7 @@
     display:none;
     position:absolute;
     top:150px;
-    left:400px;
+    left:200px;
     background : white;
     padding : 10px;
     border : 10px solid #4D4D4D;
@@ -23,7 +23,7 @@
      width : 43px;
      height : 40px;
      background : url('../img/overlay/bt_fermer.png');
-     right : -1px;
-     top : -6px;
+     right : -25px;
+     top : -25px;
      cursor:pointer;
 }
