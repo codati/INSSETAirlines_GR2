@@ -179,7 +179,7 @@ article {margin-bottom: 60px;}
 margin-bottom: 5px;
 }
 
-input[type=submit], input[type=button], input[type=password, button, .bouton, .valider, .ajouter, .retour {
+input[type=submit], input[type=button], input[type=password], button, .bouton, .valider, .ajouter, .retour {
     background-repeat: no-repeat;
     background-position: 5px;
 
