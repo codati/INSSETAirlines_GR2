@@ -125,6 +125,29 @@
                     ->from($this->_name,'idModeleAvion')
                     ->where('immatriculationAvion = ?', $p_immatriculationAvion)
                     ;
-            return $this->fetchRow($req)->toArray();
+            return $this->_db->fetchOne($req);
+        }
+      
+        
+        public function GetAvionsDispo()
+        {
+            $req = $this->select()->setIntegrityCheck(false)
+                    ->from(array('a' => $this->_name))
+                    ->join(array('m' => 'modeleavion'), 'm.idModeleAvion=a.idModeleAvion', 'libelleModeleAvion')
+                    ->where('etatAvion = ?', 'op')
+                    ;
+//            Zend_Debug::dump($req);exit;
+            return $this->fetchAll($req)->toArray();
+        }
+        
+        public function GetAvionsDispo()
+        {
+            $req = $this->select()->setIntegrityCheck(false)
+                    ->from(array('a' => $this->_name))
+                    ->join(array('m' => 'modeleavion'), 'm.idModeleAvion=a.idModeleAvion', 'libelleModeleAvion')
+                    ->where('etatAvion = ?', 'op')
+                    ;
+//            Zend_Debug::dump($req);exit;
+            return $this->fetchAll($req)->toArray();
         }
     }    

@@ -15,5 +15,13 @@
                     'refTableClass' => 'Table_Classe'
                     )
             );
-
+        public function getNbPlacesTotales($idModeleAvion, $classe)
+        {
+            $req = $this->select()->setIntegrityCheck(false)
+                                  ->from($this->_name, 'nbPlaces')
+                                  ->where('idModeleAvion = ?', $idModeleAvion)
+                                  ->where('idClasse = ?', $classe)
+                                  ;
+            return $this->_db->fetchOne($req);
+        }
     }

@@ -1,14 +1,13 @@
 <?php
 class IndexController extends Zend_Controller_Action
 {
-	public function init()
-	{
-		$this->headStyleScript = array(
-			'css' => array('nivo-slider'),
-			'js' => 'jquery.nivo.slider.pack'
-		);
-	}
-	
+    public function init()
+    {
+            $this->headStyleScript = array(
+                    'css' => array('nivo-slider'),
+                    'js' => 'jquery.nivo.slider.pack'
+            );
+    }	
     public function indexAction()
     {
         $this->view->msgDeco = $this->_getParam('decoReussie');
@@ -110,13 +109,14 @@ class IndexController extends Zend_Controller_Action
              $tableAgence = new Table_Agence;
              $agence = $tableAgence->login($user,$psw);
              
-             Zend_Session::namespaceUnset('utilisateurCourant');
+             if(session_encours())
+             {
+                Zend_Session::namespaceUnset('utilisateurCourant');
+             }
              // pour ajouter une action aux agences, ajouter une valeur dans le tableau
              $lesServicesAgences = array(
-                    'reservervol' => 'Reserver un vol',
-                    'modifier' => 'Modifier une réservation',
-                    'voir' => 'Voir ses reservations',
-                    'annuler' => 'Annuler une réservation'
+                    'reservations' => 'Reserver des places sur un vol',
+                    'gererresas' => 'Gerer mes réservations',
              );
              
              // crée la session de l'agence et ajoute des données nécéssaires
@@ -129,7 +129,7 @@ class IndexController extends Zend_Controller_Action
          }
          catch (Exception $e)
          {
-             echo $e->getMessage();exit;
+             Zend_Debug::dump($e);exit;
          }
             
     }
@@ -176,6 +176,33 @@ class IndexController extends Zend_Controller_Action
     public function contactAction()
     {
         $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+    }
+    
+    public function consulterAction()
+    {
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        
+        $tableLigne = new Table_Ligne;
+        $lignes = $tableLigne->getLignes();
+        $this->view->lignes= $lignes;
+        
+        $nbVolsLigne = array();
+        foreach ($lignes as $ligne)
+        {
+           $nbVolsLigne[$ligne['idLigne']] = $tableLigne->getNbVolsDisponibles($ligne['idLigne']);
+        }
+        $this->view->nbVolsLigne = $nbVolsLigne;
+
+    }
+    
+    public function retardAction()
+    {
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+
+        $tableVol = new Table_Vol();
+        $retards = $tableVol->GetVolRetardataire();
+
+        $this->view->retards = $retards;
     }
 }
 

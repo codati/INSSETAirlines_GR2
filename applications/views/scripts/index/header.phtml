@@ -21,8 +21,7 @@
         }        
         // verfie que la session n'est pas nulle et que l'on y est connecté
         // le fait sur les deux sessions possibles
-        if( (!is_null($espaceSession) && ($espaceSession->connecte))
-                ||  (!is_null($espaceAgence) && ($espaceAgence->connecte)))
+        if(session_encours())
         {
             $leboutonconnexion = '<input type="button" value="Déconnexion" id="bt_deco_layout">';
         }      
@@ -35,9 +34,7 @@
         <div id="right_side">
             <div id="contenu">
                <!-- <input type="button" value="Se connecter" id="bt_co_layout">-->
-                <?php
-                    echo $leboutonconnexion;
-                ?>
+                <?php echo $leboutonconnexion; ?>
                     <header>
                         <div id="banniere">
                             <div id="banniere_nuage"><a href="<?php $this->baseUrl();?>/" title="Accueil"><img src="<?php echo $this->BaseUrl();?>/img/template/logo.png" alt="Insset Airline" class="head_logo"/></a></div>
@@ -78,14 +75,14 @@
                                     {
                                         foreach ($espaceAgence->lesServicesAgence as $lienService => $unServiceAgence)
                                         {
-                                            echo '<td><a href="/reservation/'.$lienService.'">'.$unServiceAgence.'</a></td>';
+                                            echo '<td><a href="/agence/'.$lienService.'">'.$unServiceAgence.'</a></td>';
                                         }
                                     }
                                     else // menu public
                                     {
-                                       echo '<td><a href='.$this->baseUrl().'"/lignes/consulter" title="">Consulter le catalogue</a></td>';
+                                       echo '<td><a href='.$this->baseUrl().'"/index/consulter" title="">Consulter le catalogue</a></td>';
                                        echo '<td><a href="/" title="">Offres promotionnelles</a></td>';
-                                       echo '<td><a href="'.$this->baseUrl().'/planning/retard" title="">Informations retards</a></td>';
+                                       echo '<td><a href="'.$this->baseUrl().'/index/retard" title="">Informations retards</a></td>';
                                        echo '<td><a href="'.$this->baseUrl().'/index/contact" title="">Contact</a></td>';
                                        echo '<td><a href="/index/telecharger" title="">Téléchargement</a></td>';
                                     }                                  

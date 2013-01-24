@@ -38,7 +38,7 @@
 			
 			$reqInfo_resa = $this->select()->setIntegrityCheck(false);
 			$reqInfo_resa->from(array('r' => 'reservation'), array(
-							'etatReservation' => 'etatReservation',
+							//'etatReservation' => 'etatReservation',
 							'nbEscale' => '('.new Zend_Db_Expr($reqNbEscales).')'
 						 ))
 						 ->join(array('c' => 'classe'), 'c.idClasse=r.idClasse', 'nomClasse')
@@ -76,4 +76,34 @@
 			if($resInfo_resa) {return $resInfo_resa->toArray();}
 			else {return false;}
 		}
+                public function getIdResaVol($idVol, $classe)
+                {
+                    $req = $this->select()
+                                ->from($this->_name, 'idReservation')
+                                ->where('idVol = ?', $idVol)
+                                ->where('idClasse = ?', $classe)
+                                ;
+                    
+                    $res = $this->_db->fetchOne($req);
+                    return isset($res) ? $res : NULL;
+                }
+                public function nouvelleResa($donnees)
+                {
+                    $this->insert($donnees);
+                }
+           
+        public function getVolEtClasse($idResa)
+        {
+            $req = $this->select()
+                        ->from($this->_name, array('idClasse','idVol'))
+                        ->where('idReservation = ?',$idResa)
+                    ;
+            
+            return $this->_db->fetchRow($req);
+        }
+        public function supprimerReservation($idResa)
+        {
+            $where = $this->getAdapter()->quoteInto('idReservation = ?', $idResa);
+            $this->delete($where);
+        }
     }

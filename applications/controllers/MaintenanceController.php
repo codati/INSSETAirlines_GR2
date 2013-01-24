@@ -2,7 +2,16 @@
 class MaintenanceController extends Zend_Controller_Action
 {
     public function init() {
-        $this->headStyleScript = array('css'=>'planif');        
+        $this->headStyleScript = array(
+            'css'=>'planif',
+            'js'=>'gestionrevision'
+            );             
+        
+        if(!session_encours())
+        {
+            $redirector = $this->_helper->getHelper('Redirector');
+            $redirector->gotoUrl($this->view->baseUrl());  
+        }
     }
     public function indexAction() 
     {   
@@ -160,7 +169,6 @@ class MaintenanceController extends Zend_Controller_Action
 
         $this->view->leform = $monform;
     }
-
     public function modifavionsqlAction()
     {
         $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
@@ -333,6 +341,41 @@ class MaintenanceController extends Zend_Controller_Action
         }
         
         $this->view->ajout = $ajout;
+     }
+     //
+     //
+     //
+     //
+     
+     public function gestionrevisionAction()
+     {
+         $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+         
+        $tabTech = new Table_Technicien;
+        $lesTechs = $tabTech->getTechs();
+        
+        $nomTech = array();
+        foreach($lesTechs as $unTech)
+        {
+            $nomTech[$unTech['matriculeTechnicien']] = $unTech['nomTechnicien'].' '.$unTech['prenomTechnicien'];
+        }
+         
+         // selectionner un technicien
+         $form = new Zend_Form;
+         $form->setMethod('post');
+         $form->setAttrib('id', 'formChoixTech');
+         
+         $eTech = new Zend_Form_Element_Select('sel_tech');
+         $eTech->addMultiOptions($nomTech);
+         $eTech->setLabel('Selectionnez un technicien :');
+         
+         $form->addElement($eTech);
+         $this->view->formChoixTech = $form;
+         
+         // recuperer les interventions deu techniciens
+         // bouton modif pour chaque intervention
+         
+         
      }
      
     public function gestionmodeleAction()
@@ -547,5 +590,15 @@ class MaintenanceController extends Zend_Controller_Action
             $message = '<h3 class="erreur">Modification échouée, saisie invalide<br><br>'.$libelleModele.' ne peut être vide</h3>';
         }
         $this->view->message = $message;
+    }
+    
+    public function dispoavionsAction()
+    {
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        
+        $tableAvion = new Table_Avion();
+        $avionsDispo = $tableAvion->GetAvionsDispo();
+        
+        $this->view->avionsDispo = $avionsDispo;
     }
 }
