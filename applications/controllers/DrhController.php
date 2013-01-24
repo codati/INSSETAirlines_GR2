@@ -10,12 +10,6 @@ class DrhController extends Zend_Controller_Action
         
         if(!session_encours())
         {
-            $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
-            
-            $tableTech = new Table_Technicien;
-            $lesTechs = $tableTech->getTechs();      
-            
-            $this->view->lesTechs = $lesTechs;
             $redirector = $this->_helper->getHelper('Redirector');
             $redirector->gotoUrl($this->view->baseUrl());  
         }
@@ -38,7 +32,7 @@ class DrhController extends Zend_Controller_Action
 
     public function apiAction()
     {
-        //On change de layout : pour ne pas avoir les balide body/head etc
+        //On change de layout : pour ne pas avoir les balises body/head etc
         $layout = Zend_Layout::getMvcInstance();
         $layout->setLayout('api');
 

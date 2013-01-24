@@ -189,75 +189,42 @@
                     $this->update($data, $where);
 		}
 		
-		/**
-		 * Retourne la liste des vols d'une ligne
-		 * @param int $idLigne
-		 * @param bool $orderDESC
-		 */
-		public function get_lstVol_EncoursEtAVenir_ligne($idLigne, $orderDESC)
-		{
-			$dateAct = new Zend_Date;
-			$dateActSql = DateFormat_SQL($dateAct);
-			$date24h = $dateAct->subHour(24);
-			$date24Sql = DateFormat_SQL($dateAct);
-			
-			$req = $this->select()
-						->from($this->_name)
-						->where('idLigne=?', $idLigne)
-						->where('IF(dateHeureDepartEffectiveVol = "", dateHeureDepartPrevueVol >= "'.$date24Sql.'", dateHeureDepartPrevueVol >= "'.$dateActSql.'")');
-            
-                    //On fait la requete pour r�cuperer les infos de la réservation
-                    $reqNbEscales = $this->select()->setIntegrityCheck(false);
-                    $reqNbEscales->from('escale', 'COUNT(numeroEscale)')
-                                                    ->where('idVol=v.idVol');
-                    //echo $reqNbEscales->assemble();
+        /**
+         * Retourne la liste des vols d'une ligne
+         * @param int $idLigne
+         * @param bool $orderDESC
+         */
+        public function get_lstVol_EncoursEtAVenir_ligne($idLigne, $orderDESC)
+        {
+            $dateAct = new Zend_Date;
+            $dateActSql = DateFormat_SQL($dateAct);
+            $date24h = $dateAct->subHour(24);
+            $date24Sql = DateFormat_SQL($dateAct);
 
-                    $reqInfo_vol = $this->select()->setIntegrityCheck(false);
-                    $reqInfo_vol->from(array('v' => 'vol'), array(
-                                                    'idVol', 
-                                                    'remarqueVol', 
-                                                    'dateHeureDepartEffectiveVol',
-                                                    'dateHeureDepartPrevueVol',
-                                                    'dateHeureArriveeEffectiveVol',
-                                                    'dateHeureArriveePrevueVol',
-                                                    'nbEscale' => '('.new Zend_Db_Expr($reqNbEscales).')'
-                                            ))
-                                            ->join(array('l' => 'ligne'), 'l.idLigne=v.idLigne', '')
-
-                                            ->join(array('aeDep' => 'aeroport'), 'aeDep.trigrammeAeroport=l.trigrammeAeroportDepart', array('nomAeroportDepart' => 'nomAeroport'))
-                                            ->join(array('dDep' => 'desservir'), 'dDep.trigrammeAeroport=aeDep.trigrammeAeroport', array('trigrammeAeDepart' => 'trigrammeAeroport'))
-                                            ->join(array('vDep' => 'ville'), 'vDep.idVille=dDep.idVille', array('villeDepart' => 'nomVille'))
-                                            ->join(array('pDep' => 'pays'), 'pDep.idPays=vDep.idPays', array('paysDepart' => 'nomPays'))
-
-                                            ->join(array('aeArr' => 'aeroport'), 'aeArr.trigrammeAeroport=l.trigrammeAeroportArrivee', array('nomAeroportArrivee' => 'nomAeroport'))
-                                            ->join(array('dArr' => 'desservir'), 'dArr.trigrammeAeroport=aeArr.trigrammeAeroport', array('trigrammeAeArrivee' => 'trigrammeAeroport'))
-                                            ->join(array('vArr' => 'ville'), 'vArr.idVille=dArr.idVille', array('villeArrivee' => 'nomVille'))
-                                            ->join(array('pArr' => 'pays'), 'pArr.idPays=vArr.idPays', array('paysArrivee' => 'nomPays'))
-
-                                            ->where('v.idVol='.$idVol);
-
-                    //echo $reqInfo_vol->assemble();exit;
-
-                    try {$resInfo_vol = $this->fetchRow($reqInfo_vol);}
-                    catch (Zend_Db_Exception $e) {die ($e->getMessage());}
-
-                    //echo '<pre>';print_r($resInfo_vol->toArray());echo '</pre>';exit;
-                    return $resInfo_vol->toArray();
-            }
-            public function editRemarque($idVol, $remarque)
-            {
-                $data = array('remarqueVol' => $remarque);
-                $where = $this->getAdapter()->quoteInto('idVol=?', $idVol);
-                $this->update($data, $where);
-            }
-            
-            public function GetVolRetardataire()
-            {
-                $req = $this->select()->setIntegrityCheck(false)
+            $req = $this->select()
                         ->from($this->_name)
-                        ->where('dateHeureArriveeEffectiveVol > dateHeureArriveePrevueVol')
-                        ;
-                
-                return $this->fetchAll($req)->toArray();
-            }
+                        ->where('idLigne=?', $idLigne)
+                        ->where('IF(dateHeureDepartEffectiveVol = "", dateHeureDepartPrevueVol >= "'.$date24Sql.'", dateHeureDepartPrevueVol >= "'.$dateActSql.'")');
+
+            if($orderDESC == true) {$req->order('dateHeureDepartPrevueVol DESC');}
+            else {$req->order('dateHeureDepartPrevueVol ASC');}
+
+            return $this->fetchAll($req)->toArray();
+        }
+    public function editRemarque($idVol, $remarque)
+    {
+        $data = array('remarqueVol' => $remarque);
+        $where = $this->getAdapter()->quoteInto('idVol=?', $idVol);
+        $this->update($data, $where);
     }
+
+    public function GetVolRetardataire()
+    {
+        $req = $this->select()->setIntegrityCheck(false)
+                ->from($this->_name)
+                ->where('dateHeureArriveeEffectiveVol > dateHeureArriveePrevueVol')
+                ;
+
+        return $this->fetchAll($req)->toArray();
+    }
+}

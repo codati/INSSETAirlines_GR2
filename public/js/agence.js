@@ -1,15 +1,15 @@
-$(document).ready(function() {
-    $('.td_img img').click(function() {
-       id = $(this).parents('tr').attr('id');
+$(document).ready(function() {    
+    $('.td_img img').click(function() {       
        nbPlaces = $('#resa_'+id).val();
        classe = $('.sel_classe_resa_'+id+' option:selected').val();
+       typeRepas = $('.sel_repas_resa_'+id+' option:selected').val();
 
-       leftDiv = $(this).offset().left + $(this).parent().width() + 10;
+       leftDiv = $(this).offset().left + $(this).parent().width() - 30;
        topDiv = $(this).offset().top;
        //console.log("Left:"+leftDiv);
        //console.log("Top:"+topDiv);
        
-       leftForm = $(this).offset().left - $('form#ChoixLigne select').width() - 50;
+       leftForm = $(this).offset().left - $('form#ChoixLigne select').width() - 20;
        topForm = $('form#ChoixLigne').offset().top - 5;
        
        //console.log("leftform = "+ leftForm);
@@ -17,15 +17,22 @@ $(document).ready(function() {
        
        $("body").append('<div id="msg_resa" style="top:'+topForm+'px; left:'+leftForm+'px;"></div>')
        $("body").append('<div class="res_places" style="top:'+topDiv+'px;left:'+leftDiv+'px;"></div>');
-       $.get('/agence/reserver', {idVol:id, nbPlaces:nbPlaces, classe:classe}, function(data) {
+       $.get('/agence/reserver', {idVol:id, nbPlaces:nbPlaces, classe:classe, typeRepas:typeRepas}, function(data) {
            $('.res_places').html('<img src="/img/asterisk_yellow.png" alt="asterisk"/>');
            $('#msg_resa').html(data).show();
+           $('#resa_'+id).val('0');
            setTimeout("$('#msg_resa').fadeOut(1000);", 2000);
-           setTimeout("$('.res_places').fadeOut(1000);", 2000);/**/
+           setTimeout("$('.res_places').fadeOut(1000);", 2000);/*   */
        });
     });
-});
+    $('.show').click(function() {
+       id = $(this).parents('tr').attr('id');
+       display = $("#lst_vol tr#cached_"+id).css('display');
 
+       if(display == 'none') {$("#lst_vol tr#cached_"+id).css('display', 'table-row');}
+       else {$("#lst_vol tr#cached_"+id).css('display', 'none');}
+    });
+});
 function confirmerResa(idResa) {
    haut = $('#menu table').offset().top + 5;
    gauche = $('#menu table').offset().left + $('#menu table').width() + 100;

@@ -76,12 +76,13 @@
 			if($resInfo_resa) {return $resInfo_resa->toArray();}
 			else {return false;}
 		}
-                public function getIdResaVol($idVol, $classe)
+                public function getIdResaVol($idVol, $classe, $idTypeRepas)
                 {
                     $req = $this->select()
                                 ->from($this->_name, 'idReservation')
                                 ->where('idVol = ?', $idVol)
                                 ->where('idClasse = ?', $classe)
+                                ->where('idTypeRepas = ?', $idTypeRepas)
                                 ;
                     
                     $res = $this->_db->fetchOne($req);

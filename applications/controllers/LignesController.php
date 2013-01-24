@@ -5,7 +5,6 @@ class LignesController extends Zend_Controller_Action
     public function init() 
     {
         $this->headStyleScript = array();
-    
         if(!session_encours())
         {
             $redirector = $this->_helper->getHelper('Redirector');
@@ -108,4 +107,3 @@ class LignesController extends Zend_Controller_Action
         $redirector->gotoUrl($this->view->baseUrl('/lignes/premodif/idligne/'.$idLigne));
     }
 }
-?>
