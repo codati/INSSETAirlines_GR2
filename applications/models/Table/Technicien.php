@@ -25,7 +25,7 @@
         }
         public function getTechs()
         {
-            $req = $this->select()->setIntegrityCheck(false)
+            $req = $this->select()
                     ->from($this->_name, '*')
                     ;
             

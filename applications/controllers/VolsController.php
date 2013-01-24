@@ -1,18 +1,12 @@
 <?php
 class VolsController extends Zend_Controller_Action
 {
-    public function init() 
+    public function init()
     {
         $this->headStyleScript = array();
 
-        if(!session_encours())
-        {
-            $redirector = $this->_helper->getHelper('Redirector');
-            $redirector->gotoUrl($this->view->baseUrl());  
-        }
     }
-
-            public function indexAction()
+    public function indexAction()
     {
         $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
     }
@@ -60,4 +54,3 @@ class VolsController extends Zend_Controller_Action
         $this->view->lesEscales = $lesEscales;
     }
 }
-?>

@@ -1,0 +1,51 @@
+<h2 id="centrer">Vos réservations : </h2>
+<div class="tableau">    
+    <table>        
+        <tr>
+            <th>N° de reservation</th>
+            <th>Vol</th>
+            <th>Classe</th>
+            <th>Infos repas</th>
+            <th>Places réservées</th>
+            <th>Date</th>
+            <th>Etat</th>
+            <th>Action</th>
+        </tr>
+<?php
+    foreach($this->resasAgence as $uneResa)
+    {
+        echo '<tr>
+            <td>'.$uneResa['idReservation'].'</td>
+            <td>'.$uneResa['idVol'].'</td>
+            <td>'.$uneResa['nomClasse'].'</td>
+            <td>'.$uneResa['nomTypeRepas'].'
+            <td id="transform_'.$uneResa['idReservation'].'">'.$uneResa['nbPlacesReservees'].'</td>
+            <td>'.$uneResa['dateDemande'].'</td>
+            <td>'.$uneResa['etatDemande'].'</td>
+                <td>';
+            if($uneResa['etatDemande'] == "En attente")
+            {
+                echo '<img src="'.$this->baseUrl('/img/accept.png').'" alt="confirmer" onclick="confirmerResa('.$uneResa['idReservation'].')" title="Confirmer ces places"/>&nbsp;&nbsp;&nbsp;';
+                
+            }
+            elseif($uneResa['etatDemande'] == "Expirée")
+            {   
+                echo '<img id="img_expired" src="'.$this->baseUrl('/img/expired.png').'" alt="expiré" width="16px" height="16px"/>&nbsp;&nbsp;&nbsp;';
+                echo '<span id="span_expired">
+                        Le temps de validation est écoulé. Vous disposiez de 2h pour valider cette reservation. <br>
+                        Veuillez refaire une demande
+                    </span>';                
+            }
+            else
+            {
+                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+            }
+            echo '
+                <img src="'.$this->baseUrl('/img/pencil.png').'" alt="modifier" onclick="premodifResa('.$uneResa['idReservation'].')" title="Modifier le nombre de places"/>&nbsp;&nbsp;&nbsp;
+                <img src="'.$this->baseUrl('/img/cross.png').'" alt="supprimer" onclick="supprimerResa('.$uneResa['idReservation'].')" title="Supprimer cette réservation"/>                
+            </td>
+        </tr>';
+    }
+?>
+    </table>
+</div>

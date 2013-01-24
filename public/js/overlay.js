@@ -13,7 +13,7 @@ $(document).ready(function() {
         $('#erreur_co').remove();
         $('.bglayer').show();
         $('#overlay').fadeIn(1000);
-        $('#input_psw').focus(); // remettre #input_user a la fin
+        $('#input_user').focus(); 
     });
     $('#bt_deco_layout').click(function() {
        window.location = "/index/logout"; 
