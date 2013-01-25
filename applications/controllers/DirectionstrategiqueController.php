@@ -88,40 +88,59 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 	
 	public function modifierligneAction()
 	{
-		$this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));  
 		$idLigne = (int) $this->_getParam('ligne', null);
-		
 		if($idLigne != null)
 		{
-			$this->view->message = $this->_helper->FlashMessenger->getMessages();
+			$this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+	        
+	        $this->view->message = $this->_helper->FlashMessenger->getMessages();
+	        
+	        $tableLigne = new Table_Ligne;
+	        $tablePeriodicite = new Table_Periodicite;
+	        $tableAero = new Table_Aeroport();
+	        
+			$infosLigne = $tableLigne->getUneLigne($idLigne);
+	        $trigs = $tableAero->getAeroports();
+	        
+	        $aeros = array();
+	        foreach($trigs as $trig) {$aeros[$trig['trigrammeAeroport']] = $trig['nomAeroport'];}
 			
-			$TableLigne = new Table_Ligne;
-			$tablePeriodicite = new Table_Periodicite();
+	        $eTrigDepart = new Zend_Form_Element_Select('trigDepart');
+		    $eTrigDepart->setLabel('Choississez un aéroport de départ : ');             
+	        $eTrigDepart->addMultiOptions($aeros);
+			$eTrigDepart->setValue($infosLigne['trigrammeAeroportDepart']);
+	        
+	        $eTrigArrivee = new Zend_Form_Element_Select('trigArrivee');
+	        $eTrigArrivee->setLabel('Choississez un aéroport d\'arrivée : ');
+	        $eTrigArrivee->addMultiOptions($aeros);
+			$eTrigArrivee->setValue($infosLigne['trigrammeAeroportArrivee']);
+	        
+	        $periodLigne = $tableLigne->getPeriodiciteLigne($idLigne);
+	        $periodicites = $tablePeriodicite->getPeriodicites();        
+	        $newPeriodicites = array();
 			
-			$periodicites = $tablePeriodicite->getPeriodicites();
-			$newPeriodicites = array();
-			foreach($periodicites as $periodicite) {$newPeriodicites[$periodicite['idPeriode']] = $periodicite['nomPeriode'];}
-			
-			$form = new Zend_Form;
-			$form->setMethod('post');
-			$form->setAction('/lignes/modifier');
-			
-			$ePeriod = new Zend_Form_Element_Select('periodicite');
-			$ePeriod->setLabel('Periodicité :');
-			$ePeriod->addMultiOptions($newPeriodicites);
-			
-			$eSubmit = new Zend_Form_Element_Submit('sub_ligne');
-			$eSubmit->setName('Modifier');
-			$eSubmit->setAttrib('class','valider');
-			
-			$form->addElements(array(
-				$ePeriod,
-				$eSubmit
-			));
-			
-			$infosLigne = $TableLigne->getInfoLigne($idLigne);
-			$this->view->infosLigne = $infosLigne;
-			$this->view->formeditligne = $form;
+	        foreach($periodicites as $periodicite) {$newPeriodicites[$periodicite['idPeriode']] = $periodicite['nomPeriode'];}
+	        $form = new Zend_Form;
+	        $form->setMethod('post');
+	        $form->setAction('/lignes/modifier/idligne/'.$idLigne);
+	        
+	        $ePeriode = new Zend_Form_Element_Select('sel_periode');
+	        $ePeriode->setLabel('Changer la periodicité :');
+	        $ePeriode->addMultiOptions($newPeriodicites);
+	        $ePeriode->setValue($periodLigne);
+	        
+	        $eSubmit = new Zend_Form_Element_Submit('sub_modifLigne');
+	        $eSubmit->setName('Modifier');
+	        $eSubmit->setAttrib('class', 'valider');
+	        
+	        $form->addElements(array(
+	            $eTrigDepart,
+	            $eTrigArrivee,
+	            $ePeriode,
+	            $eSubmit
+	        ));
+	        $this->view->laLigne = $infosLigne;
+	        $this->view->formModif = $form;
 		}
 		else {$this->_helper->redirector('index', 'directionstrategique');}
 	}

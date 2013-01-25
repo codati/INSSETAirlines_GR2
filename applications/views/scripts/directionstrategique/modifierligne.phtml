@@ -1,11 +1,22 @@
-<h1>Ajouter une ligne</h1>
+<h1>Modifier une ligne</h1>
 <?php
-echo '<dt>Aéroport de départ :</dt><dd>'.stripslashes($this->infosLigne['depart']).'<dd>';
-echo '<dt>Aéroport d\'arrivée :</dt><dd>'.stripslashes($this->infosLigne['arrivee']).'<dd>';
-
+    // affiche le message s'il y en a un
     if (!empty($this->message))
     {
         echo $this->message[0]; 
     }
-    echo $this->formeditligne;
+    // si on a trouvé une ligne
+    if($this->laLigne)
+    {
+        echo '<p>Vous modifiez la ligne : '.$this->laLigne['depart'].' -> '.$this->laLigne['arrivee'].'</p>'; 
+      
+        // on affiche le formulaire de modification de ligne
+        echo $this->formModif;
+    }
+    else
+    {
+        // message d'erreur, ligne non trouvée
+        echo '<p>Cette ligne n\'existe pas. Veuillez vérifier les entrées</p>';
+    }
 ?>
+    <a href="/directionstrategique" class="retour" id="ret" style="margin-left: 95px;">Retour</a>

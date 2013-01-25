@@ -126,10 +126,14 @@
         {
             $this->insert($donnees);
         }
-        public function modifier($idPeriode, $idLigne)
+        public function modifier($donnees, $idLigne)
         {
             $where = $this->getAdapter()->quoteInto('idLigne = ?', $idLigne);
-            $this->update(array('idPeriodicite' => $idPeriode), $where);
+            $this->update(array(
+            	'idPeriodicite' => $donnees['idPeriodicite'],
+            	'trigrammeAeroportDepart' => $donnees['trigrammeAeroportDepart'],
+            	'trigrammeAeroportArrivee' => $donnees['trigrammeAeroportArrivee']
+			), $where);
         }
 		
 		/**
