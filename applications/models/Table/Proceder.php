@@ -25,11 +25,20 @@
         {
             $where[] = $this->getAdapter()->quoteInto('numeroIntervention = ?', $donnees['numeroIntervention']);
             $where[]= $this->getAdapter()->quoteInto('matriculeTechnicien = ?', $donnees['matriculeTechnicien']);
-            //Zend_Debug::dump($where2);exit;
-            $this->update(array(
+
+            return $this->update(array(
                     'tacheEffectuee' => $donnees['tacheEffectuee'],
                     'remarquesIntervention' => $donnees['remarquesIntervention']
                 ),$where);
+        }
+        public function getIntersTech($idTech)
+        {
+            $req = $this->select()->setIntegrityCheck(false)
+                        ->from($this->_name,'*')
+                        ->join(array('i'=>'intervention'), 'i.numeroIntervention = proceder.numeroIntervention', '*')
+                        ->where('matriculeTechnicien = ?', $idTech)
+                    ;
+            return $this->fetchAll($req)->toArray();
         }
 
     }

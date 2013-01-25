@@ -25,6 +25,8 @@ h1 {
 
 h2 {
     font-size: 1.250em;
+    text-align : center;
+    margin-bottom : 10px;
 }
 
 h2#centrer {

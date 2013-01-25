@@ -37,3 +37,30 @@
     clear : both;
     margin-top : -10px !important;
 }
+.tinterTech {
+    width : 100% !important;
+}
+.tinterTech td {
+    font-size : 1em !important;
+}
+.tr_interventions {
+    border-top : 3px solid #6495ED;
+}
+#div_img {
+    float:right;
+    right:50px;
+    position:absolute;
+}
+#formChoixTech {
+    margin : 10px auto;
+    width : 350px;
+}
+#formChoixTech #sel_tech-label {
+    width : 180px;
+    float: left;
+    line-height: 1.7;
+}
+#h1planif {
+    margin-bottom : 20px;
+    text-align : center;
+}

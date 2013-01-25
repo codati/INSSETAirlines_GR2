@@ -1,5 +1,6 @@
 $(document).ready(function() {    
-    $('.td_img img').click(function() {       
+    $('.td_img img').click(function() { 
+       id = $(this).parents('tr').attr('id');      
        nbPlaces = $('#resa_'+id).val();
        classe = $('.sel_classe_resa_'+id+' option:selected').val();
        typeRepas = $('.sel_repas_resa_'+id+' option:selected').val();
