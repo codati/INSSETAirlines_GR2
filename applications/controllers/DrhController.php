@@ -464,9 +464,37 @@ class DrhController extends Zend_Controller_Action
     //Fab
     public function modifierpiloteAction()
     {
+         
           $this->_helper->actionStack('header','index','default',array());
           $tPilote = new Table_Pilote(); 
           $idPilote = $this->_getParam('id');
+           $nom = $this->getRequest()->getPost('NomPilote');
+         $prenom = $this->getRequest()->getPost('PrenomPilote');
+         $adresse = $this->getRequest()->getPost('AdressePilote');
+         $dateNais = $this->getRequest()->getPost('dateNaissPilote');
+         if (empty($nom) && empty($prenom) && empty($adresse) && empty($dateNais))
+         {
+              $message = '<div class="information">Remplissez le formulaire ci-dessous.</div>'; 
+         }
+         else
+         {
+              $donneesPilote = array(
+                  'prenomPilote' => $prenom,
+                  'nomPilote' => $nom,
+                  'adressePilote' => $adresse,
+                  'dateNaissancePilote' => $dateNais                                
+              );
+              
+              try {
+              $where = $tPilote->getAdapter()->quoteInto('idPilote = ?', $idPilote); 
+              $tPilote->update($donneesPilote, $where);           
+              } catch (Exception $exc) {
+                   echo $exc->getMessage();
+              }
+
+
+              $message = '<div class="reussi">Le pilote a bien été modifié.</div>';
+         }
           $lePilote = $tPilote->find($idPilote)->toArray();
           $lePilote = $lePilote[0];
           //Zend_Debug::dump($lePilote);exit;
@@ -475,7 +503,7 @@ class DrhController extends Zend_Controller_Action
           $formPilote = new Zend_Form();
           // parametrer le formulaire
           $formPilote->setMethod('post');
-          $formPilote->setAction($this->view->baseUrl().'/drh/modifierpilote');
+          $formPilote->setAction($this->view->baseUrl().'/drh/modifierpilote/id/'.$idPilote);
 
           $eNom = new Zend_Form_Element_Text('NomPilote');
           $eNom->setLabel('Nom du pilote : ');
@@ -503,8 +531,12 @@ class DrhController extends Zend_Controller_Action
           $eSubmit->setLabel('Valider');
           $eSubmit->setAttrib('class','valider');
           $formPilote->addElements(array ($eNom, $ePrenom, $eAdresse, $eDate, $eSubmit));
-          $this->view->formPilote = $formPilote;     
           
+          $this->view->formPilote = $formPilote;     
+          $this->view->message = $message;     
+          
+         
+        
           
     }
 }
