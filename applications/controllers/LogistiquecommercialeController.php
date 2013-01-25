@@ -17,6 +17,10 @@ class LogistiquecommercialeController extends Zend_Controller_Action
     {
         $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
         
+        $espaceSession = new Zend_Session_Namespace('RetourTest');
+        echo $espaceSession->messageErreur;
+        $espaceSession->messageErreur = "";
+        
         $monform = new Zend_Form;
 
         // parametrer le formulaire
@@ -42,20 +46,31 @@ class LogistiquecommercialeController extends Zend_Controller_Action
     public function infosduvolAction()
     {
         $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
-
+        
+        $idVol = $this->getRequest()->getPost('idVol');
+        
         $tableVol = new Table_Vol();
         $tableEscale = new Table_Escale();
         $tableReservation = new Table_Reservation();
         
-        $idVol = $this->getRequest()->getPost('idVol');
+        if((preg_match('#^[0-9\-]+$#', $idVol)) AND ($tableVol->existeVol($idVol)))
+        {        
+            $infosVol = $tableVol->get_InfosVol($idVol);
+            $infosEscale = $tableEscale->get_InfosEscales($idVol);
+            $infosRepas = $tableReservation->GetNbTypeRepasParReservationEtParVol($idVol);
 
-        $infosVol = $tableVol->get_InfosVol($idVol);
-        $infosEscale = $tableEscale->get_InfosEscales($idVol);
-        $infosRepas = $tableReservation->GetNbTypeRepasParReservationEtParVol($idVol);
-
-        //Zend_Debug::dump($infosRepas);exit;
-        $this->view->infosVol = $infosVol;
-        $this->view->infosEscale = $infosEscale;
-        $this->view->infosRepas = $infosRepas;
+            //Zend_Debug::dump($infosRepas);exit;
+            $this->view->infosVol = $infosVol;
+            $this->view->infosEscale = $infosEscale;
+            $this->view->infosRepas = $infosRepas;
+        }
+        else
+        {
+            $espaceSession = new Zend_Session_Namespace('RetourTest');
+            $espaceSession->messageErreur = '<h3 class="erreur">Saisie invalide.</h3>';
+            
+            $redirector = $this->_helper->getHelper('Redirector');
+            $redirector->gotoUrl($this->view->baseUrl('/logistiquecommerciale/infosvol'));
+        }
     }
 }

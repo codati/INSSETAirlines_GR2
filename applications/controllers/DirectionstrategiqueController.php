@@ -88,15 +88,36 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 	
 	public function modifierligneAction()
 	{
-		$this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));  
 		$idLigne = (int) $this->_getParam('ligne', null);
-		
 		if($idLigne != null)
 		{
-			$this->view->message = $this->_helper->FlashMessenger->getMessages();
+			$this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+	        
+	        $this->view->message = $this->_helper->FlashMessenger->getMessages();
+	        
+	        $tableLigne = new Table_Ligne;
+	        $tablePeriodicite = new Table_Periodicite;
+	        $tableAero = new Table_Aeroport();
+	        
+			$infosLigne = $tableLigne->getUneLigne($idLigne);
+	        $trigs = $tableAero->getAeroports();
+	        
+	        $aeros = array();
+	        foreach($trigs as $trig) {$aeros[$trig['trigrammeAeroport']] = $trig['nomAeroport'];}
 			
-			$TableLigne = new Table_Ligne;
-			$tablePeriodicite = new Table_Periodicite();
+	        $eTrigDepart = new Zend_Form_Element_Select('trigDepart');
+		    $eTrigDepart->setLabel('Choississez un aéroport de départ : ');             
+	        $eTrigDepart->addMultiOptions($aeros);
+			$eTrigDepart->setValue($infosLigne['trigrammeAeroportDepart']);
+	        
+	        $eTrigArrivee = new Zend_Form_Element_Select('trigArrivee');
+	        $eTrigArrivee->setLabel('Choississez un aéroport d\'arrivée : ');
+	        $eTrigArrivee->addMultiOptions($aeros);
+			$eTrigArrivee->setValue($infosLigne['trigrammeAeroportArrivee']);
+	        
+	        $periodLigne = $tableLigne->getPeriodiciteLigne($idLigne);
+	        $periodicites = $tablePeriodicite->getPeriodicites();        
+	        $newPeriodicites = array();
 			
 			$periodicites = $tablePeriodicite->getPeriodicites();
 			$newPeriodicites = array();
