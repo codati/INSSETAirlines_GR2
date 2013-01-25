@@ -119,28 +119,30 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 	        $periodicites = $tablePeriodicite->getPeriodicites();        
 	        $newPeriodicites = array();
 			
-	        foreach($periodicites as $periodicite) {$newPeriodicites[$periodicite['idPeriode']] = $periodicite['nomPeriode'];}
-	        $form = new Zend_Form;
-	        $form->setMethod('post');
-	        $form->setAction('/lignes/modifier/idligne/'.$idLigne);
-	        
-	        $ePeriode = new Zend_Form_Element_Select('sel_periode');
-	        $ePeriode->setLabel('Changer la periodicité :');
-	        $ePeriode->addMultiOptions($newPeriodicites);
-	        $ePeriode->setValue($periodLigne);
-	        
-	        $eSubmit = new Zend_Form_Element_Submit('sub_modifLigne');
-	        $eSubmit->setName('Modifier');
-	        $eSubmit->setAttrib('class', 'valider');
-	        
-	        $form->addElements(array(
-	            $eTrigDepart,
-	            $eTrigArrivee,
-	            $ePeriode,
-	            $eSubmit
-	        ));
-	        $this->view->laLigne = $infosLigne;
-	        $this->view->formModif = $form;
+			$periodicites = $tablePeriodicite->getPeriodicites();
+			$newPeriodicites = array();
+			foreach($periodicites as $periodicite) {$newPeriodicites[$periodicite['idPeriode']] = $periodicite['nomPeriode'];}
+			
+			$form = new Zend_Form;
+			$form->setMethod('post');
+			$form->setAction('/lignes/modifier/idligne/'.$idLigne);
+			
+			$ePeriod = new Zend_Form_Element_Select('periodicite');
+			$ePeriod->setLabel('Periodicité :');
+			$ePeriod->addMultiOptions($newPeriodicites);
+			
+			$eSubmit = new Zend_Form_Element_Submit('sub_ligne');
+			$eSubmit->setName('Modifier');
+			$eSubmit->setAttrib('class','valider');
+			
+			$form->addElements(array(
+				$ePeriod,
+				$eSubmit
+			));
+			
+			$infosLigne = $TableLigne->getInfoLigne($idLigne);
+			$this->view->infosLigne = $infosLigne;
+			$this->view->formeditligne = $form;
 		}
 		else {$this->_helper->redirector('index', 'directionstrategique');}
 	}

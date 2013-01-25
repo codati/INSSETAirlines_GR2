@@ -218,14 +218,14 @@
             $this->update($data, $where);
         }
 
-        public function GetVolRetardataire()
-        {
-            $req = $this->select()->setIntegrityCheck(false)
-                    ->from($this->_name)
-                    ->where('dateHeureArriveeEffectiveVol > dateHeureArriveePrevueVol')
-                    ;
-                    return $this->fetchAll($req)->toArray();
-        }
+    public function GetVolRetardataire()
+    {
+        $req = $this->select()->setIntegrityCheck(false)
+                ->from($this->_name)
+                ->where('dateHeureArriveeEffectiveVol > dateHeureArriveePrevueVol')
+                ;
+		return $this->fetchAll($req)->toArray();
+    }
 			
         public function get_AllVol_PourLigne($idLigne, $limit=array(), $returnReq=false)
         {

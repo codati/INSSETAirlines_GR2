@@ -69,7 +69,7 @@
                         ->join(array('c'=>'classe'), 'r.idClasse = c.idClasse', 'nomClasse')
                         ->join(array('tp'=>'typerepas'), 'r.idTypeRepas = tp.idTypeRepas', 'nomTypeRepas')
                         ->where('idAgence = ?', $idAgence)
-                        ->order('idReservation ASC')
+                        ->order(array('idVol ASC','idReservation ASC'))
                     ;
             //echo $req->assemble();exit;
             return $this->fetchAll($req)->toArray();
