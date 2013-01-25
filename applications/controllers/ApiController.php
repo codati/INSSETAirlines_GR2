@@ -195,7 +195,7 @@ class ApiController extends Zend_Controller_Action
                     'tacheEffectuee' => $tacheEff,
                     'remarquesIntervention' => $remarques
                 );
-                $tableProceder->modifier($donnees);
+                $modif = $tableProceder->modifier($donnees);
                 $InfosRetour['erreur'] = 0;  
             }
             else 
