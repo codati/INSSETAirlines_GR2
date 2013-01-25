@@ -8,7 +8,7 @@ class ApiController extends Zend_Controller_Action
 		$layout->setLayout('api');
 	}
 	
-	public function indexAction() {echo 'index'; exit;}
+	public function indexAction() {echo ''; exit;}
 	
 	public function infosresajsonAction()
 	{

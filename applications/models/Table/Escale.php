@@ -36,7 +36,8 @@
                                         ->join(array('d' => 'desservir'), 'd.trigrammeAeroport=e.trigrammeAeroport', '')
                                         ->join(array('v' => 'ville'), 'v.idVille=d.idVille', 'nomVille')
                                         ->join(array('p' => 'pays'), 'p.idPays=v.idPays', 'nomPays')
-                                        ->where('e.idVol='.$idVol);
+                                        ->where('e.idVol='.$idVol)
+										->order('e.datehArriveePrevueEscale ASC');
 
 			//echo $reqInfosEscales->assemble();
 			//exit;

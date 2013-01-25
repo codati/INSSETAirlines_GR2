@@ -1,1 +1,24 @@
-.ajouter, .viewLigne, .modifLigne, .supprLigne {cursor: pointer;}
+.ajouter, .viewLigne, .modifLigne, .supprLigne, .modifVol, .copyVol {cursor: pointer;}
+
+.bulle_escale
+{
+	display: none;
+	border: 1px solid #6495ed;
+	padding: 5px;
+	
+	position: absolute;
+}
+
+.bulle_escale hr
+{
+	width: 100%;
+	border: 1px dotted #6495ed;
+	margin: 10px 0px;
+}
+
+.bulle_escale div.nomAero
+{
+	font-weight: bold;
+	margin-bottom: 3px;
+	text-align: center;
+}

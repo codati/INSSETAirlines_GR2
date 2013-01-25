@@ -1,0 +1,11 @@
+<h1>Ajouter une ligne</h1>
+<?php
+echo '<dt>Aéroport de départ :</dt><dd>'.stripslashes($this->infosLigne['depart']).'<dd>';
+echo '<dt>Aéroport d\'arrivée :</dt><dd>'.stripslashes($this->infosLigne['arrivee']).'<dd>';
+
+    if (!empty($this->message))
+    {
+        echo $this->message[0]; 
+    }
+    echo $this->formeditligne;
+?>
