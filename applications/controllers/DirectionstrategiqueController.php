@@ -104,7 +104,7 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 			
 			$form = new Zend_Form;
 			$form->setMethod('post');
-			$form->setAction('/lignes/modifier');
+			$form->setAction('/lignes/modifier/idligne/'.$idLigne);
 			
 			$ePeriod = new Zend_Form_Element_Select('periodicite');
 			$ePeriod->setLabel('Periodicité :');

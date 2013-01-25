@@ -20,7 +20,7 @@
             <td>'.$uneResa['nomClasse'].'</td>
             <td>'.$uneResa['nomTypeRepas'].'
             <td id="transform_'.$uneResa['idReservation'].'">'.$uneResa['nbPlacesReservees'].'</td>
-            <td>'.$uneResa['dateDemande'].'</td>
+            <td>'.DateFormat_View(new Zend_Date($uneResa['dateDemande'])).'</td>
             <td>'.$uneResa['etatDemande'].'</td>
                 <td>';
             if($uneResa['etatDemande'] == "En attente")
