@@ -1,0 +1,44 @@
+<h2>Liste des interventions pour <?php echo $this->nomTech.' ('.$this->idTech.')'; ?></h2>
+<input id="matriculeTech" type="hidden" name="hid_numTech" value="<?php echo $this->idTech; ?>"/>
+<table>
+    <tr>
+        <th>N°</th>
+        <th>Prevue le</th>
+        <th>Type</th>
+        <th>Matricule de l'avion</th>
+        <th>Travail à effectuer</th>
+    </tr>
+    
+<?php 
+    foreach($this->lesInters as $uneInter)
+    {  
+        echo '<tr class="tr_interventions" id="recupTaf_'.$uneInter['numeroIntervention'].'">
+            <td rowspan="2">'.$uneInter['numeroIntervention'].'</td>
+            <td>'.DateFormat_View(new Zend_Date($uneInter['datePrevueIntervention']), false).'</td>
+            <td>'.$uneInter['typeIntervention'].'</td>
+            <td>'.$uneInter['immatriculationAvion'].'</td>
+            <td class="taff">'.$uneInter['taf'].'</td>';
+      ?>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <table class="tinterTech">
+                    <tr>
+                        <th>Réalisée le</th>
+                        <th>Tache effectuée</th>
+                        <th>Remarques</th>
+                    </tr>
+                    
+                <?php
+                     echo '<tr id="int_'.$uneInter['numeroIntervention'].'" class="ligneInter" >
+                        <td>'.DateFormat_View(new Zend_Date($uneInter['dateEffectiveIntervention']), false).'</td>
+                        <td class="tacheEff">'.$uneInter['tacheEffectuee'].'</td>
+                        <td class="remarques">'.$uneInter['remarquesIntervention'].'</td>
+                        <td class="changeImg"><img src="'.$this->baseUrl('/img/pencil.png').'" alt="pencil" title="Modifier cette intervention" onclick="modifierIntervention('.$uneInter['numeroIntervention'].','.$this->idTech.')" /></td>        
+                    </tr>';
+                ?>
+                </table>
+            </td>
+            </tr>
+  <?php  } ?>
+</table>

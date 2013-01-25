@@ -2,7 +2,7 @@
     $infosVol = $this->infosVol;
     $infosEscale = $this->infosEscale;
 ?>
-<div id="tableau">    
+<div class="tableau">    
     <table>
         <h2 id="centrer">Informations du vol <?php echo $infosVol["idVol"]; ?></h2>
         <tr>
@@ -12,7 +12,7 @@
             <th>Pays d'embarquement</th>
             <th>Heure d'arrivée</th>
             <th>Aéroport de débarquement</th>
-            <th>Pays d'embarquement</th>
+            <th>Pays de débarquement</th>
         </tr>
         <?php
 //            Zend_Debug::dump($infosVol);Zend_Debug::dump($infosEscale);
@@ -73,7 +73,7 @@
     </table>
 </div>
 <br>
-<div id="tableau">    
+<div class="tableau">    
     <table>
         <tr>
             <th>Type de repas</th>

@@ -342,11 +342,6 @@ class MaintenanceController extends Zend_Controller_Action
         
         $this->view->ajout = $ajout;
      }
-     //
-     //
-     //
-     //
-     
      public function gestionrevisionAction()
      {
          $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
@@ -371,11 +366,45 @@ class MaintenanceController extends Zend_Controller_Action
          
          $form->addElement($eTech);
          $this->view->formChoixTech = $form;
+     }
+     public function getintertechAction()
+     {
+         $layout = Zend_Layout::getMvcInstance();
+         $layout->setLayout('api');
          
-         // recuperer les interventions deu techniciens
-         // bouton modif pour chaque intervention
+         $idTech = $this->_getParam('tech');
+         $nomTech = $this->_getParam('nomTech');
          
+         $tableProceder = new Table_Proceder;
+         $this->view->lesInters = $tableProceder->getIntersTech($idTech);
+         $this->view->idTech = $idTech;
+         $this->view->nomTech = $nomTech;
+     }
+     public function modifierinterventionAction()
+     {
+         $numIntervention = $this->_getParam('numInter');
+         $idTech = $this->_getParam('idTechnicien');
+         $nvTacheEff = $this->_getparam('modifTache');
+         $nvRemarque = $this->_getParam('modifRem');
          
+         $donnees = array(
+             'numeroIntervention' => $numIntervention,
+             'matriculeTechnicien' => $idTech,
+             'tacheEffectuee' => $nvTacheEff,
+             'remarquesIntervention' => $nvRemarque
+         );
+         
+         $tableProceder = new Table_Proceder;
+         $modif = $tableProceder->modifier($donnees);
+         if($modif != 0)
+         {
+             echo '<p class="reussi">Modification réussie !</p>';
+         }
+         else
+         {
+             echo '<p class="erreur">Modification échouée... Veuillez réessayer</p>';
+         }
+         exit;
      }
      
     public function gestionmodeleAction()
