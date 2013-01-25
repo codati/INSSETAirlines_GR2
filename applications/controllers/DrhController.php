@@ -408,15 +408,21 @@ class DrhController extends Zend_Controller_Action
 
           $eNom = new Zend_Form_Element_Text('NomPilote');
           $eNom->setLabel('Nom du pilote : ');
+          $eNom->setAttrib('required', 'required');
 
           $ePrenom = new Zend_Form_Element_Text('PrenomPilote');
           $ePrenom->setLabel('Premom du pilote : ');
+          $ePrenom->setAttrib('required', 'required');
 
           $eAdresse = new Zend_Form_Element_Text('AdressePilote');
           $eAdresse->setLabel('Adresse du pilote : ');
-
+          $eAdresse->setAttrib("required", "required");
+          
           $eDate = new Zend_Form_Element_Text('dateNaissPilote');
           $eDate->setLabel('Date de naissance (AAAA-MM-JJ) : ');
+          $eDate->setAttrib("required", "required");
+          $eDate->setAttrib("dateFormat", "yy-mm-dd");
+          $eDate->setAttrib('class','datePick');
 
           $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
           $eSubmit->setLabel('Valider');
@@ -455,6 +461,51 @@ class DrhController extends Zend_Controller_Action
          }
          $this->view->message = $message;
     }
-    //fdjfbdubdfudbudbuiosdh
+    //Fab
+    public function modifierpiloteAction()
+    {
+          $this->_helper->actionStack('header','index','default',array());
+          $tPilote = new Table_Pilote(); 
+          $idPilote = $this->_getParam('id');
+          $lePilote = $tPilote->find($idPilote)->toArray();
+          $lePilote = $lePilote[0];
+          //Zend_Debug::dump($lePilote);exit;
+
+          
+          $formPilote = new Zend_Form();
+          // parametrer le formulaire
+          $formPilote->setMethod('post');
+          $formPilote->setAction($this->view->baseUrl().'/drh/modifierpilote');
+
+          $eNom = new Zend_Form_Element_Text('NomPilote');
+          $eNom->setLabel('Nom du pilote : ');
+          $eNom->setValue($lePilote['nomPilote']);
+          $eNom->setAttrib("required", "required");
+          
+          $ePrenom = new Zend_Form_Element_Text('PrenomPilote');
+          $ePrenom->setLabel('Premom du pilote : ');
+          $ePrenom->setValue($lePilote['prenomPilote']);
+          $ePrenom->setAttrib("required", "required");
+
+          $eAdresse = new Zend_Form_Element_Text('AdressePilote');
+          $eAdresse->setLabel('Adresse du pilote : ');
+          $eAdresse->setValue($lePilote['adressePilote']);    
+          $eAdresse->setAttrib("required", "required");
+
+          $eDate = new Zend_Form_Element_Text('dateNaissPilote');
+          $eDate->setLabel('Date de naissance (AAAA-MM-JJ) : ');
+          $eDate->setValue($lePilote['dateNaissancePilote']);
+          $eDate->setAttrib("required", "required");
+          $eDate->setAttrib("dateFormat", "yy-mm-dd");
+          $eDate->setAttrib('class','datePick');
+          
+          $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
+          $eSubmit->setLabel('Valider');
+          $eSubmit->setAttrib('class','valider');
+          $formPilote->addElements(array ($eNom, $ePrenom, $eAdresse, $eDate, $eSubmit));
+          $this->view->formPilote = $formPilote;     
+          
+          
+    }
 }
 

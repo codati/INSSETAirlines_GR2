@@ -209,12 +209,6 @@
 
             return $this->fetchAll($req)->toArray();
         }
-    public function editRemarque($idVol, $remarque)
-    {
-        $data = array('remarqueVol' => $remarque);
-        $where = $this->getAdapter()->quoteInto('idVol=?', $idVol);
-        $this->update($data, $where);
-    }
 
     public function GetVolRetardataire()
     {
@@ -231,15 +225,6 @@
                 $this->update($data, $where);
             }
             
-            public function GetVolRetardataire()
-            {
-                $req = $this->select()->setIntegrityCheck(false)
-                        ->from($this->_name)
-                        ->where('dateHeureArriveeEffectiveVol > dateHeureArriveePrevueVol')
-                        ;
-                
-                return $this->fetchAll($req)->toArray();
-            }
 			
 			public function get_AllVol_PourLigne($idLigne, $limit=array(), $returnReq=false)
 			{
