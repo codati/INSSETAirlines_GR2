@@ -9,7 +9,7 @@ function prepare() {
        classe = $('.sel_classe_resa_'+idNum+' option:selected').val();
        typeRepas = $('.sel_repas_resa_'+idNum+' option:selected').val();
 
-       leftDiv = $(this).offset().left + $(this).parent().width() - 30;
+       leftDiv = $(this).offset().left + $(this).parent().width() - 10;
        topDiv = $(this).offset().top;
        //console.log("Left:"+leftDiv);
        //console.log("Top:"+topDiv);
