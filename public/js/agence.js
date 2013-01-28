@@ -1,9 +1,13 @@
-$(document).ready(function() {    
+$(document).ready(function() {
+   prepare();
+});
+function prepare() { 
     $('.td_img img').click(function() { 
        id = $(this).parents('tr').attr('id');      
-       nbPlaces = $('#resa_'+id).val();
-       classe = $('.sel_classe_resa_'+id+' option:selected').val();
-       typeRepas = $('.sel_repas_resa_'+id+' option:selected').val();
+       idNum = id.substr('7');
+       nbPlaces = $('#resa_'+idNum).val();
+       classe = $('.sel_classe_resa_'+idNum+' option:selected').val();
+       typeRepas = $('.sel_repas_resa_'+idNum+' option:selected').val();
 
        leftDiv = $(this).offset().left + $(this).parent().width() - 30;
        topDiv = $(this).offset().top;
@@ -18,29 +22,29 @@ $(document).ready(function() {
        
        $("body").append('<div id="msg_resa" style="top:'+topForm+'px; left:'+leftForm+'px;"></div>')
        $("body").append('<div class="res_places" style="top:'+topDiv+'px;left:'+leftDiv+'px;"></div>');
-       $.get('/agence/reserver', {idVol:id, nbPlaces:nbPlaces, classe:classe, typeRepas:typeRepas}, function(data) {
+       $.get('/agence/reserver', {idVol:idNum, nbPlaces:nbPlaces, classe:classe, typeRepas:typeRepas}, function(data) {
            $('.res_places').html('<img src="/img/asterisk_yellow.png" alt="asterisk"/>');
            $('#msg_resa').html(data).show();
-           $('#resa_'+id).val('0');
+           $('#resa_'+idNum).val('0');
            setTimeout("$('#msg_resa').fadeOut(1000);", 2000);
            setTimeout("$('.res_places').fadeOut(1000);", 2000);/*   */
        });
     });
-    $('.show').click(function() {
+     $('.show').click(function() {
        id = $(this).parents('tr').attr('id');
        display = $("#lst_vol tr#cached_"+id).css('display');
 
        if(display == 'none') {$("#lst_vol tr#cached_"+id).css('display', 'table-row');}
        else {$("#lst_vol tr#cached_"+id).css('display', 'none');}
     });
-});
+}
 function confirmerResa(idResa) {
    haut = $('#menu table').offset().top + 5;
    gauche = $('#menu table').offset().left + $('#menu table').width() + 100;
    $.get('/agence/confirmer',{idReservation:idResa}, function(data) {
-      location.reload(true);
-      $("body").append('<div id="confirmResa" style="position:absolute;top:'+haut+'px; left:'+gauche+'px;">'+data+'</div>');
-      setTimeout("$('#msg_resa').fadeOut(1000);", 2000);
+       //$('#prepend').prepend(data);
+      $('section').empty();     // on vide le contenu de la page
+      $('section').html(data);  // ici data == contenu de gererresas.phtml
    });
 }
 function premodifResa(idResa) {
@@ -52,13 +56,18 @@ function premodifResa(idResa) {
 function modifier(idResa) {
     nvNbPlaces = $('#test_'+idResa).val();
     $.get('/agence/modifier/', {idReservation:idResa, nvNbPlaces:nvNbPlaces}, function(data) {
-        $('div.tableau').append('<br>'+data);
-        location.reload(true);
+        fermerP();
+        $('#prepend').prepend(data);
+        $('#transform_'+idResa).empty();
+        $('#transform_'+idResa).html(nvNbPlaces);
     });
 }
 function supprimerResa(idResa) {
     $.get('/agence/supprimer/',{idReservation:idResa}, function(data) {
-       $('div.tableau').append('<br>'+data);
+       $('#append').append(data);
        location.reload(true);
     });
+}
+function fermerP() {
+    $('.rel').remove();
 }
