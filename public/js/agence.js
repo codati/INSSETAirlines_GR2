@@ -23,6 +23,9 @@ function prepare() {
        $("body").append('<div id="msg_resa" style="top:'+topForm+'px; left:'+leftForm+'px;"></div>')
        $("body").append('<div class="res_places" style="top:'+topDiv+'px;left:'+leftDiv+'px;"></div>');
        $.get('/agence/reserver', {idVol:idNum, nbPlaces:nbPlaces, classe:classe, typeRepas:typeRepas}, function(data) {
+           if(data[0]== 1) { // data est un message de reussite  
+             data = data.substr(1);
+           }
            $('.res_places').html('<img src="/img/asterisk_yellow.png" alt="asterisk"/>');
            $('#msg_resa').html(data).show();
            $('#resa_'+idNum).val('0');
@@ -56,16 +59,25 @@ function premodifResa(idResa) {
 function modifier(idResa) {
     nvNbPlaces = $('#test_'+idResa).val();
     $.get('/agence/modifier/', {idReservation:idResa, nvNbPlaces:nvNbPlaces}, function(data) {
+        if(data[0]== 1) { // data est un message de reussite      
+            attente(idResa);
+            data = data.substr(1);
+        }
         fermerP();
         $('#prepend').prepend(data);
         $('#transform_'+idResa).empty();
         $('#transform_'+idResa).html(nvNbPlaces);
+        
     });
+}
+function attente(idResa) {
+    $.get('/agence/remettreattente', {idReservation:idResa});
 }
 function supprimerResa(idResa) {
     $.get('/agence/supprimer/',{idReservation:idResa}, function(data) {
-       $('#append').append(data);
-       location.reload(true);
+       $('#prepend').prepend(data);
+       tr = $('#transform_'+idResa).parents('tr');
+       $(tr).remove();
     });
 }
 function fermerP() {
