@@ -139,4 +139,14 @@
             $where = $this->getAdapter()->quoteInto('idReservation = ?', $idResa);
             $this->delete($where);
         }
+        
+        //Place bloquées (abandonné)
+        public function GetVolReserve()
+        {
+            $req = $this->select()->setIntegrityCheck(false)
+                    ->from(array($this->_name), 'idReservation')
+                    ;
+            
+            return $this->fetchAll($req)->toArray();
+        }
     }
