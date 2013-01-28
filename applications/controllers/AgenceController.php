@@ -28,16 +28,16 @@ class AgenceController extends Zend_Controller_Action
      * @param bool $passe : si false, on vient de modifierAction()
      * @return message de confirmation ou d'erreur
      */
-    //public function reserverAction($idVol =0, $nbPlaces = 0, $classe =0,$typeRepas =7, $passe =true)
-    public function reserverAction()
+    public function reserverAction($idVol =0, $nbPlaces = 0, $classe =0,$typeRepas =7, $passe =true)
+    //public function reserverAction()
     { 
-        //if($passe)
-        //{
+        if($passe)
+        {
             $idVol = $this->_getParam('idVol');
             $nbPlaces = $this->_getParam('nbPlaces');
             $classe = $this->_getParam('classe');
             $typeRepas = $this->_getParam('typeRepas');
-       // }
+        }
         $espaceAgence = new Zend_Session_Namespace('agenceCourante');
         $idAgence = $espaceAgence->idAgence;
 
@@ -248,6 +248,7 @@ class AgenceController extends Zend_Controller_Action
         $tablereservation = new Table_Reservation;
         $volClasseRepas = $tablereservation->getVolClasseTypeRepas($idResa);
         
+        $this->reserverAction($volClasseRepas['idVol'], $nbPlaces, $volClasseRepas['idClasse'], $volClasseRepas['idTypeRepas'], false);
         // remettre etat a en attente
         $tableDemander = new Table_Demander;
         $tableDemander->setEnAttente($idResa, $idAgence);       
