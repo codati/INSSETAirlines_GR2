@@ -140,3 +140,4 @@
             $where = $this->getAdapter()->quoteInto('idReservation = ?', $idResa);
             $this->delete($where);
         }
+    }

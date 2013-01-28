@@ -103,33 +103,4 @@
             $where[]= $this->getAdapter()->quoteInto('idAgence = ?', $idAgence);
             $this->delete($where);
         }
-        
-        // Place bloquées (abandonné)
-        public function GetNbPlacesBloquees($p_idReservation)
-        {
-//            SELECT
-//                DISTINCT(d.idReservation),
-//                r.idVol, 
-//                SUM(d.nbPlacesReservees) AS nbPlace,
-//                c.nomClasse
-//            FROM demander d
-//            JOIN reservation r
-//                ON d.idReservation = r.idReservation
-//            JOIN classe c
-//                ON c.idClasse = r.idClasse
-//            WHERE r.idVol = $p_idVol
-//            AND d.etatDemande IN (En attente, Validée)
-//            GROUP BY r.idVol;            
-            
-            $req = $this->select()->setIntegrityCheck(false)
-                    ->from(array('d' => $this->_name), array('r.idVol', 'nbPlaces'=>'SUM(d.nbPlacesReservees)'))
-                    ->join(array('r' => 'reservation'), 'd.idReservation = r.idReservation', 'd.idReservation')
-                    ->join(array('c' => 'classe'), 'c.idClasse = r.idClasse', 'c.nomClasse')
-                    ->where('d.idReservation = ?', $p_idReservation)
-                    ->where('d.etatDemande IN (?)', array('En attente', 'Validée'))
-                    ->order('r.idVol')
-                    ;
-            
-            return $this->fetchAll($req)->toArray();
-        }
     }
