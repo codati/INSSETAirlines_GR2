@@ -97,9 +97,10 @@
             $where[]= $this->getAdapter()->quoteInto('idAgence = ?', $idAgence);
             $this->update(array('etatDemande'=>'En attente'), $where);
         }
-        public function supprimerDemande($idResa)
+        public function supprimerDemande($idResa, $idAgence)
         {
             $where[]= $this->getAdapter()->quoteInto('idReservation = ?', $idResa);
+            $where[]= $this->getAdapter()->quoteInto('idAgence = ?', $idAgence);
             $this->delete($where);
         }
     }

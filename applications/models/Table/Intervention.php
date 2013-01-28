@@ -58,7 +58,7 @@
             try {
             $reqInter = $this->select()
                             ->setIntegrityCheck(false)
-                            ->from($this->_name, 'numeroIntervention, immatriculationAvion, datePrevueIntervention, typeIntervention, taf')
+                            ->from($this->_name, array('numeroIntervention','immatriculationAvion','datePrevueIntervention','typeIntervention','taf'))
                             ->join(array('p'=>'proceder'),'p.numeroIntervention = intervention.numeroIntervention')
                             ->where('p.matriculeTechnicien = ?', $matriculeTech)
                             ->where('dateEffectiveIntervention is null')

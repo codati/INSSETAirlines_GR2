@@ -265,4 +265,19 @@
         {
             return ((bool)$this->find($idVol)->toArray());
         }
+		
+	public function copy($idRefVol)
+	{
+		$req = $this->select()->from($this->_name)->where('idVol=?',$idRefVol);
+		$res = $this->fetchRow($req)->toArray();
+		
+		unset(
+			$res['idVol'], 
+			$res['dateHeureDepartEffectiveVol'], 
+			$res['dateHeureArriveeEffectiveVol'], 
+			$res['remarqueVol'], 
+			$res['matriculeAvion']
+		);
+		$this->insert($res);
+	}
 }

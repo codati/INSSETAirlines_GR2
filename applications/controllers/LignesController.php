@@ -58,7 +58,7 @@ class LignesController extends Zend_Controller_Action
     {
         $trigDepart = $this->getRequest()->getPost('trigDepart');
         $trigArrivee = $this->getRequest()->getPost('trigArrivee');
-        $idPeriode = $this->getRequest()->getPost('sel_periode');
+        $idPeriode = $this->getRequest()->getPost('periodicite');
 		
         $idLigne = $this->_getParam('idligne');
        // echo $idPeriode;exit;

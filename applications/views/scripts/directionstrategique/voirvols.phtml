@@ -1,10 +1,13 @@
 <?php
 echo '<h1>Vols de la ligne '.stripslashes($this->infosLigne['depart']).' vers '.stripslashes($this->infosLigne['arrivee']).'</h1><br />';
 echo '<input type="hidden" id="idLigne" value="'.$this->infosLigne['idLigne'].'" />';
+
+// affiche le message s'il y en a un
+if(!empty($this->message)) {echo $this->message[0];}
 ?>
 
 <br />
-<input type="button" class="ajouter" id="AjouterVol" value="Ajouter une ligne" />
+<input type="button" class="ajouter" id="AjouterVol" value="Ajouter un vol" />
 <br /><br /><br />
 
 <table class="tableau">

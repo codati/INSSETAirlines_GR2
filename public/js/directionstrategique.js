@@ -55,18 +55,19 @@ $(document).ready(function()
 	$(".modifVol").click(function()
 	{
 		id = $(this).parents('tr').attr('id');
-		window.location.href = "/directionstrategique/modifVol/vol/"+id;
+		window.location.href = "/directionstrategique/modifvol/vol/"+id;
 	});
 	
 	$(".copyVol").click(function()
 	{
-		id = $(this).parents('tr').attr('id');
-		window.location.href = "/directionstrategique/copyVol/vol/"+id;
+		idL = $("#idLigne").val();
+		idV = $(this).parents('tr').attr('id');
+		window.location.href = "/directionstrategique/copyvol/vol/"+idV+"/ligne/"+idL;
 	});
 	
 	$("#AjouterVol").click(function()
 	{
 		id = $("#idLigne").val();
-		window.location.href = "/directionstrategique/ajouterVol/ligne/"+id;
+		window.location.href = "/directionstrategique/ajoutervol/ligne/"+id;
 	});
 });
