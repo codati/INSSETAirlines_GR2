@@ -1,4 +1,10 @@
-<h2 id="centrer">Vos réservations : </h2>
+<?php
+    if($this->reussi)
+    {
+        echo $this->msg.$this->img.'</p>';
+    }  
+?>
+<h2 id="prepend">Vos réservations : </h2>
 <div class="tableau">    
     <table>        
         <tr>
@@ -11,7 +17,7 @@
             <th>Etat</th>
             <th>Action</th>
         </tr>
-<?php
+<?php 
     foreach($this->resasAgence as $uneResa)
     {
         echo '<tr>
@@ -49,3 +55,4 @@
 ?>
     </table>
 </div>
+<?php if($this->reussi) {exit;} ?>

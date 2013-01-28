@@ -2,12 +2,15 @@
 
 class AgenceController extends Zend_Controller_Action
 {
+    private $img = '';
+        
     public function init()
     {
             $this->headStyleScript = array(
                 'css' => 'service_commercial',
                 'js' => array('agence','service_exploitation')
             );
+            $this->img = '<img class="img_fermer" width="16px" height="16px" src="'.$this->view->baseUrl('/img/close.png').'" alt="close" title="Fermer" onclick="fermerP()" />';
     }	    
     /**
      * appelle l'action de serviceexploitation controller en passant un parametre qui permet la modif et l'ajout de code
@@ -26,6 +29,7 @@ class AgenceController extends Zend_Controller_Action
      * @return message de confirmation ou d'erreur
      */
     public function reserverAction($idVol =0, $nbPlaces = 0, $classe =0,$typeRepas =7, $passe =true)
+    //public function reserverAction()
     { 
         if($passe)
         {
@@ -36,7 +40,7 @@ class AgenceController extends Zend_Controller_Action
         }
         $espaceAgence = new Zend_Session_Namespace('agenceCourante');
         $idAgence = $espaceAgence->idAgence;
-        
+
         //$idAgence = 1;  // pour les tests
         // verifie que l'on saisi bien un nombre, et qu'il est superieur ou egal à 0
         if(is_numeric($nbPlaces) && $nbPlaces > 0)
@@ -59,7 +63,7 @@ class AgenceController extends Zend_Controller_Action
 
             if($nbPlaces > $nbPlacesTotales) // on demande plus de places que la classe ne contient
             {
-                echo '<p class="erreur">Ce modele ne contient que '.$nbPlacesTotales.' places pour cette classe.</p>';
+                echo '<p class="erreur rel">Ce modele ne contient que '.$nbPlacesTotales.' places pour cette classe.'.$this->img;
                 exit;
             }
             else
@@ -92,7 +96,7 @@ class AgenceController extends Zend_Controller_Action
                     }
                     if($nbPlaces > $nbPlacesDispo) // plus ou pas assez de places dispos
                     {
-                        echo '<p class="erreur">Impossible. Il reste '.$nbPlacesDispo.' places dans cette classe.</p>';
+                        echo '<p class="erreur rel">Impossible. Il reste '.$nbPlacesDispo.' places dans cette classe.'.$this->img;
                         exit;
                     }
                     else    // assez de places dispos
@@ -106,11 +110,11 @@ class AgenceController extends Zend_Controller_Action
                         else
                         {
                             // la demande n'existe pas, on la créée
-                            $this->creerDemande($idAgence, $idResaVol, $nbPlaces, $typeRepas);
+                            $this->creerDemande($idAgence, $idResaVol, $nbPlaces);
                         }
-                        echo '<p class="reussi">Vous avez réservé '.$nbPlaces.' place(s) pour le vol n°'.$idVol.' en '.$libClasse.'.<br>
-                            Réservation N° : '.$idResaVol.'
-                        </p>';
+                        // ne pas virer le "1", tres important pour le JS
+                        echo '1<p class="reussi rel">Vous avez réservé '.$nbPlaces.' place(s) pour le vol n°'.$idVol.' en '.$libClasse.'.<br>
+                            Réservation N° : '.$idResaVol.$this->img;
                         exit;
                     }
                 }
@@ -127,9 +131,10 @@ class AgenceController extends Zend_Controller_Action
                     $idResa = $tableResa->getAdapter()->lastInsertId();
 
                     // créé la demande de place sur cette reservation
-                    $this->creerDemande($idAgence, $idResa, $nbPlaces, $typeRepas);
-                    echo '<p class="reussi">Vous avez réservé '.$nbPlaces.' place(s) pour le vol n°'.$idVol.' en '.$libClasse.'.<br>
-                            Réservation N° : '.$idResa.'
+                    $this->creerDemande($idAgence, $idResa, $nbPlaces);
+                    // ne pas virer le "1", tres important pour le JS
+                    echo '1<p class="reussi rel">Vous avez réservé '.$nbPlaces.' place(s) pour le vol n°'.$idVol.' en '.$libClasse.'.<br>
+                            Réservation N° : '.$idResa.$this->img.'
                         </p>';
                 }
             }
@@ -137,7 +142,7 @@ class AgenceController extends Zend_Controller_Action
         }
         else
         {
-            echo '<p class="erreur">Seuls les nombres positifs sont acceptés</p>';
+            echo '<p class="erreur rel">Seuls les nombres positifs sont acceptés'.$this->img;
             exit;
         }
     }
@@ -147,7 +152,7 @@ class AgenceController extends Zend_Controller_Action
      * @param int $idResaVol : id de la reservation
      * @param int $nbPlaces : le nombre de places a ajouter
      */
-    private function creerDemande($idAgence, $idResaVol, $nbPlaces, $typeRepas)
+    private function creerDemande($idAgence, $idResaVol, $nbPlaces)
     {
         $donnees =array(
             'idAgence' => $idAgence, // changer lagence 
@@ -162,7 +167,7 @@ class AgenceController extends Zend_Controller_Action
      * recupere, expire ou non une reservation et les affiches
      * @param int $idAgence : id de l'agence
      */
-    public function gererresasAction()
+    public function gererresasAction($reussi =null, $msg=null)
     {        
         $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
         $espaceAgence = new Zend_Session_Namespace('agenceCourante');
@@ -195,6 +200,9 @@ class AgenceController extends Zend_Controller_Action
             $mesResas = $tableDemander->getResasAgence($idAgence);
         }
         
+        $this->view->msg = $msg;
+        $this->view->reussi = $reussi;
+        $this->view->img = $this->img;
         $this->view->resasAgence = $mesResas;
     }
     /**
@@ -213,12 +221,17 @@ class AgenceController extends Zend_Controller_Action
         $res = $tableDemander->confirmer($idResa, $idAgence);
         if($res == 1)
         {
-            echo '<p class="reussi">Vos places ont étés confirmées à tant !</p>';
+            // balise p pas fermée : normal
+            $msg = '<p class="reussi rel">Vos places ont étés confirmées à tant !';            
         }
         else
         {
-            echo '<p class="erreur">Erreur lors de la requête. Veuillez réessayer</p>';
+            echo '<p class="erreur rel">Erreur lors de la requête. Veuillez réessayer';
         }
+        // va rechercher l'action gererresas pour reparcourir les résas et donc recuperer les modifs effectuées
+        $this->gererresasAction(true,$msg);
+        // affiche le contenu de la vue
+        echo $this->render('gererresas');
         exit;
     }
     /**
@@ -231,20 +244,22 @@ class AgenceController extends Zend_Controller_Action
     {
         $idResa = $this->_getParam('idReservation');
         $nbPlaces = $this->_getParam('nvNbPlaces');
+
+        $tablereservation = new Table_Reservation;
+        $volClasseRepas = $tablereservation->getVolClasseTypeRepas($idResa);
+         
+        
+        $this->reserverAction($volClasseRepas['idVol'], $nbPlaces, $volClasseRepas['idClasse'], $volClasseRepas['idTypeRepas'], false);      
+        exit;
+    }
+    public function remettreattenteAction()
+    {
+        $idResa = $this->_getParam('idReservation');
         $espaceAgence = new Zend_Session_Namespace('agenceCourante');
         $idAgence = $espaceAgence->idAgence;
-        
-        $tablereservation = new Table_Reservation;
-        $vol_classe = $tablereservation->getVolEtClasse($idResa);
-        
         // remettre etat a en attente
         $tableDemander = new Table_Demander;
-        $tableDemander->setEnAttente($idResa, $idAgence);
-        
-        // appel a l'action reserver, pour la verif de saisie, nombre de places ; enregistrement, modifs ; erreurs
-        $this->reserverAction($vol_classe['idVol'], $nbPlaces, $vol_classe['idClasse'], false);
-        
-        exit;
+        $tableDemander->setEnAttente($idResa, $idAgence); 
     }
     /**
      * Supprime une reservation, quelque soit son etat
@@ -260,9 +275,7 @@ class AgenceController extends Zend_Controller_Action
         $tableDemander = new Table_Demander;
         $tableDemander->supprimerDemande($idResa, $idAgence);
         
-        $tableResa = new Table_Reservation;
-        $tableResa->supprimerReservation($idResa);
-        echo '<p class="reussi">Réservation supprimée</p>';
+        echo '<p class="reussi rel">Réservation supprimée'.$this->img.'</p>';
         exit;
     }
 }

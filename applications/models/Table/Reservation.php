@@ -125,28 +125,18 @@
                     $this->insert($donnees);
                 }
            
-        public function getVolEtClasse($idResa)
+        public function getVolClasseTypeRepas($idResa)
         {
             $req = $this->select()
-                        ->from($this->_name, array('idClasse','idVol'))
+                        ->from($this->_name, array('idClasse','idVol','idTypeRepas'))
                         ->where('idReservation = ?',$idResa)
                     ;
             
             return $this->_db->fetchRow($req);
         }
+
         public function supprimerReservation($idResa)
         {
             $where = $this->getAdapter()->quoteInto('idReservation = ?', $idResa);
             $this->delete($where);
         }
-        
-        //Place bloquées (abandonné)
-        public function GetVolReserve()
-        {
-            $req = $this->select()->setIntegrityCheck(false)
-                    ->from(array($this->_name), 'idReservation')
-                    ;
-            
-            return $this->fetchAll($req)->toArray();
-        }
-    }
