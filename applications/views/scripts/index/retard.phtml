@@ -6,10 +6,12 @@
             <th>Vol</th>
             <th>Depart prévue</th>
             <th>Arrivée prévue</th>
+            <th>Arrivée effective</th>
             <th>Informations</th>
         </tr>
         <?php
             $lesRetards = $this->retards;
+//            Zend_Debug::dump($lesRetards);exit;
             foreach ($lesRetards as $unRetard) 
             {
                 echo '<tr>';
@@ -17,6 +19,7 @@
                 echo '<td>'.$unRetard["idVol"].'</td>';
                 echo '<td>'.$unRetard["dateHeureDepartPrevueVol"].'</td>';
                 echo '<td>'.$unRetard["dateHeureArriveePrevueVol"].'</td>';
+                echo '<td>'.$unRetard["dateHeureArriveeEffectiveVol"].'</td>';
                 echo '<td>'.$unRetard["remarqueVol"].'</td>';
                 echo '</tr>';
             }

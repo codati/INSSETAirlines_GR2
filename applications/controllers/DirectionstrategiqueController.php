@@ -130,19 +130,22 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 			$ePeriod = new Zend_Form_Element_Select('periodicite');
 			$ePeriod->setLabel('Periodicité :');
 			$ePeriod->addMultiOptions($newPeriodicites);
+			$ePeriod->setValue($infosLigne['idPeriodicite']);
 			
 			$eSubmit = new Zend_Form_Element_Submit('sub_ligne');
 			$eSubmit->setName('Modifier');
 			$eSubmit->setAttrib('class','valider');
 			
 			$form->addElements(array(
+	            $eTrigDepart,
+	            $eTrigArrivee,
 				$ePeriod,
 				$eSubmit
 			));
 			
-			$infosLigne = $TableLigne->getInfoLigne($idLigne);
-			$this->view->infosLigne = $infosLigne;
-			$this->view->formeditligne = $form;
+			$infosLigne = $tableLigne->getInfoLigne($idLigne);
+			$this->view->laLigne = $infosLigne;
+			$this->view->formModif = $form;
 		}
 		else {$this->_helper->redirector('index', 'directionstrategique');}
 	}
@@ -220,22 +223,49 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 			
 			$this->view->lstVol = $lstVol;
 			$this->view->paginator = $paginator;
+		
+			$copyOk = $this->_getParam('copy', false);
+			if($copyOk == true) {$this->view->message = $this->_helper->FlashMessenger->getMessages();}
 		}
 	}
 	
 	public function ajoutervolAction()
 	{
+		$idLigne = $this->_getParam('ligne', null);
 		
+		if($idLigne != null)
+		{
+			
+		}
+		else {$this->_helper->redirector('index', 'directionstrategique');}
 	}
 	
 	public function modifiervolAction()
 	{
 		
+		$idVol = $this->_getParam('vol', null);
+		$idLigne = $this->_getParam('ligne', null);
+		
+		if($idRefVol != null && $idLigne != null)
+		{
+			
+		}
+		else {$this->_helper->redirector('index', 'directionstrategique');}
 	}
 	
 	public function copyvolAction()
 	{
+		$idRefVol = $this->_getParam('vol', null);
+		$idLigne = $this->_getParam('ligne', null);
 		
+		if($idRefVol != null && $idLigne != null)
+		{
+			$tableVol = new Table_Vol;
+			$tableVol->copy($idRefVol);
+			$this->_helper->FlashMessenger('<div class="reussi">Copie du vol réussie.</div>');
+			$this->_helper->redirector('voirvols', 'directionstrategique', null, array('copy' => true, 'ligne' => $idLigne));
+		}
+		else {$this->_helper->redirector('index', 'directionstrategique');}
 	}
 }
 
