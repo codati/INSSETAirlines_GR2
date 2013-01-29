@@ -73,4 +73,18 @@ class LogistiquecommercialeController extends Zend_Controller_Action
             $redirector->gotoUrl($this->view->baseUrl('/logistiquecommerciale/infosvol'));
         }
     }
+    
+    //Fab
+    public function gererpromosAction()
+    {
+          $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+          
+          /*
+           * Récupérer tous les vols dont : 
+           * le départ < à un mois
+           * taux remplissage < à 50%
+           * qui n'ont pas encore de promo 
+           */
+          
+    }
 }
