@@ -38,6 +38,7 @@
                         ->join(array('i'=>'intervention'), 'i.numeroIntervention = proceder.numeroIntervention', '*')
                         ->where('matriculeTechnicien = ?', $idTech)
                     ;
+            //Zend_Debug::dump($this->fetchAll($req)->toArray());exit;
             return $this->fetchAll($req)->toArray();
         }
 

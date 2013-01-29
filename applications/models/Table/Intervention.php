@@ -64,6 +64,7 @@
                             ->where('dateEffectiveIntervention is null')
                             ->order('datePrevueIntervention')
                             ;
+            echo $reqInter->assemble();exit;
             $lesInters = $this->fetchAll($reqInter)->toArray();
             //Zend_Debug::dump($lesInters);
             //exit;
@@ -77,5 +78,11 @@
         public function dernierAjout()
         {
             return $this->getAdapter()->lastInsertId();
+        }
+        public function terminer($numIntervention)
+        {
+            $date = DateFormat_SQL(Zend_Date::now(),false);
+            $where = $this->getAdapter()->quoteInto('numeroIntervention = ?', $numIntervention);
+            $this->update(array('dateEffectiveIntervention'=> $date),$where);
         }
     }

@@ -1,0 +1,38 @@
+<h2>Voir les places bloquées pour les vols</h2>
+
+<div class="tableau">
+    <table>
+        <tr>
+            <th>Vol</th>
+            <th>Date et heure de départ</th>
+            <th>Date et heure d'arrivée</th>
+            <th>Classe</th>
+            <th>Places réservées</th>
+            <th>Places restantes</th>
+        </tr>
+    <?php 
+        $i = 1;
+        foreach($this->tabPlaces as $idVol => $lesResas)
+        {
+
+            $i % 2 ? $class = "" : $class = "clair"; // bicoloration des tr
+            $rowspan = count($lesResas);    // compte le nombre de resas pour le rowspan
+            echo '<tr class='.$class.'>
+                        <td rowspan="'.$rowspan.'">'.$idVol.'</td>
+                        <td rowspan="'.$rowspan.'">'.DateFormat_View(new Zend_Date($this->lesVols[$idVol]['dateHeureDepartPrevueVol'])).'</td>
+                        <td rowspan="'.$rowspan.'">'.DateFormat_View(new Zend_Date($this->lesVols[$idVol]['dateHeureArriveePrevueVol'])).'</td>
+                        ';
+            foreach ($lesResas as $infos)
+            {
+                echo '<td class='.$class.'>'.$infos['classe'].'</td>
+                        <td class='.$class.'>'.$infos['placeReservees'].'</td>
+                    ';
+                $placesDispos = $infos['placesTotales'] - $infos['placeReservees'];
+                echo '<td class='.$class.'>'.$placesDispos.'</td></tr>';
+
+            }
+            $i++;
+        }
+    ?>
+    </table>
+</div>

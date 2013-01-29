@@ -280,4 +280,15 @@
 		);
 		$this->insert($res);
 	}
+        public function getVolAVenirToutesLignes()
+        {
+            $req = $this->select()->setIntegrityCheck(false)
+                        ->from($this->_name,array('idVol','dateHeureDepartPrevueVol','dateHeureArriveePrevueVol', 'matriculeAvion'))
+                        ->where('dateHeureDepartEffectiveVol is null')
+                        ->orwhere('dateHeureDepartEffectiveVol = ""')
+                        ->order('idVol ASC')
+                    ;
+            //Zend_Debug::dump($this->fetchAll($req)->toArray());exit;
+            return $this->fetchAll($req)->toArray();
+        }
 }

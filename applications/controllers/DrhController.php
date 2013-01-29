@@ -5,7 +5,7 @@ class DrhController extends Zend_Controller_Action
     {
     	$this->headStyleScript = array(
                'css' => 'personaviguant',
-			'js' => 'formTech'
+               'js' => array('personaviguant','formTech')
 		);
         
         if(!session_encours())
@@ -17,12 +17,12 @@ class DrhController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $this->_helper->actionStack('header','index','default',array());
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
     }
 
     public function gestiontechnicienAction()
     {
-        $this->_helper->actionStack('header','index','default',array());
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 
         $tableTech = new Table_Technicien;
         $lesTechs = $tableTech->getTechs();      
@@ -55,7 +55,7 @@ class DrhController extends Zend_Controller_Action
 
     public function ajoutertechnicienAction() 
     {
-        $this->_helper->actionStack('header','index','default',array());
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 
         $espaceSession = new Zend_Session_Namespace('AjoutTechCourant');
 
@@ -104,7 +104,7 @@ class DrhController extends Zend_Controller_Action
 
     public function ajoutsqltechnicienAction()
     {
-        $this->_helper->actionStack('header','index','default',array());
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 
         $tableTech = new Table_Technicien;
 
@@ -151,7 +151,7 @@ class DrhController extends Zend_Controller_Action
 
     public function modifiertechnicienAction() 
     {
-        $this->_helper->actionStack('header','index','default',array());
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 
         $tableTech = new Table_Technicien;
 
@@ -216,7 +216,7 @@ class DrhController extends Zend_Controller_Action
 
     public function modifsqltechnicienAction()
     {
-        $this->_helper->actionStack('header','index','default',array());
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 
         $tableTech = new Table_Technicien;
 
@@ -266,7 +266,7 @@ class DrhController extends Zend_Controller_Action
 
     public function supprimertechnicienAction() 
     {
-        $this->_helper->actionStack('header','index','default',array());
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 
         $tableTech = new Table_Technicien;
 
@@ -289,7 +289,7 @@ class DrhController extends Zend_Controller_Action
     //Fab
     public function habilitationAction() 
     {   
-      $this->_helper->actionStack('header','index','default',array());
+      $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 
       $this->view->message = $this->_helper->FlashMessenger->getMessages();
 
@@ -340,7 +340,7 @@ class DrhController extends Zend_Controller_Action
     //Fab
     public function habiliterAction()
     {
-         $this->_helper->actionStack('header','index','default',array());
+         $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 
          //on récupère les données du formulaire
          $idPilote = $this->getRequest()->getPost('sel_pilote');
@@ -392,7 +392,7 @@ class DrhController extends Zend_Controller_Action
     //Fab
     public function personaviguantAction()
     {
-          $this->_helper->actionStack('header','index','default',array());
+          $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 
           //On récupère tous les pilotes
           $tPilote = new Table_Pilote;
@@ -434,7 +434,7 @@ class DrhController extends Zend_Controller_Action
     //Fab
     public function ajouterpiloteAction()
     {
-         $this->_helper->actionStack('header','index','default',array());
+         $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 
          $tPilote = new Table_Pilote();
          
@@ -465,7 +465,7 @@ class DrhController extends Zend_Controller_Action
     public function modifierpiloteAction()
     {
          
-          $this->_helper->actionStack('header','index','default',array());
+          $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
           $tPilote = new Table_Pilote(); 
           $idPilote = $this->_getParam('id');
            $nom = $this->getRequest()->getPost('NomPilote');
@@ -534,10 +534,6 @@ class DrhController extends Zend_Controller_Action
           
           $this->view->formPilote = $formPilote;     
           $this->view->message = $message;     
-          
-         
-        
-          
     }
 }
 

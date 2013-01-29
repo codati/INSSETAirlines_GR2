@@ -108,13 +108,12 @@
             }
         }
         
-        public function getIdResaVol($idVol, $classe, $idTypeRepas)
+        public function getIdResaVol($idVol, $classe)
                 {
                     $req = $this->select()
                                 ->from($this->_name, 'idReservation')
                                 ->where('idVol = ?', $idVol)
                                 ->where('idClasse = ?', $classe)
-                                ->where('idTypeRepas = ?', $idTypeRepas)
                                 ;
                     
                     $res = $this->_db->fetchOne($req);
@@ -140,4 +139,23 @@
             $where = $this->getAdapter()->quoteInto('idReservation = ?', $idResa);
             $this->delete($where);
         }*/
+        public function getResasParVol($idVol)
+        {
+            $req = $this->select()
+                        ->from($this->_name,'idReservation')
+                        ->where('idVol = ?',$idVol)
+                        ->group('idClasse')
+                    ;
+            // echo $req->assemble();exit;
+            return $this->_db->fetchCol($req);
+        }
+        public function getClasse($idResa)
+        {
+            $req = $this->select()->setIntegrityCheck(false)
+                        ->from($this->_name,'idClasse')
+                        ->join('classe','classe.idClasse = reservation.idClasse','nomClasse')
+                        ->where('idReservation = ?', $idResa)
+                    ;
+            return $this->_db->fetchRow($req);
+        }
     }
