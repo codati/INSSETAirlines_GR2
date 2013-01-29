@@ -134,10 +134,10 @@
             
             return $this->_db->fetchRow($req);
         }
-        /*
+
         public function supprimerReservation($idResa)
         {
             $where = $this->getAdapter()->quoteInto('idReservation = ?', $idResa);
             $this->delete($where);
-        }*/
+        }
     }

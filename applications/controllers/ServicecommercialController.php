@@ -12,5 +12,10 @@ class ServiceCommercialController extends Zend_Controller_Action
     {
         
     }
+    
+    public function placesbloqueesAction()
+    {
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+    }
 }
 
