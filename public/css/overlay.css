@@ -83,6 +83,7 @@
     width : auto !important;
 }
 #erreur_co {
+    font-family : Georgia !important;
+    font-size : 14px;
     font-weight: normal !important;
-    /*font-family : "Times New Roman";*/
 }

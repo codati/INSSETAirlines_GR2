@@ -21,6 +21,13 @@
 .td_img img {
     cursor : pointer;
 }
+
+#ChoixLigne {
+    margin : 10px;
+}
+#ChoixLigne dt {
+    margin-bottom : 5px;
+}
 #msg_resa, .res_places  {
     position : absolute;
 }
@@ -61,9 +68,16 @@
 }
 .rel {
     position : relative;
+    padding-right: 30px;
 }
 .img_fermer {
     position: absolute;
     top : 5px;
     right : 10px;
+}
+img:hover {
+    cursor : pointer;
+}
+.clair {
+    background: #f0f0f0;
 }

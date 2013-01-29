@@ -381,23 +381,25 @@ class MaintenanceController extends Zend_Controller_Action
          $this->view->nomTech = $nomTech;
      }
      public function modifierinterventionAction()
-     {
+     {  
+         //echo DateFormat_SQL(Zend_Date::now(),false);exit;
          $numIntervention = $this->_getParam('numInter');
          $idTech = $this->_getParam('idTechnicien');
          $nvTacheEff = $this->_getparam('modifTache');
          $nvRemarque = $this->_getParam('modifRem');
-         
+
          $donnees = array(
              'numeroIntervention' => $numIntervention,
              'matriculeTechnicien' => $idTech,
              'tacheEffectuee' => $nvTacheEff,
              'remarquesIntervention' => $nvRemarque
          );
-         
          $tableProceder = new Table_Proceder;
          $modif = $tableProceder->modifier($donnees);
          if($modif != 0)
          {
+             $tableInter = new Table_Intervention;
+             $tableInter->terminer($numIntervention);
              echo '<p class="reussi">Modification réussie !</p>';
          }
          else

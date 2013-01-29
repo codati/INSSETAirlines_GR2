@@ -534,10 +534,6 @@ class DrhController extends Zend_Controller_Action
           
           $this->view->formPilote = $formPilote;     
           $this->view->message = $message;     
-          
-         
-        
-          
     }
 }
 

@@ -29,7 +29,7 @@ function prepare() {
            $('.res_places').html('<img src="/img/asterisk_yellow.png" alt="asterisk"/>');
            $('#msg_resa').html(data).show();
            $('#resa_'+idNum).val('0');
-           setTimeout("$('#msg_resa').fadeOut(1000);", 2000);
+           /*setTimeout("$('#msg_resa').fadeOut(1000);", 2000);
            setTimeout("$('.res_places').fadeOut(1000);", 2000);/*   */
        });
     });
@@ -66,8 +66,7 @@ function modifier(idResa) {
         fermerP();
         $('#prepend').prepend(data);
         $('#transform_'+idResa).empty();
-        $('#transform_'+idResa).html(nvNbPlaces);
-        
+        $('#transform_'+idResa).html(nvNbPlaces);        
     });
 }
 function attente(idResa) {
@@ -75,6 +74,7 @@ function attente(idResa) {
 }
 function supprimerResa(idResa) {
     $.get('/agence/supprimer/',{idReservation:idResa}, function(data) {
+       fermerP();
        $('#prepend').prepend(data);
        tr = $('#transform_'+idResa).parents('tr');
        $(tr).remove();

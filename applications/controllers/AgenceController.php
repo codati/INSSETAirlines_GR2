@@ -63,25 +63,19 @@ class AgenceController extends Zend_Controller_Action
 
             if($nbPlaces > $nbPlacesTotales) // on demande plus de places que la classe ne contient
             {
-                echo '<p class="erreur rel">Ce modele ne contient que '.$nbPlacesTotales.' places pour cette classe.'.$this->img;
+                echo '<p class="erreur rel">Ce modele ne contient que '.$nbPlacesTotales.' places pour cette classe.'.$this->img.'</p>';
                 exit;
             }
             else
             {
                 // get la reservation avec le vol et la classe
                 $tableResa = new Table_Reservation;
-                $idResaVol = $tableResa->getIdResaVol($idVol, $classe, $typeRepas);
+                $idResaVol = $tableResa->getIdResaVol($idVol, $classe);
+                //Zend_Debug::dump($idResaVol);exit;
+                                
+                $tableClasse = new Table_Classe;
+                $nomClasse = $tableClasse->getLibelle($classe);
                 
-                if($classe == 2) // premiere classe, avec id 2...
-                {
-                    $libClasse = 'premiere classe';
-                }
-                else // autre classe, on get son nom pour laffichage
-                {
-                    $tableClasse = new Table_Classe;
-                    $nomClasse = $tableClasse->getLibelle($classe);
-                    $libClasse = 'classe '.$nomClasse;
-                }
                 if($idResaVol) // on a trouvé une reservation
                 {
                     // get le nombre de places deja reservées (en attente ou definitives)
@@ -89,10 +83,13 @@ class AgenceController extends Zend_Controller_Action
                     $nbPlacesReservees = $tableDemander->getNbPlacesReservee($idResaVol);
                     //echo $nbPlacesReservees;exit;
 
-                    $nbPlacesDispo = 9999;
                     if($passe)
                     {
                         $nbPlacesDispo = $nbPlacesTotales - $nbPlacesReservees;
+                    }
+                    else
+                    {
+                        $nbPlacesDispo = $nbPlacesTotales;
                     }
                     if($nbPlaces > $nbPlacesDispo) // plus ou pas assez de places dispos
                     {
@@ -113,7 +110,7 @@ class AgenceController extends Zend_Controller_Action
                             $this->creerDemande($idAgence, $idResaVol, $nbPlaces);
                         }
                         // ne pas virer le "1", tres important pour le JS
-                        echo '1<p class="reussi rel">Vous avez réservé '.$nbPlaces.' place(s) pour le vol n°'.$idVol.' en '.$libClasse.'.<br>
+                        echo '1<p class="reussi rel">Vous avez réservé '.$nbPlaces.' place(s) pour le vol n°'.$idVol.' en '.strtolower($nomClasse).'.<br>
                             Réservation N° : '.$idResaVol.$this->img;
                         exit;
                     }
@@ -133,7 +130,7 @@ class AgenceController extends Zend_Controller_Action
                     // créé la demande de place sur cette reservation
                     $this->creerDemande($idAgence, $idResa, $nbPlaces);
                     // ne pas virer le "1", tres important pour le JS
-                    echo '1<p class="reussi rel">Vous avez réservé '.$nbPlaces.' place(s) pour le vol n°'.$idVol.' en '.$libClasse.'.<br>
+                    echo '1<p class="reussi rel">Vous avez réservé '.$nbPlaces.' place(s) pour le vol n°'.$idVol.' en '.strtolower($nomClasse).'.<br>
                             Réservation N° : '.$idResa.$this->img.'
                         </p>';
                 }

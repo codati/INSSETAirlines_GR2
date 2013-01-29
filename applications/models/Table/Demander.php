@@ -25,6 +25,7 @@
             $req = $this->select()
                         ->from($this->_name, 'SUM(nbPlacesReservees) as nbPlacesReservees')
                         ->where('idReservation IN (?)', $resasVol)
+                        ->where('etatDemande IN (?)', array("En attente", "Validée"))
                         ;
            $res = $this->_db->fetchOne($req);
            return isset($res) ? $res : 0;
