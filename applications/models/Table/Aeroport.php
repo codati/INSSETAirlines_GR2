@@ -12,4 +12,11 @@
             $res = $this->fetchAll($req)->toArray();
             return $res;
         }
+		
+		public function getNomAeroport($trigramme)
+		{
+			$req = $this->select()->from($this->_name, 'nomAeroport')->where('trigrammeAeroport=?', $trigramme);
+			$res = $this->fetchRow($req)->toArray();
+			return $res;
+		}
     }

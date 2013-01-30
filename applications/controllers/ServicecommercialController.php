@@ -47,6 +47,5 @@ class ServiceCommercialController extends Zend_Controller_Action
         $this->view->lesVols = $newVols;
         $this->view->tabPlaces = $nbPlacesReservees;
     }
-    
 }
 

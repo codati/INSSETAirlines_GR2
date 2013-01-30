@@ -118,9 +118,10 @@ section
     width: 965px;
 }
 
-.end_float {
- clear: both;
-}
+.left {float: left;}
+.right {float: right;}
+.end_float {clear: both;}
+
 /****		contenu		****/
 .section_contenu
 {

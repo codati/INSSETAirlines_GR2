@@ -1,0 +1,101 @@
+<?php
+echo '<h1>Ajouter un vols à la ligne '.stripslashes($this->infosLigne['depart']).' vers '.stripslashes($this->infosLigne['arrivee']).'</h1><br />';
+echo '<input type="hidden" id="idLigne" value="'.$this->infosLigne['idLigne'].'" />';
+
+echo '<form enctype="application/x-www-form-urlencoded" action="" method="post">';
+echo '<input type="hidden" name="nbEscale" id="nbEscale" value="'.$this->nbEscale.'" />';
+echo '<input type="hidden" name="escaleOrder" id="escaleOrder" value="'.$this->escaleOrder.'" />';
+echo '<input type="hidden" name="trigArrivee" id="trigArrivee" value="'.$this->trigLigne['trigArrivee'].'" />';
+
+if(isset($this->errorForm)) {echo '<br/><br/><div class="erreur">'.$this->errorForm.'</div>';}
+?>
+<br/><br/>
+
+<div class="left AddVolLeft">
+	<span class="titreAddEscale">Le vol</span><br/><br/>
+	<dl class="form">
+		<dt id="dateDep-label"><label for="dateDep" class="optional">Date de départ :</label></dt>
+		<dd id="dateDep-element"><input type="text" name="dateDep" id="dateDep" value="<?php echo $this->dateDep; ?>" class="datetimePicker"></dd>
+		
+		<dt id="dateArr-label"><label for="dateArr" class="optional">Date d'arrivée :</label></dt>
+		<dd id="dateArr-element"><input type="text" name="dateArr" id="dateArr" value="<?php echo $this->dateArr; ?>" class="datetimePicker"></dd>
+		
+		<dt id="Ajouter-label">&nbsp;</dt>
+		<dd id="Ajouter-element"><input type="submit" name="Ajouter" id="Ajouter" value="Ajouter" class="ajouter"></dd>
+	</dl>
+</div>
+<div class="left AddVolRight">
+	
+	<span class="titreAddEscale">Escales</span><br/>
+	<div class="AddEscale">
+		<strong>Départ</strong>
+		&nbsp;&nbsp;&nbsp;Aéroport :&nbsp;
+		<select id="aeroDep" name="aeroEscDep">
+			<?php
+			foreach($this->lstAero as $val)
+			{
+				$trigDep = $this->trigLigne['trigDepart'];
+				$selected = '';
+				if($trigDep == $val['trigrammeAeroport']) {$selected = ' selected="selected"';}
+				
+				echo '<option value="'.$val['trigrammeAeroport'].'"'.$selected.'>'.$val['nomAeroport'].'</option>';
+			}
+			?>
+		</select>
+		<?php
+		if($this->nbEscale == 0) {$valDefDateEscDebut = $this->dateDep;}
+		else {$valDefDateEscDebut = '';}
+		echo '&nbsp;&nbsp;&nbsp;Date :&nbsp;<input type="text" id="dateEscDep" class="datetimePicker" value="'.$valDefDateEscDebut.'" />';
+		?>
+		<br/>
+		<strong>Arrivée</strong>
+		&nbsp;&nbsp;&nbsp;Aéroport :&nbsp;
+		<select id="aeroArr" name="aeroEscArr">
+			<?php foreach($this->lstAero as $val) {echo '<option value="'.$val['trigrammeAeroport'].'">'.$val['nomAeroport'].'</option>';} ?>
+		</select>
+		&nbsp;&nbsp;&nbsp;Date :&nbsp;<input type="text" id="dateEscArr" class="datetimePicker" />
+		<br/>
+		<input type="hidden" name="idEscaleEdit" id="idEscaleEdit" value="" />
+		<div class="addEscaleClick">Ajouter l'escale</div>
+		<div class="editEscaleClick">Modifier l'escale</div>
+	</div>
+	<ul id="list-escales">
+		<?php
+		foreach($this->escale as $i => $esc)
+		{
+			/*
+			depaero
+			depaerotxt
+			depdate
+			arraero
+			arraerotxt
+			arrdate
+			*/
+			
+			echo '<li id="escale_'.$i.'">';
+				echo '<div class="left">';
+					echo '<strong>Départ</strong>';
+					echo '<div class="EscaleAeroWidth">Aéroport :&nbsp;<span id="escale_'.$i.'_aeroDepText">'.$esc['depaerotxt'].'</span></div>';
+					echo '&nbsp;&nbsp;&nbsp;Date :&nbsp;<span id="escale_'.$i.'_dateDepText">'.$esc['depdate'].'</span>';
+					echo '<br/>';
+					echo '<strong>Arrivée</strong>';
+					echo '<div class="EscaleAeroWidth">Aéroport :&nbsp;<span id="escale_'.$i.'_aeroArrText">'.$esc['arraerotxt'].'</span></div>';
+					echo '&nbsp;&nbsp;&nbsp;Date :&nbsp;<span id="escale_'.$i.'_dateArrText">'.$esc['arrdate'].'</span>';
+					
+					echo '<input type="hidden" name="escale_'.$i.'_DepAero" id="escale_'.$i.'_DepAero" value="'.$esc['depaero'].'" />';
+					echo '<input type="hidden" name="escale_'.$i.'_DepDate" id="escale_'.$i.'_DepDate" value="'.$esc['depdate'].'" />';
+					echo '<input type="hidden" name="escale_'.$i.'_ArrAero" id="escale_'.$i.'_ArrAero" value="'.$esc['arraero'].'" />';
+					echo '<input type="hidden" name="escale_'.$i.'_ArrDate" id="escale_'.$i.'_ArrDate" value="'.$esc['arrdate'].'" />';
+				echo '</div>';
+				echo '<div class="right escalesIcons">';
+					echo '<img src="/img/pencil.png" alt="modifier" title="Modifier" id="editEscale" />';
+					echo '<img src="/img/cross.png" alt="supprimer" title="Supprimer" id="supprEscale" />';
+				echo '</div>';
+				echo '<div class="end_float"></div>';
+			echo '</li>';
+		}
+		?>
+	</ul>
+</div>
+<div class="end_float"></div>
+</form>

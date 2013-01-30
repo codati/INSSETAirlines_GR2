@@ -280,25 +280,16 @@
 		);
 		$this->insert($res);
 	}
-        public function getVolAVenirToutesLignes()
-        {
-            $req = $this->select()->setIntegrityCheck(false)
-                        ->from($this->_name,array('idVol','dateHeureDepartPrevueVol','dateHeureArriveePrevueVol', 'matriculeAvion'))
-                        ->where('dateHeureDepartEffectiveVol is null')
-                        ->orwhere('dateHeureDepartEffectiveVol = ""')
-                        ->order('idVol ASC')
-                    ;
-            //Zend_Debug::dump($this->fetchAll($req)->toArray());exit;
-            return $this->fetchAll($req)->toArray();
-        }
-        
-        public function getVolsEntreDate($dateDebut, $dateFin)
-        {
-             $req = $this->select()->setIntegrityCheck(false)
-                         ->from($this->_name, array('idVol', 'dateHeureDepartPrevueVol','dateHeureArriveePrevueVol'))
-                         ->where('dateHeureDepartPrevueVol > ?', $dateDebut)
-                         ->where('dateHeureDepartPrevueVol < ?', $dateFin);
-            //Zend_Debug::dump($this->fetchAll($req)->toArray());exit;
-            return $this->fetchAll($req)->toArray();
-        }
+	
+	public function ajouter($idLigne, $dateDepartPrevue, $dateArriveePrevue)
+	{
+		$data = array
+		(
+			'dateHeureDepartPrevueVol' => $dateDepartPrevue,
+			'dateHeureArriveePrevueVol' => $dateArriveePrevue,
+			'idLigne' => $idLigne
+		);
+		$idVol = $this->insert($data);
+		return $idVol;
+	}
 }

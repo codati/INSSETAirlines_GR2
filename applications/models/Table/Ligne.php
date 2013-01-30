@@ -156,5 +156,25 @@
 			
 			return $res->toArray();
 		}
+		
+        /**
+         * @author Vermeulen Maxime
+         * Retourne les trigrammes des aéroports de départ et d'arrivée de la ligne
+         * @return array : Les trigrammes
+         */
+        public function getTrigAeroLigne($idLigne)
+        {
+            $req = $this->select()
+                        ->setIntegrityCheck(false)
+                        ->from(array('l'=>'ligne'),array(
+							'trigDepart' => 'trigrammeAeroportDepart',
+							'trigArrivee' => 'trigrammeAeroportArrivee',
+						))
+						->where('idLigne = ?', $idLigne);
+					
+            $res = $this->fetchRow($req);
+            if($res) {return $res->toArray();}
+            else {return null;}
+        }
     }
 ?>
