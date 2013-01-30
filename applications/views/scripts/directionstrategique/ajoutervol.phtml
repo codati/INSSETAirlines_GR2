@@ -13,12 +13,12 @@ if(isset($this->errorForm)) {echo '<br/><br/><div class="erreur">'.$this->errorF
 
 <div class="left AddVolLeft">
 	<span class="titreAddEscale">Le vol</span><br/><br/>
-	<dl class="form">
+	<dl>
 		<dt id="dateDep-label"><label for="dateDep" class="optional">Date de départ :</label></dt>
-		<dd id="dateDep-element"><input type="text" name="dateDep" id="dateDep" value="<?php echo $this->dateDep; ?>" class="datetimePicker"></dd>
+		<dd id="dateDep-element"><input type="text" name="dateDep" id="dateDep" value="<?php echo $this->dateDep; ?>" class="datetimePicker" dateFormat="dd/mm/yy"></dd>
 		
 		<dt id="dateArr-label"><label for="dateArr" class="optional">Date d'arrivée :</label></dt>
-		<dd id="dateArr-element"><input type="text" name="dateArr" id="dateArr" value="<?php echo $this->dateArr; ?>" class="datetimePicker"></dd>
+		<dd id="dateArr-element"><input type="text" name="dateArr" id="dateArr" value="<?php echo $this->dateArr; ?>" class="datetimePicker" dateFormat="dd/mm/yy"></dd>
 		
 		<dt id="Ajouter-label">&nbsp;</dt>
 		<dd id="Ajouter-element"><input type="submit" name="Ajouter" id="Ajouter" value="Ajouter" class="ajouter"></dd>
@@ -45,7 +45,7 @@ if(isset($this->errorForm)) {echo '<br/><br/><div class="erreur">'.$this->errorF
 		<?php
 		if($this->nbEscale == 0) {$valDefDateEscDebut = $this->dateDep;}
 		else {$valDefDateEscDebut = '';}
-		echo '&nbsp;&nbsp;&nbsp;Date :&nbsp;<input type="text" id="dateEscDep" class="datetimePicker" value="'.$valDefDateEscDebut.'" />';
+		echo '&nbsp;&nbsp;&nbsp;Date :&nbsp;<input type="text" id="dateEscDep" class="datetimePicker" value="'.$valDefDateEscDebut.'"  dateFormat="dd/mm/yy"/>';
 		?>
 		<br/>
 		<strong>Arrivée</strong>
@@ -53,7 +53,7 @@ if(isset($this->errorForm)) {echo '<br/><br/><div class="erreur">'.$this->errorF
 		<select id="aeroArr" name="aeroEscArr">
 			<?php foreach($this->lstAero as $val) {echo '<option value="'.$val['trigrammeAeroport'].'">'.$val['nomAeroport'].'</option>';} ?>
 		</select>
-		&nbsp;&nbsp;&nbsp;Date :&nbsp;<input type="text" id="dateEscArr" class="datetimePicker" />
+		&nbsp;&nbsp;&nbsp;Date :&nbsp;<input type="text" id="dateEscArr" class="datetimePicker"  dateFormat="dd/mm/yy" />
 		<br/>
 		<input type="hidden" name="idEscaleEdit" id="idEscaleEdit" value="" />
 		<div class="addEscaleClick">Ajouter l'escale</div>
