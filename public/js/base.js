@@ -41,35 +41,70 @@ $(document).ready(function()
 	{
 		$(".timePicker").timepicker(
 		{
-			dateFormat: $(".datePick").attr("dateFormat"),
+			dateFormat: $(".timePicker").attr("dateFormat"),
 			hourGrid: 4,
 			minuteGrid: 10
+			, dayNamesMin: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa']     			
+			, dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi']
+			, monthNamesShort: ['Jan','Fev','Mar','Avr','Mai','Jun','Jul','Août','Sep','Oct','Nov','Déc']
+			, monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre']
+			, prevText: 'Mois précédent'
+			, nextText: 'Mois suivant'
+			, closeText: 'OK'
+			, currentText: "Aujourd'hui"
 		});
 	}
 	else
 	{
 		$(".timePicker").timepicker(
 		{
+			dateFormat: 'DD dd MM yy',
 			hourGrid: 4,
 			minuteGrid: 10
+			, dayNamesMin: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa']     			
+			, dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi']
+			, monthNamesShort: ['Jan','Fev','Mar','Avr','Mai','Jun','Jul','Août','Sep','Oct','Nov','Déc']
+			, monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre']
+			, prevText: 'Mois précédent'
+			, nextText: 'Mois suivant'
+			, closeText: 'OK'
+			, currentText: "Aujourd'hui"
 		});
 	}
 	
 	if($(".datetimePicker").attr("dateFormat"))
 	{
+		console.log($(".datetimePicker").attr("dateFormat"));
 		$(".datetimePicker").datetimepicker(
 		{
-			dateFormat: $(".datePick").attr("dateFormat"),
+			dateFormat: $(".datetimePicker").attr("dateFormat"),
 			hourGrid: 4,
 			minuteGrid: 10
+			, dayNamesMin: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa']     			
+			, dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi']
+			, monthNamesShort: ['Jan','Fev','Mar','Avr','Mai','Jun','Jul','Août','Sep','Oct','Nov','Déc']
+			, monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre']
+			, prevText: 'Mois précédent'
+			, nextText: 'Mois suivant'
+			, closeText: 'OK'
+			, currentText: "Aujourd'hui"
 		});
 	}
 	else
 	{
 		$(".datetimePicker").datetimepicker(
 		{
+			dateFormat: 'DD dd MM yy à',
 			hourGrid: 4,
 			minuteGrid: 10
+			, dayNamesMin: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa']     			
+			, dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi']
+			, monthNamesShort: ['Jan','Fev','Mar','Avr','Mai','Jun','Jul','Août','Sep','Oct','Nov','Déc']
+			, monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre']
+			, prevText: 'Mois précédent'
+			, nextText: 'Mois suivant'
+			, closeText: 'OK'
+			, currentText: "Aujourd'hui"
 		});
 	}
 });

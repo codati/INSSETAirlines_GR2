@@ -69,7 +69,7 @@ class DrhController extends Zend_Controller_Action
 
         // parametrer le formulaire
         $monform->setMethod('post');
-        $monform->setAttrib('id','formAjout');
+        $monform->setAttrib('class','form');
 
         $monform->setAction($this->view->baseUrl().'/drh/ajoutsqltechnicien');
 
@@ -181,7 +181,7 @@ class DrhController extends Zend_Controller_Action
 
         // parametrer le formulaire
         $monform->setMethod('post');
-        $monform->setAttrib('id','formModif');
+        $monform->setAttrib('class','form');
 
         $monform->setAction($this->view->baseUrl().'/drh/modifsqltechnicien');
 
@@ -296,7 +296,7 @@ class DrhController extends Zend_Controller_Action
       $formHabiliter = new Zend_Form();
       // parametrer le formulaire
       $formHabiliter->setMethod('post');
-      $formHabiliter->setAttrib('id','formHabiliter');
+      $formHabiliter->setAttrib('class','form');
       $formHabiliter->setAction($this->view->baseUrl().'/drh/habiliter');
 
       //On récupère tous les pilotes
@@ -404,6 +404,7 @@ class DrhController extends Zend_Controller_Action
           $formNouveauPilote = new Zend_Form();
           // parametrer le formulaire
           $formNouveauPilote->setMethod('post');
+          $formNouveauPilote->setAttrib('class','form');
           $formNouveauPilote->setAction($this->view->baseUrl().'/drh/ajouterpilote');
 
           $eNom = new Zend_Form_Element_Text('NomPilote');
@@ -504,6 +505,7 @@ class DrhController extends Zend_Controller_Action
           // parametrer le formulaire
           $formPilote->setMethod('post');
           $formPilote->setAction($this->view->baseUrl().'/drh/modifierpilote/id/'.$idPilote);
+          $formPilote->setAttrib('class', 'form');
 
           $eNom = new Zend_Form_Element_Text('NomPilote');
           $eNom->setLabel('Nom du pilote : ');
