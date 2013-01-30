@@ -22,3 +22,101 @@
 	margin-bottom: 3px;
 	text-align: center;
 }
+
+.AddVolLeft
+{
+	border-right: 1px solid #6495ED;
+	padding-right: 10px;
+	margin-right: 10px;
+}
+
+.AddVolLeft span.titreAddEscale, .AddVolRight span.titreAddEscale {font-size: 1.2em;}
+
+.AddVolLeft input[type=text], .AddVolRight input[type=text] {width: 190px;}
+.AddVolRight select {width: 240px;}
+
+.AddEscale
+{
+	border: 1px solid #6495ED;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	
+	padding: 5px;
+	margin: 5px 0;
+}
+
+.AddEscale strong, .AddEscale div.add {font-weight: bold;}
+
+.AddEscale strong
+{
+	width: 50px;
+	display: inline-block;
+}
+
+.AddEscale div.addEscaleClick
+{
+	background-image: url("../img/add.png");
+	background-repeat: no-repeat;
+	
+	cursor: pointer;
+	height: 15px;
+	
+	margin-top: 5px;
+	padding-left: 20px;
+}
+.AddEscale strong.addEscaleClick:hover {text-decoration: underline;}
+
+.AddEscale div.editEscaleClick
+{
+	display: none;
+	
+	background-image: url("../img/pencil.png");
+	background-repeat: no-repeat;
+	
+	cursor: pointer;
+	height: 15px;
+	
+	margin-top: 5px;
+	padding-left: 20px;
+}
+.AddEscale strong.editEscaleClick:hover {text-decoration: underline;}
+
+/* style des éléments de la liste */
+ul#list-escales li
+{
+  border: 1px solid #6495ED;
+  cursor: move;
+  
+  padding: 5px;
+  margin-bottom: 2px;
+}
+
+/* style de l'élément fantome, qui apparait losque que l'on bouge un élément */
+ul#list-escales li.highlight
+{
+  background: #f1f1f1;
+  border:1px dashed #6495ED;
+  height: 26px;
+}
+
+ul#list-escales li strong
+{
+	font-weight: bold;
+	width: 50px;
+	display: inline-block;
+}
+
+.EscaleAeroWidth
+{
+	width: 280px;
+	margin-left: 15px;
+	display: inline-block;
+}
+
+.escalesIcons {margin-top: 3px;}
+.escalesIcons img
+{
+	cursor: pointer;
+	margin-left: 3px;
+}

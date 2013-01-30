@@ -226,8 +226,8 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 			$this->view->lstVol = $lstVol;
 			$this->view->paginator = $paginator;
 		
-			$copyOk = $this->_getParam('copy', false);
-			if($copyOk == true) {$this->view->message = $this->_helper->FlashMessenger->getMessages();}
+			$msg = $this->_helper->FlashMessenger->getMessages();
+			if($msg != '') {$this->view->message = $msg;}
 		}
 	}
 	
@@ -237,7 +237,169 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 		
 		if($idLigne != null)
 		{
+			$this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 			
+			$tableLigne = new Table_Ligne;
+			$tableAero = new Table_Aeroport;
+			
+			$trigAeroLigne = $tableLigne->getTrigAeroLigne($idLigne);
+			
+			/*
+			echo '<pre>';print_r($_POST);echo '</pre>';
+			Array
+			(
+			    [dateDep] => 01/29/2013 11:26
+			    [dateArr] => 01/30/2013 11:26
+			    [Ajouter] => Ajouter
+			    [nbEscale] => 1
+			    [escaleOrder] => escale_0
+			    [aeroEscDep] => AKL
+			    [aeroEscArr] => AKL
+			    [escale_0_DepAero] => BER
+			    [escale_0_DepDate] => 01/29/2013 11:26
+			    [escale_0_ArrAero] => AKL
+			    [escale_0_ArrDate] => 01/30/2013 00:00
+			)
+			*/
+			
+			$validForm = $this->_getParam('Ajouter', null);
+			$affForm = true;
+			$erreurForm = '';
+			
+			if($validForm != null)
+			{
+				$dateDep = $this->_getParam('dateDep');
+				$dateArr = $this->_getParam('dateArr');
+				$nbEscale = $this->_getParam('nbEscale');
+				$escaleOrder = $this->_getParam('escaleOrder');
+				
+				$erreurEscale = false;
+				$escale = array();
+				
+				if($nbEscale > 0)
+				{
+					$orderEx = explode('.', $escaleOrder);
+					
+					for($i=0;$i<=$nbEscale;$i++)
+					{
+						if(in_array('escale_'.$i, $orderEx))
+						{
+							$depaero = $this->_getParam('escale_'.$i.'_DepAero');
+							$depdate = $this->_getParam('escale_'.$i.'_DepDate');
+							$arraero = $this->_getParam('escale_'.$i.'_ArrAero');
+							$arrdate = $this->_getParam('escale_'.$i.'_ArrDate');
+							
+							$depaerotxt = $tableAero->getNomAeroport($depaero);
+							$arraerotxt = $tableAero->getNomAeroport($arraero);
+							
+							$escale[$i]['depaero'] = $depaero;
+							$escale[$i]['depaerotxt'] = $depaerotxt['nomAeroport'];
+							$escale[$i]['depdate'] = $depdate;
+							$escale[$i]['arraero'] = $arraero;
+							$escale[$i]['arraerotxt'] = $arraerotxt['nomAeroport'];
+							$escale[$i]['arrdate'] = $arrdate;
+							
+							if($depaero == null || $depdate == null || $arraero == null || $arrdate == null) {$erreurEscale = true;}
+						}
+					}
+				}
+				$nbEscaleReel = count($escale);
+				
+				if($erreurEscale == false && $dateDep != null && $dateArr != null) {$affForm = false;}
+				else 
+				{
+						if($erreurEscale == true) {$erreurForm = 'Un champ n\'a pas été rempli dans les escales.';}
+					elseif($dateDep == null) {$erreurForm = 'La date de départ du vol n\'est pas indiquée.';}
+					elseif($dateArr == null) {$erreurForm = 'La date d\'arrivée du vol n\'est pas indiquée.';}
+				}
+			}
+			else
+			{
+				$dateDep = $dateArr = $escaleOrder = '';
+				$nbEscale = 0;
+				$escale = array();
+			}
+			
+			if($affForm == false)
+			{
+				//Création du vol en bdd.
+				
+				/**
+				Récap des variables
+					$dateDep
+					$dateArr
+					$nbEscale
+					$nbEscaleReel
+					$escaleOrder
+					$escale -> array
+						(
+							array
+							(
+								depaero
+								depaerotxt
+								depdate
+								arraero
+								arraerotxt
+								arrdate
+							)
+						)
+				*/
+				
+				$dateDep = new Zend_Date($dateDep);
+				$dateDepSql = DateFormat_SQL($dateDep);
+				
+				$dateArr = new Zend_Date($dateArr);
+				$dateArrSql = DateFormat_SQL($dateArr);
+				
+				$tableVol = new Table_Vol;
+				$idVol = $tableVol->ajouter($idLigne, $dateDepSql, $dateArrSql);
+				
+				if($nbEscaleReel > 0)
+				{
+					$tableEscale = new Table_Escale;
+					$i = 1;
+					foreach($escale as $val)
+					{
+						if($trigAeroLigne['trigArrivee'] != $val['arraero'])
+						{
+							$escDep = new Zend_Date($val['depdate']);
+							$escDepSql = DateFormat_SQL($escDep);
+							
+							$escArr = new Zend_Date($val['arrdate']);
+							$escArrSql = DateFormat_SQL($escArr);
+							
+							$tableEscale->ajouter($idVol, $i, $escDepSql, $escArrSql, $val['arraero']);
+							$i++;
+						}
+					}
+				}
+				
+				$message = '<div class="reussi">Le vol a été créé.</div>';
+		        $this->_helper->FlashMessenger($message);
+		        $redirector = $this->_helper->getHelper('Redirector');
+		        $redirector->gotoUrl($this->view->baseUrl('/directionstrategique/voirvols/ligne/'.$idLigne));
+			}
+			else
+			{
+				/*
+					Création du formulaire à la main et non via Zend car 
+					j'ai besoin de pouvoir placer les balises form où je le veux.
+				*/
+				
+				//Gestion de l'erreur.
+				if($erreurForm != '') {$this->view->errorForm = $erreurForm;}
+				
+				$this->view->trigLigne = $trigAeroLigne;
+				$this->view->lstAero = $tableAero->getAeroports();
+				$this->view->infosLigne = $tableLigne->getUneLigne($idLigne);
+				
+				//Envoi à la vue des infos du form pour reremplir si déjà rempli
+				$this->view->dateDep = $dateDep;
+				$this->view->dateArr = $dateArr;
+				$this->view->escaleOrder = $escaleOrder;
+				$this->view->nbEscale = $nbEscale;
+				$this->view->escale = $escale;
+			}
 		}
 		else {$this->_helper->redirector('index', 'directionstrategique');}
 	}
