@@ -88,7 +88,7 @@ class LogistiquecommercialeController extends Zend_Controller_Action
           $dateDebut = DateFormat_SQL(Zend_Date::now());
           $dateFin = DateFormat_SQL(Zend_Date::now()->addMonth(1));
 
-          $lesVolsAVenir = $tVol->getVolsEntreDate($dateDebut, $dateFin);
+          $lesVolsAVenir = $tVol->getVolsPlanifiesEntreDate($dateDebut, $dateFin);
           
           $this->view->lesVolsAVenir = $lesVolsAVenir;
                   
