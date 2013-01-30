@@ -305,4 +305,14 @@
          return $this->fetchAll($req)->toArray();
      }
      
+	 public function modifier($idVol, $dateDepartPrevue, $dateArriveePrevue)
+	 {
+	 	$data = array
+	 	(
+	 		'dateHeureDepartPrevueVol' => $dateDepartPrevue,
+			'dateHeureArriveePrevueVol' => $dateArriveePrevue
+		);
+	 	$where = $this->getAdapter()->quoteInto('idVol = ?', $idVol);
+        $this->update($data, $where);
+	 }
 }
