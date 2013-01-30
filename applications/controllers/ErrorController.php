@@ -6,6 +6,10 @@ class ErrorController extends Zend_Controller_Action
     private static $errorMessage;
     private static $httpCode;
     
+    public function init()
+    {
+        $this->headStyleScript = array('css' => 'error');
+    }
     public function preDispatch()
     {
     	$this->_exception = $this->_getParam('error_handler');
@@ -14,7 +18,7 @@ class ErrorController extends Zend_Controller_Action
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER:
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION:
                 self::$httpCode = 404;
-                self::$errorMessage = 'Page introuvable';
+                self::$errorMessage = 'Erreur : Page introuvable';
             break;
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_OTHER:
             	switch (get_class($this->_exception->exception)) {
@@ -32,7 +36,7 @@ class ErrorController extends Zend_Controller_Action
             		break;
             		default:
             			self::$httpCode = 500;
-            			self::$errorMessage = 'Erreur inconnue : '. $this->_exception->exception->getMessage();
+            			self::$errorMessage = 'Erreur inconnue :<br> '. $this->_exception->exception->getMessage();
             		break;
             	}
             break;
@@ -42,7 +46,7 @@ class ErrorController extends Zend_Controller_Action
     
     public function errorAction()
     {
-        $this->_helper->actionStack('header','index','default',array());
+        $this->_helper->actionStack('header','index','default',array('head'=>  $this->headStyleScript));
     	$this->view->message = self::$errorMessage;
     	$this->view->httpCode = self::$httpCode;
     }

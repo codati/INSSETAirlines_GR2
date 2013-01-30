@@ -155,6 +155,7 @@ class ApiController extends Zend_Controller_Action
 
             //Envoi à la vue
             $this->view->json = $json;
+            $this->render('infosresajson'); // change la vue 
         }
         public function getinterventionsAction()
         {
@@ -174,15 +175,16 @@ class ApiController extends Zend_Controller_Action
                 $InfosRetour['data'] = 'Session invalide';
                 $InfosRetour['erreur'] = 1;
             }
-            $this->view->infosInterventions = Zend_Json::encode($InfosRetour);
+            $this->view->json = Zend_Json::encode($InfosRetour);
+            $this->render('infosresajson'); // change la vue 
         }
         public function modifierAction()
-        {
+        {    	
             $idSession = $this->_getParam('idSession', 0);
             $numIntervention = $this->_getParam('numeroIntervention', 0);
             $tacheEff = $this->_getParam('tacheEff', 0);
             $remarques = $this->_getParam('remarques', 0);
-            Zend_Session::setId($idSession);            
+            //Zend_Session::setId($idSession);            
             
             $sessionTechnicien = new Zend_Session_Namespace('technicien');
             
@@ -196,12 +198,23 @@ class ApiController extends Zend_Controller_Action
                     'remarquesIntervention' => $remarques
                 );
                 $modif = $tableProceder->modifier($donnees);
-                $InfosRetour['erreur'] = 0;  
+                if($modif == 1)
+                {
+                    $InfosRetour['data'] = 'Modifications terminées avec succès';
+                    $InfosRetour['erreur'] = 0; 
+                }
+                else 
+                {
+                    $InfosRetour['data'] = 'Erreur lors de la modification';
+                    $InfosRetour['erreur'] = 1; 
+                } 
             }
             else 
             {
+                $InfosRetour['data'] = 'Modification échouée';
                 $InfosRetour['erreur'] = 1;
             }
-            $this->view->infosInterventions = Zend_Json::encode($InfosRetour);
+            $this->view->json = Zend_Json::encode($InfosRetour);
+            $this->render('infosresajson'); // change la vue 
         }
 }

@@ -1,0 +1,41 @@
+#truc {
+    margin-right : 50px;
+    width : 425px;
+}
+#div_code, #img404 {
+    float : right;  
+    margin-bottom: 50px;
+}
+footer {
+    clear : both;
+}
+#truc p {
+    font-size : 1.1em;
+    padding : 5px;
+}
+#div_code p {    
+    text-align : center;
+    margin-bottom : 5px;
+}
+#msgErreur, #div_code span {
+    text-align: center;
+    border : 1px solid #6495ED;
+    border-radius : 5px;
+    background: #f0f0f0;
+    line-height: 1.5;
+}
+#truc ul {
+    margin : 20px 0 50px 10px;
+    line-height: 1.5em;
+    list-style-type: circle;
+}
+#truc ul li {
+    margin-left : 10px;
+}
+#contactErreur {
+    font-weight: bold;
+}
+
+
+
+

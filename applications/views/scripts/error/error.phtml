@@ -1,3 +1,25 @@
+
 <?php
-    echo $this->httpCode.' '.$this->message;
+    if($this->httpCode == 404)
+    {
+        echo '<img id="img404" src="'.$this->baseUrl('/img/404.jpg').'" alt="erreur404" title="Erreur 404"/>';
+    }
+    else
+    {
+        echo '<div id="div_code"><p><span>Code : '.$this->httpCode.'</span></p>
+               <img src="'.$this->baseUrl('/img/autresErreurs.jpg').'" alt="Erreur" title="Erreur !" />
+            </div>';
+    }
 ?>
+<div id="truc">
+    <p id="msgErreur">
+        <?php echo $this->message; ?>
+    </p>
+    <ul>
+        <li>La page demandée existe-t-elle vraiment ?</li>
+        <li>Etes vous sûr d'être connécté ?</li>
+    </ul>
+    <p>
+        Si le problème persiste, merci de nous <a id="contactErreur" href="<?php echo $this->baseUrl('/index/contact'); ?>">contacter</a>.
+    </p>
+</div>
