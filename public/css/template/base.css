@@ -118,9 +118,10 @@ section
     width: 965px;
 }
 
-.end_float {
- clear: both;
-}
+.left {float: left;}
+.right {float: right;}
+.end_float {clear: both;}
+
 /****		contenu		****/
 .section_contenu
 {
@@ -278,10 +279,6 @@ input[type=submit]:hover, input[type=button]:hover, button:hover, .valider:hover
     left: 53.5px; 
 }
 
-#retourModifLigne {
-    
-}
-
 select
 {
     /*padding: 5px;*/
@@ -309,7 +306,7 @@ select
     margin : 10px;
 }
 
-#formAjout, #formModif, #formSaisie {
+#formAjout, #formModif, #formSaisie{
     padding : 10px;
     text-align: center;
 }

@@ -48,4 +48,18 @@
 			if($resInfosEscales) {return $resInfosEscales->toArray();}
 			else {return false;}
 		}
+
+		public function ajouter($idVol, $numEscale, $arriverDate, $departDate, $aeroport)
+		{
+			$data = array
+			(
+				'numeroEscale' => $numEscale,
+				'datehArriveePrevueEscale' => $arriverDate,
+				'datehDepartPrevueEscale' => $departDate,
+				'idVol' => $idVol,
+				'trigrammeAeroport' => $aeroport
+			);
+			
+			$this->insert($data);
+		}
     }
