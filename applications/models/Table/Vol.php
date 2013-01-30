@@ -292,4 +292,14 @@
 		$idVol = $this->insert($data);
 		return $idVol;
 	}
+        public function getVolAVenirToutesLignes()
+        {
+            $req = $this->select()
+                        ->from($this->_name)
+                        ->where('dateHeureDepartEffectiveVol is null')
+                        ->orwhere('dateHeureDepartEffectiveVol = ""')
+                        ->order('idLigne ASC')
+                    ;
+            return $this->fetchAll($req)->toArray();
+        }
 }
