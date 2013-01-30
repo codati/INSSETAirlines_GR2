@@ -1,29 +1,31 @@
 <h2>Planification Standard</h2><br />
 
-<table id="tableau">
-	<tr>
-		<th>Numéro du vol</th>
-		<th>Date de départ</th>
-		<th>Aéroport de départ</th>
-		<th>Date d'arrivé</th>
-		<th>Aéroport d'arrivé</th>
-		<th>Planifier</th>
-	</tr>
-	<?php
-	if(count($this->ListeVol) > 0)
-	{
-		foreach($this->ListeVol as $val)
-		{
-			echo '<tr>';
-				echo '<td>'.$val['idVol'].'</td>';
-				echo '<td>'.$val['dateHeureDepartPrevueVol'].'</td>';
-				echo '<td>'.$val['nomAeroportDepart'].'</td>';
-				echo '<td>'.$val['dateHeureArriveePrevueVol'].'</td>';
-				echo '<td>'.$val['nomAeroportArrivee'].'</td>';
-				echo '<td><a href="'.$this->baseUrl().'/planning/planifiervol/idVol/'.$val['idVol'].'">Planifier</a></td>';
-			echo '</tr>';
-		}
-	}
-	else {echo '<tr><td colspan="6">Aucun vol n\'est à planifier.</td></tr>';}
-	?>
-</table>
+<div id="tableau">
+    <table>
+            <tr>
+                    <th>Numéro du vol</th>
+                    <th>Date de départ</th>
+                    <th>Aéroport de départ</th>
+                    <th>Date d'arrivé</th>
+                    <th>Aéroport d'arrivé</th>
+                    <th>Planifier</th>
+            </tr>
+            <?php
+            if(count($this->ListeVol) > 0)
+            {
+                    foreach($this->ListeVol as $val)
+                    {
+                            echo '<tr>';
+                                    echo '<td>'.$val['idVol'].'</td>';
+                                    echo '<td>'.$val['dateHeureDepartPrevueVol'].'</td>';
+                                    echo '<td>'.$val['nomAeroportDepart'].'</td>';
+                                    echo '<td>'.$val['dateHeureArriveePrevueVol'].'</td>';
+                                    echo '<td>'.$val['nomAeroportArrivee'].'</td>';
+                                    echo '<td><a href="'.$this->baseUrl().'/planning/planifiervol/idVol/'.$val['idVol'].'">Planifier</a></td>';
+                            echo '</tr>';
+                    }
+            }
+            else {echo '<tr><td colspan="6">Aucun vol n\'est à planifier.</td></tr>';}
+            ?>
+    </table>
+</div>

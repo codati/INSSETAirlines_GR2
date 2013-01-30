@@ -53,7 +53,7 @@ class MaintenanceController extends Zend_Controller_Action
 
         // parametrer le formulaire
         $monform->setMethod('post');
-        $monform->setAttrib('id','formAjout');
+        $monform->setAttrib('class','form');
 
         $monform->setAction($this->view->baseUrl().'/maintenance/ajoutavionsql');
 
@@ -145,7 +145,7 @@ class MaintenanceController extends Zend_Controller_Action
 
         // parametrer le formulaire
         $monform->setMethod('post');
-        $monform->setAttrib('id','formModif');
+        $monform->setAttrib('class','form');
 
         $monform->setAction($this->view->baseUrl().'/maintenance/modifavionsql');
 
@@ -358,7 +358,7 @@ class MaintenanceController extends Zend_Controller_Action
          // selectionner un technicien
          $form = new Zend_Form;
          $form->setMethod('post');
-         $form->setAttrib('id', 'formChoixTech');
+         $form->setAttrib('class', 'form');
          
          $eTech = new Zend_Form_Element_Select('sel_tech');
          $eTech->addMultiOptions($nomTech);
@@ -435,7 +435,7 @@ class MaintenanceController extends Zend_Controller_Action
 
         // parametrer le formulaire
         $monform->setMethod('post');
-        $monform->setAttrib('id','formAjout');
+        $monform->setAttrib('class','form');
 
         $monform->setAction($this->view->baseUrl().'/maintenance/ajoutmodelesql');
         
@@ -545,7 +545,7 @@ class MaintenanceController extends Zend_Controller_Action
 
         // parametrer le formulaire
         $monform->setMethod('post');
-        $monform->setAttrib('id','formModif');
+        $monform->setAttrib('class','form');
 
         $monform->setAction($this->view->baseUrl().'/maintenance/modifmodelesql');
 
