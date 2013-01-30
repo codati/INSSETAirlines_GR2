@@ -55,6 +55,7 @@ class DirectionstrategiqueController extends Zend_Controller_Action
         $form = new Zend_Form;
         $form->setMethod('post');
         $form->setAction('/lignes/ajouter');
+        $form->setAttrib('class', 'form');
         
         $eTrigDepart = new Zend_Form_Element_Select('trigDepart');
         $eTrigDepart->setLabel('Choississez un aéroport de départ : ');             
@@ -126,6 +127,7 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 			$form = new Zend_Form;
 			$form->setMethod('post');
 			$form->setAction('/lignes/modifier/idligne/'.$idLigne);
+                        $form->setAttrib('class', 'form');
 			
 			$ePeriod = new Zend_Form_Element_Select('periodicite');
 			$ePeriod->setLabel('Periodicité :');
