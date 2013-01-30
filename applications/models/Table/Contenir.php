@@ -24,4 +24,13 @@
                                   ;
             return $this->_db->fetchOne($req);
         }
+        
+        public function getSommePlaces($idModeleAvion)
+        {
+          $req = $this->select()
+                        ->from($this->_name, 'SUM(nbPlaces) as totalPlaces')
+                        ->where('idModeleAvion = ?', $idModeleAvion)
+                        ;
+          return $res = $this->_db->fetchOne($req);
+        }
     }

@@ -40,6 +40,18 @@
           
           public function existePromo($idVol)
           {
-               
+           $req = $this->select()
+                        ->from($this->_name, 'SUM(pourcentagePromo) as promo')
+                        ->where('idVol = ?', $idVol)
+                        ;
+           $res = $this->_db->fetchOne($req);
+           if ($res == 0)
+           {
+                return false;
+           }
+           else
+           {
+                return true;
+           }
           }
     }
