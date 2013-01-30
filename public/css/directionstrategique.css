@@ -32,6 +32,9 @@
 
 .AddVolLeft span.titreAddEscale, .AddVolRight span.titreAddEscale {font-size: 1.2em;}
 
+.AddVolLeft input[type=text], .AddVolRight input[type=text] {width: 190px;}
+.AddVolRight select {width: 240px;}
+
 .AddEscale
 {
 	border: 1px solid #6495ED;
