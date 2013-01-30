@@ -291,4 +291,14 @@
             //Zend_Debug::dump($this->fetchAll($req)->toArray());exit;
             return $this->fetchAll($req)->toArray();
         }
+        
+        public function getVolsEntreDate($dateDebut, $dateFin)
+        {
+             $req = $this->select()->setIntegrityCheck(false)
+                         ->from($this->_name, array('idVol', 'dateHeureDepartPrevueVol','dateHeureArriveePrevueVol'))
+                         ->where('dateHeureDepartPrevueVol > ?', $dateDebut)
+                         ->where('dateHeureDepartPrevueVol < ?', $dateFin);
+            //Zend_Debug::dump($this->fetchAll($req)->toArray());exit;
+            return $this->fetchAll($req)->toArray();
+        }
 }

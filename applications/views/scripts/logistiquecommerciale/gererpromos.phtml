@@ -1,16 +1,33 @@
 <h1>Gestion des promotions</h1><br /><br />
 <h2>Fonctionnement</h2>
-<p>Retrouvez ci-dessous la liste des vols dont <b>le taux de remplissage est inférieur à 50%</b> et dont <b>le départ a lieu dans moins d'un mois</b>.</p><br/>
+<p>Retrouvez ci-dessous la liste des vols dont <b>le départ a lieu dans moins d'un mois</b>.</p><br/>
 
 <h2>Liste des vols susceptibles d'être promotionnés</h2>
 <div id="tableau">    
-    <table>
-        <caption>Liste des vols</caption>
-        <tr>
-            <th>Id</th>
-            <th>Date de départ prévue</th>
-            <th>Taux de remplissage</th>
-            <th>Action</th>
-        </tr>
-    </table>
+     <table>
+         <caption>Liste des vols</caption>
+           <tr>
+               <th>Id</th>
+               <th>Date de départ prévue</th>
+               <th>Taux de remplissage</th>
+               <th>Action</th>
+           </tr>
+
+           <?php
+               $locale = new Zend_Locale('fr_FR');
+               foreach ($this->lesVolsAVenir as $unVol) 
+               {
+                    $unVol['dateHeureDepartPrevueVol'] = new Zend_Date($unVol['dateHeureDepartPrevueVol'],false, $locale);
+                    echo '<tr>
+                              <td>'.$unVol['idVol'].'</td>
+                              <td>'.$unVol['dateHeureDepartPrevueVol']->toString('dd MMMM yyyy').'</td>
+                              <td> UN TAUX % </td>
+                              <td><a href="'.$this->baseUrl().'/logistiquecommerciale/creerPromo/idVol/'.$unVol['idVol'].'" title="Créer une promo"><img src="'. $this->baseUrl() .'/img/add.png" /></a></td>
+                         </tr>';
+               }
+           ?>
+
+
+     </table>
 </div>
+

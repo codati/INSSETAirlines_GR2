@@ -138,7 +138,7 @@
         {
             $where = $this->getAdapter()->quoteInto('idReservation = ?', $idResa);
             $this->delete($where);
-        }*/
+        }
         public function getResasParVol($idVol)
         {
             $req = $this->select()

@@ -82,9 +82,16 @@ class LogistiquecommercialeController extends Zend_Controller_Action
           /*
            * Récupérer tous les vols dont : 
            * le départ < à un mois
-           * taux remplissage < à 50%
            * qui n'ont pas encore de promo 
            */
+          $tVol = new Table_Vol();
+          $dateDebut = DateFormat_SQL(Zend_Date::now());
+          $dateFin = DateFormat_SQL(Zend_Date::now()->addMonth(1));
+
+          $lesVolsAVenir = $tVol->getVolsEntreDate($dateDebut, $dateFin);
+          
+          $this->view->lesVolsAVenir = $lesVolsAVenir;
+                  
           
     }
 }
