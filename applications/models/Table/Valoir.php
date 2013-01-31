@@ -37,12 +37,7 @@
 			try {$this->insert($data);}
 			catch (Zend_Db_Exception $e) {die ($e->getMessage());}
 		}
-          public function updatePrixVol($idVol, $idClasse, $prix)
-          {
-              $where[] = $this->getAdapter()->quoteInto('idVol = ?', $idVol);
-              $where[] = $this->getAdapter()->quoteInto('idClasse = ?', $idClasse);
-              $this->update(array('prixUnitaire' => $prix),$where);
-          }
+          
           public function existePromo($idVol)
           {
            $req = $this->select()
@@ -58,5 +53,15 @@
            {
                 return true;
            }
+          }
+          
+          public function getClassesVol($idVol)
+          {
+               $req = $this->select()->setIntegrityCheck(false)
+                           ->from($this->_name, array('idClasse'))
+                           ->join(array('c'=>'classe'),'c.idClasse = valoir.idClasse', array('c.nomClasse'))
+                           ->where('idVol = ?', $idVol)
+                           ;
+               return $this->fetchAll($req)->toArray();
           }
     }

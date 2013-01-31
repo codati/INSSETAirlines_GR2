@@ -186,7 +186,7 @@ article {margin-bottom: 60px;}
 margin-bottom: 5px;
 }
 
-input[type=submit], input[type=button], input[type=password], button, .bouton, .valider, .ajouter, .retour {
+input[type=submit], input[type=button], input[type=password], button, .bouton, .valider, .ajouter, .modifier, .retour {
     background-repeat: no-repeat;
     background-position: 5px;
 
@@ -237,6 +237,11 @@ input[type=submit].annuler, button.annuler {
 
 .ajouter {
     background-image: url('/img/add.png');
+    background-repeat:  no-repeat;
+}
+
+.modifier {
+    background-image: url('/img/pencil.png');
     background-repeat:  no-repeat;
 }
 
@@ -302,7 +307,7 @@ select
     padding : 10px 0 0 25px;
 }
 
-.form dd, .form dt {
+.form dd, .form dt, .AddVolLeft dd, .AddVolLeft dt {
     margin : 10px;
 }
 
@@ -310,6 +315,7 @@ select
     padding : 10px;
     text-align: center;
 }
+
 #ret {
     padding: 8px 8px 8px 25px;
 }

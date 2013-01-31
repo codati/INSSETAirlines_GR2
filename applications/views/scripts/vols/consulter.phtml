@@ -54,7 +54,7 @@
                     {
                          //calcul du prix remisé
                          $nouveauPrix = (($lesTarifsDuVol['prixUnitaire'])*(1-($lesTarifsDuVol['pourcentagePromo'])/100));
-                          echo $lesTarifsDuVol['nomClasse'].' : <b>'.$nouveauPrix; 
+                          echo $lesTarifsDuVol['nomClasse'].' : <b>'.round($nouveauPrix,2); 
                           echo ' euros </b>(soit '.$lesTarifsDuVol['pourcentagePromo'].'% de réduction !)<br />';
                     }
                        
