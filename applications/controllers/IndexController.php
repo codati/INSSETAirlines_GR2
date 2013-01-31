@@ -10,6 +10,7 @@ class IndexController extends Zend_Controller_Action
     }	
     public function indexAction()
     {
+        $this->view->msgDoitCo = $this->_getParam('nonCo');
         $this->view->msgDeco = $this->_getParam('decoReussie');
     	$this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
     }	

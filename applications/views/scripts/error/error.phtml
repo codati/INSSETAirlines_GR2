@@ -4,6 +4,10 @@
     {
         echo '<img id="img404" src="'.$this->baseUrl('/img/404.jpg').'" alt="erreur404" title="Erreur 404"/>';
     }
+    elseif($this->httpCode == 403)
+    {
+        echo '<img id="img403" src="'.$this->baseUrl('/img/403.jpg').'" alt="Erreur" title="Erreur !" />';
+    }
     else
     {
         echo '<div id="div_code"><p><span>Code : '.$this->httpCode.'</span></p>

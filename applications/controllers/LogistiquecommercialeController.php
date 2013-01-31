@@ -15,6 +15,10 @@ class LogistiquecommercialeController extends Zend_Controller_Action
             $redirector = $this->_helper->getHelper('Redirector');
             $redirector->gotoUrl($this->view->baseUrl());  
         }
+        if(!Services_verifAcces('Logistiquecommerciale')) 
+        {
+            throw new Zend_Controller_Action_Exception('',403);
+        }
     }
     
     public function infosvolAction()

@@ -9,6 +9,10 @@ class DirectionstrategiqueController extends Zend_Controller_Action
         {
             $redirector = $this->_helper->getHelper('Redirector');
             $redirector->gotoUrl($this->view->baseUrl());  
+        }        
+        if(!Services_verifAcces('Directionstrategique')) 
+        {
+            throw new Zend_Controller_Action_Exception('',403);
         }
     }
 	

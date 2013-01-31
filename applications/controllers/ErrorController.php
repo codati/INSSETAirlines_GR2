@@ -13,7 +13,6 @@ class ErrorController extends Zend_Controller_Action
     public function preDispatch()
     {
     	$this->_exception = $this->_getParam('error_handler');
-        
     	switch ($this->_exception->type) {
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER:
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION:
@@ -34,6 +33,10 @@ class ErrorController extends Zend_Controller_Action
             			self::$httpCode = 200;
             			self::$errorMessage = $this->_exception->exception->getMessage();
             		break;
+                        case 'Zend_Controller_Action_Exception' :
+                            self::$httpCode = $this->_exception->exception->getCode(); 
+                            self::$errorMessage = 'Vous n\'avez pas les droits nécéssaires pour accéder à cette page !';
+                        break;
             		default:
             			self::$httpCode = 500;
             			self::$errorMessage = 'Erreur inconnue :<br> '. $this->_exception->exception->getMessage();
