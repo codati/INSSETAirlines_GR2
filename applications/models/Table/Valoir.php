@@ -64,4 +64,10 @@
                            ;
                return $this->fetchAll($req)->toArray();
           }
+          public function updatePrixVol($idVol, $idClasse, $prix)
+          {
+              $where[] = $this->getAdapter()->quoteInto('idVol = ?', $idVol);
+              $where[] = $this->getAdapter()->quoteInto('idClasse = ?', $idClasse);
+              $this->update(array('prixUnitaire' => $prix),$where);
+          }
     }
