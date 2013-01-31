@@ -136,8 +136,8 @@ class ApiController extends Zend_Controller_Action
             $pass = $this->getRequest()->getPost('pass');
             
             $tableTech = new Table_Technicien;
-            //$tech  = $tableTech->login($user, $pass);
-            $tech  = $tableTech->login('lefebvre-catherine', md5('lefebvre'));
+            $tech  = $tableTech->login($user, $pass);
+            //$tech  = $tableTech->login('lefebvre-catherine', md5('lefebvre'));
             
             if(!is_null($tech))
             {       

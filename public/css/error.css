@@ -13,9 +13,12 @@ footer {
     font-size : 1.1em;
     padding : 5px;
 }
+#div_code p span {
+    padding : 5px 20px;
+}
 #div_code p {    
     text-align : center;
-    margin-bottom : 5px;
+    margin-bottom : 10px;
 }
 #msgErreur, #div_code span {
     text-align: center;

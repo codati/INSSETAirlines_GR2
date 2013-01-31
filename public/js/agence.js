@@ -29,8 +29,8 @@ function prepare() {
            $('.res_places').html('<img src="/img/asterisk_yellow.png" alt="asterisk"/>');
            $('#msg_resa').html(data).show();
            $('#resa_'+idNum).val('0');
-           /*setTimeout("$('#msg_resa').fadeOut(1000);", 2000);
-           setTimeout("$('.res_places').fadeOut(1000);", 2000);/*   */
+           /*setTimeout("$('#msg_resa').fadeOut(1000);", 2000); */
+           setTimeout("$('.res_places').fadeOut(1000);", 2000);
        });
     });
      $('.show').click(function() {

@@ -1,0 +1,48 @@
+<h2>Modification du vol #<?php echo $this->InfosVol['idVol']; ?></h2><br />
+
+Départ : <span style="font-weight: bold;"><?php echo $this->InfosVol['nomAeroportDepart']; ?></span> le <?php echo DateFormat_View($this->InfosVol['dateHeureDepartPrevueVol']); ?><br/><br/>
+Arrivé : <span style="font-weight: bold;"><?php echo $this->InfosVol['nomAeroportArrivee']; ?></span> le <?php echo DateFormat_View($this->InfosVol['dateHeureArriveePrevueVol']); ?><br/>
+<br/>
+
+<?php
+    $FormPlanifier = new Zend_Form();
+    $FormPlanifier->setMethod('post');
+    $FormPlanifier->setAction('/planning/recapmodifvol/idVol/'.$this->idVol);
+    $FormPlanifier->setAttrib('id', 'form_planifier');
+    
+    $modeleAvion = new Zend_Form_Element_Select('modele_avion');
+    $modeleAvion->setLabel('Modèle d\'avion :');
+    $modeleAvion->addMultiOptions($this->ListeModele);
+
+    $Avion = new Zend_Form_Element_Select('avion');
+    $Avion->setLabel('Avion :');
+    $Avion->addMultiOptions($this->ListeAvion);
+
+    $Pilote = new Zend_Form_Element_Select('pilote');
+    $Pilote->setLabel('Pilote :');
+    $Pilote->addMultiOptions($this->ListePilote);
+
+    $CoPilote = new Zend_Form_Element_Select('copilote');
+    $CoPilote->setLabel('Co-pilote :');
+    $CoPilote->addMultiOptions($this->ListeCoPilote);
+
+    $prixClass = new Zend_Form_Element_Hidden('prix_classe');
+    $prixClass->setLabel('<br/><br/>Chargement des classes&nbsp;&nbsp;&nbsp;<img src="/img/loading_squares.gif" alt="Loading" />');
+    $prixClass->addDecorators(array(array('Label', array('tag' => 'div', 'escape' => false))));
+
+
+    $Submit = new Zend_Form_Element_Submit('send');
+    $Submit->setLabel('Voir le récapitulatif');
+    
+    $FormPlanifier->addElement('hidden', 'dateDepart', array('value' => $this->dateDepart));
+    $FormPlanifier->addElement('hidden', 'dateArrivee', array('value' => $this->dateArrivee));
+    $FormPlanifier->addElement($modeleAvion);
+    $FormPlanifier->addElement($Avion);
+    $FormPlanifier->addElement($Pilote);
+    $FormPlanifier->addElement($CoPilote);
+    $FormPlanifier->addElement($prixClass);
+    $FormPlanifier->addElement($Submit);
+    echo $FormPlanifier;
+?>
+<br/><br/>
+<div id="planning"></div>

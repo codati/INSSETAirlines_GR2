@@ -5,44 +5,44 @@ Arrivé : <span style="font-weight: bold;"><?php echo $this->InfosVol['nomAeropo
 <br/>
 
 <?php
-$FormPlanifier = new Zend_Form();
-$FormPlanifier->setMethod('post');
-$FormPlanifier->setAction('/planning/recapvol/idVol/'.$this->idVol);
-$FormPlanifier->setAttrib('id', 'form_planifier');
+    $FormPlanifier = new Zend_Form();
+    $FormPlanifier->setMethod('post');
+    $FormPlanifier->setAction('/planning/recapvol/idVol/'.$this->idVol);
+    $FormPlanifier->setAttrib('id', 'form_planifier');
 
-$FormPlanifier->addElement('hidden', 'dateDepart', array('value' => $this->dateDepart));
-$FormPlanifier->addElement('hidden', 'dateArrivee', array('value' => $this->dateArrivee));
+    $modeleAvion = new Zend_Form_Element_Select('modele_avion');
+    $modeleAvion->setLabel('Modèle d\'avion :');
+    $modeleAvion->addMultiOptions($this->ListeModele);
 
-$modeleAvion = new Zend_Form_Element_Select('modele_avion');
-$modeleAvion->setLabel('Modèle d\'avion :');
-$modeleAvion->addMultiOptions($this->ListeModele);
-$FormPlanifier->addElement($modeleAvion);
+    $Avion = new Zend_Form_Element_Select('avion');
+    $Avion->setLabel('Avion :');
+    $Avion->addMultiOptions($this->ListeAvion);
 
-$Avion = new Zend_Form_Element_Select('avion');
-$Avion->setLabel('Avion :');
-$Avion->addMultiOptions($this->ListeAvion);
-$FormPlanifier->addElement($Avion);
+    $Pilote = new Zend_Form_Element_Select('pilote');
+    $Pilote->setLabel('Pilote :');
+    $Pilote->addMultiOptions($this->ListePilote);
 
-$Pilote = new Zend_Form_Element_Select('pilote');
-$Pilote->setLabel('Pilote :');
-$Pilote->addMultiOptions($this->ListePilote);
-$FormPlanifier->addElement($Pilote);
+    $CoPilote = new Zend_Form_Element_Select('copilote');
+    $CoPilote->setLabel('Co-pilote :');
+    $CoPilote->addMultiOptions($this->ListeCoPilote);
 
-$CoPilote = new Zend_Form_Element_Select('copilote');
-$CoPilote->setLabel('Co-pilote :');
-$CoPilote->addMultiOptions($this->ListeCoPilote);
-$FormPlanifier->addElement($CoPilote);
+    $prixClass = new Zend_Form_Element_Hidden('prix_classe');
+    $prixClass->setLabel('<br/><br/>Chargement des classes&nbsp;&nbsp;&nbsp;<img src="/img/loading_squares.gif" alt="Loading" />');
+    $prixClass->addDecorators(array(array('Label', array('tag' => 'div', 'escape' => false))));
 
-$prixClass = new Zend_Form_Element_Hidden('prix_classe');
-$prixClass->setLabel('<br/><br/>Chargement des classes&nbsp;&nbsp;&nbsp;<img src="/img/loading_squares.gif" alt="Loading" />');
-$prixClass->addDecorators(array(array('Label', array('tag' => 'div', 'escape' => false))));
-$FormPlanifier->addElement($prixClass);
 
-$Submit = new Zend_Form_Element_Submit('send');
-$Submit->setLabel('Voir le récapitulatif');
-$FormPlanifier->addElement($Submit);
-
-echo $FormPlanifier;
+    $Submit = new Zend_Form_Element_Submit('send');
+    $Submit->setLabel('Voir le récapitulatif');
+    
+    $FormPlanifier->addElement('hidden', 'dateDepart', array('value' => $this->dateDepart));
+    $FormPlanifier->addElement('hidden', 'dateArrivee', array('value' => $this->dateArrivee));
+    $FormPlanifier->addElement($modeleAvion);
+    $FormPlanifier->addElement($Avion);
+    $FormPlanifier->addElement($Pilote);
+    $FormPlanifier->addElement($CoPilote);
+    $FormPlanifier->addElement($prixClass);
+    $FormPlanifier->addElement($Submit);
+    echo $FormPlanifier;
 ?>
 <br/><br/>
 <div id="planning"></div>

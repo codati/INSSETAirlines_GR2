@@ -41,4 +41,42 @@
 			$data = array('idVol' => $idVol, 'idPilote' => $idPilote, 'role' => $role);
 			$this->insert($data);
 		}
+                /**
+                 * retourne l'id du pilote pour un vol
+                 * @param int $idVol : l'id du vol
+                 * @return int $idPilote : l'id du pilote
+                 */
+                public function getIdPilote($idVol)
+                {
+                    $req = $this->select()
+                                ->from($this->_name,'idPilote')
+                                ->where('assurer.idVol = ?', $idVol)
+                                ->where('role = ?','pilote')
+                            ;
+                    return $this->_db->fetchOne($req);
+                }
+                /**
+                 * retourne l'id du copilote pour un vol
+                 * @param int $idVol : l'id du vol
+                 * @return int $idPilote : l'id du copilote
+                 */
+                public function getIdCoPilote($idVol)
+                {
+                    $req = $this->select()
+                                ->from($this->_name,'idPilote')
+                                ->where('assurer.idVol = ?', $idVol)
+                                ->where('role = ?','co-pilote')
+                            ;
+                    //echo $req->assemble();exit;
+                    return $this->_db->fetchOne($req);
+                }
+                /**
+                 * supprime un vol pour un pilote
+                 * @param int $idVol : l'id du vol
+                 * @param int $idPilote : l'id du pilote
+                 */
+                public function deleteVolPilote($idVol, $idPilote)
+                {
+                    $this->delete(array('idVol' => $idVol,'idPilote' => $idPilote));
+                }
     }

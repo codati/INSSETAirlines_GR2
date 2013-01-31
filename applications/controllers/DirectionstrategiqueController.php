@@ -117,8 +117,7 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 			$eTrigArrivee->setValue($infosLigne['trigrammeAeroportArrivee']);
 	        
 	        $periodLigne = $tableLigne->getPeriodiciteLigne($idLigne);
-	        $periodicites = $tablePeriodicite->getPeriodicites();        
-	        $newPeriodicites = array();
+	        
 			
 			$periodicites = $tablePeriodicite->getPeriodicites();
 			$newPeriodicites = array();

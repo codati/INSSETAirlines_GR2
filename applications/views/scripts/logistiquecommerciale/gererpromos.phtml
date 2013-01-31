@@ -1,0 +1,53 @@
+<h1>Gestion des promotions</h1><br /><br />
+<h2>Fonctionnement</h2>
+<p>Retrouvez ci-dessous la liste des vols dont <b>le départ a lieu dans moins d'un mois</b> et qui n'ont pas encore de promotion.</p><br/>
+
+<h2>Liste des vols susceptibles d'être promotionnés</h2>
+<div id="tableau">    
+     <table>
+         <caption>Liste des vols</caption>
+           <tr>
+               <th>Id</th>
+               <th>Date de départ prévue</th>
+               <th>Taux de remplissage</th>
+               <th>Action</th>
+           </tr>
+
+           <?php
+               $tValoir = new Table_Valoir;
+               $tReservation = new Table_Reservation;
+               $tAvion = new Table_Avion;
+               $tContenir = new Table_Contenir;
+               $tableDemander = new Table_Demander;
+               $locale = new Zend_Locale('fr_FR');
+               foreach ($this->lesVolsAVenir as $unVol) 
+               {
+                    //Si'il n'y a pas de promo pour ce vol
+                    if (!$tValoir->existePromo($unVol['idVol']))
+                    {
+                         $unVol['dateHeureDepartPrevueVol'] = new Zend_Date($unVol['dateHeureDepartPrevueVol'],false, $locale);
+                         /*
+                          * Calcul du taux de remplissage
+                          * 
+                          */
+                         $lesResas = $tReservation->getResasParVol($unVol['idVol']);
+                         $nbPlacesReservees = $tableDemander->getNbPlacesReservee($lesResas);
+                         $modeleAvion = $tAvion->getModele($unVol['matriculeAvion']);
+                         $nbPlacesTotales = $tContenir->getSommePlaces($modeleAvion);
+                         $tauxRemplissage = ($nbPlacesReservees/$nbPlacesTotales)*100;
+                         
+                         echo '<tr>
+                                   <td>'.$unVol['idVol'].'</td>
+                                   <td>'.$unVol['dateHeureDepartPrevueVol']->toString('dd MMMM yyyy').'</td>
+                                   <td>'.round($tauxRemplissage).'%<br /><meter value="'.$tauxRemplissage.'" min="0" max="100" low="50" high="75" optimum="90"></meter>  
+</td>
+                                   <td><a href="'.$this->baseUrl().'/logistiquecommerciale/creerPromo/idVol/'.$unVol['idVol'].'" title="Créer une promo"><img src="'. $this->baseUrl() .'/img/add.png" /></a></td>
+                              </tr>';
+                    }
+               }
+           ?>
+
+
+     </table>
+</div>
+

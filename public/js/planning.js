@@ -11,7 +11,7 @@ function enabled_and_EndLoading(elem)
 }
 
 $(document).ready(function()
-{
+{   
     //Page planification du vol.
     $("#form_planifier #avion-element").append('<span id="load-avion"></span>');
     $("#form_planifier #pilote-element").append('<span id="load-pilote"></span><span id="detail_pilote">Détails des horaires du pilote</span><span id="load-detail_pilote"></span>');
@@ -23,10 +23,8 @@ $(document).ready(function()
             var modeleavion = $("#form_planifier #modele_avion option:selected").val();
             $.get('/planning/formprixclasse', {idModele:modeleavion}, function(data) {$("#form_planifier #prix_classe-label").html(data);});
     }
-
-    $("#form_planifier #modele_avion").change(function()
-    {
-            //On désactive les champs
+    $("#form_planifier #modele_avion").change(function() {
+         //On désactive les champs
             disabled_and_loading("avion");
             disabled_and_loading("pilote");
             disabled_and_loading("copilote");
@@ -79,7 +77,6 @@ $(document).ready(function()
             //Actualisation de la liste des classes pour les prix
             $.get('/planning/formprixclasse', {idModele:idmodeleavion}, function(data) {$("#form_planifier #prix_classe-label").html(data);});
     });
-
     $("#form_planifier #pilote").change(function()
     {
             disabled_and_loading("copilote");
@@ -228,4 +225,39 @@ $(document).ready(function()
     });
 
     $("#form_RecapPlanifier button").click(function() {$(location).attr('href', '/planning/planifier');});
+    
+    $('#form_RecapModifPlanifier').submit(function() {
+        idvol = $("#idVol").val();
+        modeleavion = $("#modele").val();
+        avion = $("#avion").val();
+        pilote = $("#pilote").val();
+        copilote = $("#copilote").val();
+
+        class1 = $("#class_1").val();
+        class2 = $("#class_2").val();
+        class3 = $("#class_3").val();
+
+        $.get('/planning/finmodifplanif', {
+            idVol:idvol,
+            idModeleAvion:modeleavion,
+            immaAvion:avion,
+            idPilote:pilote,
+            idCoPilote:copilote,
+            class_1:class1,
+            class_2:class2,
+            class_3:class3
+        },
+        function(data) {
+            $("#formRecapPlanifier_load-valid").html('');
+            if(data == '1')
+            {
+                    $("#form_RecapPlanifier").css("display", "none");
+                    $("#error-formRecapPlanifier").css("display", "none");
+                    $("#valid-formRecapPlanifier").show();
+            }
+            else {$("#error-formRecapPlanifier").show();}
+        });
+        return false;
+        
+    });
 });

@@ -22,13 +22,17 @@
          */
         public function getNbPlacesReservee($resasVol)
         {
-            $req = $this->select()
+          if(!empty($resasVol))
+          {
+               $req = $this->select()
                         ->from($this->_name, 'SUM(nbPlacesReservees) as nbPlacesReservees')
                         ->where('idReservation IN (?)', $resasVol)
                         ->where('etatDemande IN (?)', array("En attente", "Validée"))
                         ;
-           $res = $this->_db->fetchOne($req);
-           return isset($res) ? $res : 0;
+               $res = $this->_db->fetchOne($req);
+               return isset($res) ? $res : 0;
+           }
+           else {return ;}
         }
         /**
          * Permet de savoir si une demande existe deja en fontion de l'agence et de la reservation
