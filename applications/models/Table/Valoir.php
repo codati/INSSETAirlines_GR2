@@ -19,7 +19,7 @@
                {
                     $req = $this->select()
                     ->setIntegrityCheck(false)
-                    ->from(array('va'=>'valoir'),array('va.prixUnitaire'))
+                    ->from(array('va'=>'valoir'),array('va.prixUnitaire', 'va.pourcentagePromo', 'va.dateDebutPromo', 'va.dateFinPromo'))
                     ->join(array('c'=>'classe'),'c.idClasse = va.idClasse', array('c.nomClasse'))
                     ->where('idVol= ?', $idVol)
                     ;
@@ -37,4 +37,21 @@
 			try {$this->insert($data);}
 			catch (Zend_Db_Exception $e) {die ($e->getMessage());}
 		}
+          
+          public function existePromo($idVol)
+          {
+           $req = $this->select()
+                        ->from($this->_name, 'SUM(pourcentagePromo) as promo')
+                        ->where('idVol = ?', $idVol)
+                        ;
+           $res = $this->_db->fetchOne($req);
+           if ($res == 0)
+           {
+                return false;
+           }
+           else
+           {
+                return true;
+           }
+          }
     }

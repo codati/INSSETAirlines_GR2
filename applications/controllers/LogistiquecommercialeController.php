@@ -73,4 +73,25 @@ class LogistiquecommercialeController extends Zend_Controller_Action
             $redirector->gotoUrl($this->view->baseUrl('/logistiquecommerciale/infosvol'));
         }
     }
+    
+    //Fab
+    public function gererpromosAction()
+    {
+          $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+          
+          /*
+           * Récupérer tous les vols dont : 
+           * le départ < à un mois
+           * qui n'ont pas encore de promo 
+           */
+          $tVol = new Table_Vol();
+          $dateDebut = DateFormat_SQL(Zend_Date::now());
+          $dateFin = DateFormat_SQL(Zend_Date::now()->addMonth(1));
+
+          $lesVolsAVenir = $tVol->getVolsPlanifiesEntreDate($dateDebut, $dateFin);
+          
+          $this->view->lesVolsAVenir = $lesVolsAVenir;
+                  
+          
+    }
 }

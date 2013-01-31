@@ -5,7 +5,7 @@ class DrhController extends Zend_Controller_Action
     {
     	$this->headStyleScript = array(
                'css' => 'personaviguant',
-               'js' => array('personaviguant','formTech')
+			'js' => array('formTech', 'personaviguant')
 		);
         
         if(!session_encours())

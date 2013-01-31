@@ -410,9 +410,255 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 		$idVol = $this->_getParam('vol', null);
 		$idLigne = $this->_getParam('ligne', null);
 		
-		if($idRefVol != null && $idLigne != null)
+		if($idVol != null && $idLigne != null)
 		{
+			$this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
 			
+			$tableVol = new Table_Vol;
+			$tableEscale = new Table_Escale;
+			$tableLigne = new Table_Ligne;
+			$tableAero = new Table_Aeroport;
+			
+			$volExist = $tableVol->existeVol($idVol);
+			if($volExist)
+			{
+				$infosLigne = $tableLigne->getUneLigne($idLigne);
+				$infosVol = $tableVol->get_InfosVol($idVol);
+				
+				$trigAeroLigne = $tableLigne->getTrigAeroLigne($idLigne);
+				
+				/*
+				echo '<pre>';print_r($_POST);echo '</pre>';
+				Array
+				(
+				    [dateDep] => 01/29/2013 11:26
+				    [dateArr] => 01/30/2013 11:26
+				    [Ajouter] => Ajouter
+				    [nbEscale] => 1
+				    [escaleOrder] => escale_0
+				    [aeroEscDep] => AKL
+				    [aeroEscArr] => AKL
+				    [escale_0_DepAero] => BER
+				    [escale_0_DepDate] => 01/29/2013 11:26
+				    [escale_0_ArrAero] => AKL
+				    [escale_0_ArrDate] => 01/30/2013 00:00
+				)
+				*/
+				
+				$validForm = $this->_getParam('Modifier', null);
+				$affForm = true;
+				$erreurForm = '';
+				
+				if($validForm != null)
+				{
+					$dateDep = $this->_getParam('dateDep');
+					$dateArr = $this->_getParam('dateArr');
+					$nbEscale = $this->_getParam('nbEscale');
+					$escaleOrder = $this->_getParam('escaleOrder');
+					
+					$erreurEscale = false;
+					$escale = array();
+					
+					if($nbEscale > 0)
+					{
+						$orderEx = explode('.', $escaleOrder);
+						
+						for($i=0;$i<=$nbEscale;$i++)
+						{
+							if(in_array('escale_'.$i, $orderEx))
+							{
+								$depaero = $this->_getParam('escale_'.$i.'_DepAero');
+								$depdate = $this->_getParam('escale_'.$i.'_DepDate');
+								$arraero = $this->_getParam('escale_'.$i.'_ArrAero');
+								$arrdate = $this->_getParam('escale_'.$i.'_ArrDate');
+								
+								$depaerotxt = $tableAero->getNomAeroport($depaero);
+								$arraerotxt = $tableAero->getNomAeroport($arraero);
+								
+								$escale[$i]['depaero'] = $depaero;
+								$escale[$i]['depaerotxt'] = $depaerotxt['nomAeroport'];
+								$escale[$i]['depdate'] = $depdate;
+								$escale[$i]['arraero'] = $arraero;
+								$escale[$i]['arraerotxt'] = $arraerotxt['nomAeroport'];
+								$escale[$i]['arrdate'] = $arrdate;
+								
+								if($depaero == null || $depdate == null || $arraero == null || $arrdate == null) {$erreurEscale = true;}
+							}
+						}
+					}
+					$nbEscaleReel = count($escale);
+					
+					if($erreurEscale == false && $dateDep != null && $dateArr != null) {$affForm = false;}
+					else 
+					{
+							if($erreurEscale == true) {$erreurForm = 'Un champ n\'a pas été rempli dans les escales.';}
+						elseif($dateDep == null) {$erreurForm = 'La date de départ du vol n\'est pas indiquée.';}
+						elseif($dateArr == null) {$erreurForm = 'La date d\'arrivée du vol n\'est pas indiquée.';}
+					}
+				}
+				else
+				{
+					//$infosVol
+					$dateDep = $infosVol['dateHeureDepartPrevueVol'];
+					$dateArr = $infosVol['dateHeureArriveePrevueVol'];
+					$nbEscale = $infosVol['nbEscale'];
+					
+					//get_InfosEscales
+					if($nbEscale > 0)
+					{
+						$infosEscales = $tableEscale->get_InfosEscales($idVol);
+						/*
+						array(
+							'numeroEscale',
+                            'datehArriveeEffectiveEscale',
+                            'datehArriveePrevueEscale',
+                            'datehDepartEffectiveEscale',
+                            'datehDepartPrevueEscale',
+                            'trigrammeAeroport'
+                        ))
+                        ->join(array('ae' => 'aeroport'), 'ae.trigrammeAeroport=e.trigrammeAeroport', 'nomAeroport')
+                        ->join(array('d' => 'desservir'), 'd.trigrammeAeroport=e.trigrammeAeroport', '')
+                        ->join(array('v' => 'ville'), 'v.idVille=d.idVille', 'nomVille')
+                        ->join(array('p' => 'pays'), 'p.idPays=v.idPays', 'nomPays')
+						*/
+						
+						$escaleDepAero = $trigAeroLigne['trigDepart'];
+						$escaleDepAeroTxt = stripslashes($infosLigne['depart']);
+						$escaleDepDate = $infosVol['dateHeureDepartPrevueVol'];
+						
+						$escaleOrder = '';
+						$escale = array();
+						foreach($infosEscales as $escaleItem)
+						{
+							$num = $escaleItem['numeroEscale'];
+							
+							if($escaleOrder != '') {$escaleOrder .= '.';}
+							$escaleOrder .= 'escale_'.$num;
+							
+							$escaleArrAero = $escaleItem['trigrammeAeroport'];
+							$escaleArrAeroTxt = $escaleItem['nomAeroport'];
+							$escaleArrDate = $escaleItem['datehArriveePrevueEscale'];
+							
+							$escale[$num] = array
+							(
+								'depaero' => $escaleDepAero,
+								'depaerotxt' => $escaleDepAeroTxt,
+								'depdate' => $escaleDepDate,
+								'arraero' => $escaleArrAero,
+								'arraerotxt' => $escaleArrAeroTxt,
+								'arrdate' => $escaleArrDate
+							);
+							
+							$escaleDepAero = $escaleArrAero;
+							$escaleDepAeroTxt = $escaleArrAeroTxt;
+							$escaleDepDate = $escaleArrDate;
+						}
+						
+						$num++;
+						$escale[$num] = array
+						(
+							'depaero' => $escaleDepAero,
+							'depaerotxt' => $escaleDepAeroTxt,
+							'depdate' => $escaleDepDate,
+							'arraero' => $trigAeroLigne['trigArrivee'],
+							'arraerotxt' => stripslashes($infosLigne['arrivee']),
+							'arrdate' => $infosVol['dateHeureArriveePrevueVol']
+						);
+					}
+					else
+					{
+						$escaleOrder = '';
+						$escale = array();
+					}
+				}
+				
+				if($affForm == false)
+				{
+					//Création du vol en bdd.
+					
+					/**
+					Récap des variables
+						$dateDep
+						$dateArr
+						$nbEscale
+						$nbEscaleReel
+						$escaleOrder
+						$escale -> array
+							(
+								array
+								(
+									depaero
+									depaerotxt
+									depdate
+									arraero
+									arraerotxt
+									arrdate
+								)
+							)
+					*/
+					
+					Zend_Debug::dump($dateDep);
+					$dateDep = new Zend_Date($dateDep);
+					$dateDepSql = DateFormat_SQL($dateDep);
+					
+					Zend_Debug::dump($dateArr);
+					$dateArr = new Zend_Date($dateArr);
+					$dateArrSql = DateFormat_SQL($dateArr);
+					
+					Zend_Debug::dump($dateDepSql);
+					Zend_Debug::dump($dateArrSql);
+					
+					$tableVol = new Table_Vol;
+					$idVol = $tableVol->modifier($idVol, $dateDepSql, $dateArrSql);
+					$tableEscale->supprAllEscale($idVol);
+					
+					if($nbEscaleReel > 0)
+					{
+						$i = 1;
+						foreach($escale as $val)
+						{
+							if($trigAeroLigne['trigArrivee'] != $val['arraero'])
+							{
+								$escDep = new Zend_Date($val['depdate']);
+								$escDepSql = DateFormat_SQL($escDep);
+								
+								$escArr = new Zend_Date($val['arrdate']);
+								$escArrSql = DateFormat_SQL($escArr);
+								
+								$tableEscale->ajouter($idVol, $i, $escDepSql, $escArrSql, $val['arraero']);
+								$i++;
+							}
+						}
+					}
+					
+					$message = '<div class="reussi">Le vol a été modifié.</div>';
+			        $this->_helper->FlashMessenger($message);
+			        $redirector = $this->_helper->getHelper('Redirector');
+			        $redirector->gotoUrl($this->view->baseUrl('/directionstrategique/voirvols/ligne/'.$idLigne));
+				}
+				else
+				{
+					/*
+						Création du formulaire à la main et non via Zend car 
+						j'ai besoin de pouvoir placer les balises form où je le veux.
+					*/
+					
+					//Gestion de l'erreur.
+					if($erreurForm != '') {$this->view->errorForm = $erreurForm;}
+					
+					$this->view->trigLigne = $trigAeroLigne;
+					$this->view->lstAero = $tableAero->getAeroports();
+					$this->view->infosLigne = $infosLigne;
+					
+					//Envoi à la vue des infos du form pour reremplir si déjà rempli
+					$this->view->dateDep = $dateDep;
+					$this->view->dateArr = $dateArr;
+					$this->view->escaleOrder = $escaleOrder;
+					$this->view->nbEscale = $nbEscale;
+					$this->view->escale = $escale;
+				}
+			}
+			else {$this->_helper->redirector('index', 'directionstrategique');}
 		}
 		else {$this->_helper->redirector('index', 'directionstrategique');}
 	}

@@ -292,4 +292,27 @@
 		$idVol = $this->insert($data);
 		return $idVol;
 	}
+     
+     /*RETOURNE LES VOLS PLANIFIES ENTRE DEUX DATES*/
+     public function getVolsPlanifiesEntreDate($dateDebut, $dateFin)
+     {
+          $req = $this->select()->setIntegrityCheck(false)
+                      ->from($this->_name, array('idVol', 'dateHeureDepartPrevueVol','dateHeureArriveePrevueVol', 'matriculeAvion'))
+                      ->where('dateHeureDepartPrevueVol > ?', $dateDebut)
+                      ->where('dateHeureDepartPrevueVol < ?', $dateFin)
+                      ->where('matriculeAvion is not null');
+         //Zend_Debug::dump($this->fetchAll($req)->toArray());exit;
+         return $this->fetchAll($req)->toArray();
+     }
+     
+	 public function modifier($idVol, $dateDepartPrevue, $dateArriveePrevue)
+	 {
+	 	$data = array
+	 	(
+	 		'dateHeureDepartPrevueVol' => $dateDepartPrevue,
+			'dateHeureArriveePrevueVol' => $dateArriveePrevue
+		);
+	 	$where = $this->getAdapter()->quoteInto('idVol = ?', $idVol);
+        $this->update($data, $where);
+	 }
 }
