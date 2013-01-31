@@ -54,8 +54,9 @@ $(document).ready(function()
 	
 	$(".modifVol").click(function()
 	{
-		id = $(this).parents('tr').attr('id');
-		window.location.href = "/directionstrategique/modifvol/vol/"+id;
+		idL = $("#idLigne").val();
+		idV = $(this).parents('tr').attr('id');
+		window.location.href = "/directionstrategique/modifiervol/vol/"+idV+"/ligne/"+idL;
 	});
 	
 	$(".copyVol").click(function()
