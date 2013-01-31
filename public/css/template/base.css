@@ -302,7 +302,7 @@ select
     padding : 10px 0 0 25px;
 }
 
-.form dd, .form dt {
+.form dd, .form dt, .AddVolLeft dd, .AddVolLeft dt {
     margin : 10px;
 }
 
@@ -310,6 +310,7 @@ select
     padding : 10px;
     text-align: center;
 }
+
 #ret {
     padding: 8px 8px 8px 25px;
 }
