@@ -124,7 +124,7 @@ class LogistiquecommercialeController extends Zend_Controller_Action
               $formAjoutPromo->addElement($ePourcentagePromo);
               
          }
-         $eSubmit = new Zend_Form_Element_Button('sub_submit');
+         $eSubmit = new Zend_Form_Element_Submit('sub_submit');
          $eSubmit->setLabel('Valider');
          $eSubmit->setAttrib('onclick', "return test2($idVol);");
          $formAjoutPromo->addElement($eSubmit);
@@ -144,41 +144,46 @@ class LogistiquecommercialeController extends Zend_Controller_Action
          $rCA = $this->_getParam('rCA', 0);//3
          $dateFinPromo = $leVol[0]['dateHeureDepartPrevueVol'];
          
-         $test = 'infos ';
-         if ($rPC != 0)
-         {
-               $donneesValoir = array(
-                            'dateFinPromo' => $dateFinPromo,
-                            'dateDebutPromo' => DateFormat_SQL(Zend_Date::now()),
-                            'pourcentagePromo' => $rPC
-                     );
-               $where[] = $tValoir->getAdapter()->quoteInto('idVol = ?', $idVol);
-               $where[] = $tValoir->getAdapter()->quoteInto('idClasse = ?', 2);
-               $test = $tValoir->update($donneesValoir, $where);
-         }
+         //echo $rCA.' '.$rCE.' '.$rPC;exit;
+         
+         $where = array();
+         $donneesValoir = array(
+                    'dateFinPromo' => $dateFinPromo,
+                    'dateDebutPromo' => DateFormat_SQL(Zend_Date::now()),
+         );
+         $res =0;
          if ($rCE != 0)
          {
-               $donneesValoir = array(
-                            'dateFinPromo' => $dateFinPromo,
-                            'dateDebutPromo' => DateFormat_SQL(Zend_Date::now()),
-                            'pourcentagePromo' => $rCE
-                     );
+              $donneesValoirCE = $donneesValoir;
+               $donneesValoirCE['pourcentagePromo'] = $rCE;
                $where[] = $tValoir->getAdapter()->quoteInto('idVol = ?', $idVol);
                $where[] = $tValoir->getAdapter()->quoteInto('idClasse = ?', 1);
-               $test .= ' '.$tValoir->update($donneesValoir, $where);
+               
+              // Zend_Debug::dump($where);
+              // Zend_Debug::dump($donneesValoirCE);exit;
+               $res += $tValoir->update($donneesValoirCE, $where);
          }
+         
+         $where = array();
+         if ($rPC != 0)
+         {
+              $donneesValoirPC = $donneesValoir;
+               $donneesValoirPC['pourcentagePromo'] = $rPC;
+               $where[] = $tValoir->getAdapter()->quoteInto('idVol = ?', $idVol);
+               $where[] = $tValoir->getAdapter()->quoteInto('idClasse = ?', 2);
+               $res += $tValoir->update($donneesValoirPC, $where);
+         }
+         
+         $where = array();
          if ($rCA != 0)
          {
-               $donneesValoir = array(
-                            'dateFinPromo' => $dateFinPromo,
-                            'dateDebutPromo' => DateFormat_SQL(Zend_Date::now()),
-                            'pourcentagePromo' => $rPC
-                     );
+              $donneesValoirCA = $donneesValoir;
+               $donneesValoirCA['pourcentagePromo'] = $rCA;
                $where[] = $tValoir->getAdapter()->quoteInto('idVol = ?', $idVol);
                $where[] = $tValoir->getAdapter()->quoteInto('idClasse = ?', 3);
-               $test .= ' '.$tValoir->update($donneesValoir, $where);
-         }         
-         echo $test;
+               $res += $tValoir->update($donneesValoirCA, $where);
+         }      
+         echo '<p id="degage" class="reussi">Vous avez ajouté '.$res.' promos pour le vol n° '.$idVol.'</p>';
          exit;
     }
 }

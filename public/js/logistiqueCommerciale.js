@@ -15,9 +15,9 @@ function test2(idVol) {
           rCA = $('#vide_'+idVol+' select#sel_pourcent_3 option:selected').val()
           rCE = $('#vide_'+idVol+' select#sel_pourcent_1 option:selected').val()
      
-          $.get('/logistiquecommerciale/nvpromo',{idVol:idVol, rPC:rPC, rCA:rCA, rCE:rCE}, function(data) 
-          {
-               alert(data);   
+          $.get('/logistiquecommerciale/nvpromo',{idVol:idVol, rPC:rPC, rCA:rCA, rCE:rCE}, function(data){
+               $('#degage').remove();
+               $('h1').prepend(data);
           });
      }
      else{return false;}
