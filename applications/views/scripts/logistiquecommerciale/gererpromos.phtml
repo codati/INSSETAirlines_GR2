@@ -1,6 +1,6 @@
 <h1>Gestion des promotions</h1><br /><br />
 <h2>Fonctionnement</h2>
-<p>Retrouvez ci-dessous la liste des vols dont <b>le départ a lieu dans moins d'un mois</b> et qui n'ont pas encore de promotion.</p><br/>
+<p>Retrouvez ci-dessous la liste des vols dont <b>le départ a lieu dans moins d'un mois</b> et qui n'ont pas encore de promotion. La promotion débutera ce jour et prendra fin le jour du départ du vol.</p><br/>
 
 <h2>Liste des vols susceptibles d'être promotionnés</h2>
 <div id="tableau">    
@@ -10,7 +10,7 @@
                <th>Id</th>
                <th>Date de départ prévue</th>
                <th>Taux de remplissage</th>
-               <th>Action</th>
+               <th>Créer une promotion</th>
            </tr>
 
            <?php
@@ -36,13 +36,13 @@
                          $nbPlacesTotales = $tContenir->getSommePlaces($modeleAvion);
                          $tauxRemplissage = ($nbPlacesReservees/$nbPlacesTotales)*100;
                          
-                         echo '<tr>
+                         echo '<tr id="'.$unVol['idVol'].'">
                                    <td>'.$unVol['idVol'].'</td>
                                    <td>'.$unVol['dateHeureDepartPrevueVol']->toString('dd MMMM yyyy').'</td>
                                    <td>'.round($tauxRemplissage).'%<br /><meter value="'.$tauxRemplissage.'" min="0" max="100" low="50" high="75" optimum="90"></meter>  
 </td>
-                                   <td><a href="'.$this->baseUrl().'/logistiquecommerciale/creerPromo/idVol/'.$unVol['idVol'].'" title="Créer une promo"><img src="'. $this->baseUrl() .'/img/add.png" /></a></td>
-                              </tr>';
+                                   <td class="td_promo"><img src="'. $this->baseUrl() .'/img/add.png" onclick="ajouterPromo('.$unVol['idVol'].')" /></td>
+                              </tr><tr id="vide_'.$unVol['idVol'].'"></tr>';
                     }
                }
            ?>

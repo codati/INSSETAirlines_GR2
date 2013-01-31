@@ -1,0 +1,9 @@
+#formAjoutPromo dl dd, #formAjoutPromo dl dt 
+{
+     display:inline !important;
+     margin-right: 5px;
+}
+#formAjoutPromo {
+     background: #EFF6FF;
+     border-radius: 5px;
+}

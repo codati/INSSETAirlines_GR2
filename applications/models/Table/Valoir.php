@@ -54,4 +54,14 @@
                 return true;
            }
           }
+          
+          public function getClassesVol($idVol)
+          {
+               $req = $this->select()->setIntegrityCheck(false)
+                           ->from($this->_name, array('idClasse'))
+                           ->join(array('c'=>'classe'),'c.idClasse = valoir.idClasse', array('c.nomClasse'))
+                           ->where('idVol = ?', $idVol)
+                           ;
+               return $this->fetchAll($req)->toArray();
+          }
     }
