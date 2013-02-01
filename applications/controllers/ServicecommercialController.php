@@ -39,7 +39,7 @@ class ServiceCommercialController extends Zend_Controller_Action
             $redirector->gotoUrl($this->view->baseUrl());  
         }
         if (!Services_verifAcces('Service commercial')) {
-            throw new Zend_Controller_Action_Exception('',403);
+            throw new Zend_Controller_Action_Exception('', 403);
         }
     }
     /**
@@ -49,7 +49,7 @@ class ServiceCommercialController extends Zend_Controller_Action
 	 */
     public function indexAction() 
     {
-        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
     }
     /**
     * Renvoi la liste des places rÃ©servÃ©es et libre pour un vol et par classe
@@ -58,7 +58,7 @@ class ServiceCommercialController extends Zend_Controller_Action
     */
     public function placesbloqueesAction()
     {
-        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
         
         $tableVol = new Table_Vol;
         $lesVols = $tableVol->getVolAVenirToutesLignes();
