@@ -22,26 +22,30 @@
  */
 class ErrorController extends Zend_Controller_Action
 {
-	/**
-	 * @var : Description à mettre.
-	 */
+    /**
+     * @var : Description à mettre.
+     */
     private $_exception;
 	
-	/**
-	 * @var : Description à mettre.
-	 */
+    /**
+     * @var : Description à mettre.
+     */
     private static $errorMessage;
 	
-	/**
-	 * @var : Description à mettre.
-	 */
+    /**
+     * @var : Description à mettre.
+     */
     private static $httpCode;
     
-	/**
-	 * Description à mettre.
-	 * 
-	 * @return null
-	 */
+    public function init()
+    {
+        $this->headStyleScript = array('css'=>'error'); 
+    }
+    /**
+     * Description à mettre.
+     * 
+     * @return null
+     */
     public function preDispatch()
     {
     	$this->_exception = $this->_getParam('error_handler');
@@ -54,25 +58,25 @@ class ErrorController extends Zend_Controller_Action
         case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_OTHER:
         	switch (get_class($this->_exception->exception)) {
     		case 'Zend_View_Exception' :
-    			self::$httpCode = 500;
-    			self::$errorMessage = 'Erreur de traitement d\'une vue';
-    			break;
+                    self::$httpCode = 500;
+                    self::$errorMessage = 'Erreur de traitement d\'une vue';
+                    break;
     		case 'Zend_Db_Exception' :
-    			self::$httpCode = 503;
-    			self::$errorMessage = 'Erreur de traitement dans la base de données';
-    			break;
+                    self::$httpCode = 503;
+                    self::$errorMessage = 'Erreur de traitement dans la base de données';
+                    break;
     		case 'Metier_Exception' :
-    			self::$httpCode = 200;
-    			self::$errorMessage = $this->_exception->exception->getMessage();
-    			break;
+                    self::$httpCode = 200;
+                    self::$errorMessage = $this->_exception->exception->getMessage();
+                    break;
             case 'Zend_Controller_Action_Exception' :
                 self::$httpCode = $this->_exception->exception->getCode(); 
                 self::$errorMessage = 'Vous n\'avez pas les droits nécéssaires pour accéder à cette page !';
                 break;
     		default:
-    			self::$httpCode = 500;
-    			self::$errorMessage = 'Erreur inconnue : '. $this->_exception->exception->getMessage();
-    			break;
+                    self::$httpCode = 500;
+                    self::$errorMessage = 'Erreur inconnue : '. $this->_exception->exception->getMessage();
+                    break;
         	}
         	break;
     	}
@@ -86,7 +90,7 @@ class ErrorController extends Zend_Controller_Action
 	 */
     public function errorAction()
     {
-        $this->_helper->actionStack('header', 'index', 'default', array());
+        $this->_helper->actionStack('header', 'index', 'default', array('head'=>$this->headStyleScript));
     	$this->view->message = self::$errorMessage;
     	$this->view->httpCode = self::$httpCode;
     }
