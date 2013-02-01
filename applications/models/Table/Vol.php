@@ -378,4 +378,36 @@
             $res = $this->fetchAll($req);
             return $res ? $res->toArray() : false;
         }
+        /**
+         * retourne les vols planifiés d'une periode
+         * @param datetime $dateDebut : date de debut de la periode
+         * @param datetime $dateFin ; date de fin de la periode
+         * @return array de vols
+         */
+     public function getVolsPlanifiesEntreDate($dateDebut, $dateFin)
+     {
+          $req = $this->select()->setIntegrityCheck(false)
+                      ->from($this->_name, array('idVol', 'dateHeureDepartPrevueVol','dateHeureArriveePrevueVol', 'matriculeAvion'))
+                      ->where('dateHeureDepartPrevueVol > ?', $dateDebut)
+                      ->where('dateHeureDepartPrevueVol < ?', $dateFin)
+                      ->where('matriculeAvion is not null');
+         //Zend_Debug::dump($this->fetchAll($req)->toArray());exit;
+         return $this->fetchAll($req)->toArray();
+     }
+     /**
+      * modifie un vol
+      * @param int $idVol : l'id du vol
+      * @param datetime $dateDepartPrevue : nouvelle date de départ pour le vol
+      * @param datetime $dateArriveePrevue : nouvelle date d'arrivée pour le vol
+      */
+        public function modifier($idVol, $dateDepartPrevue, $dateArriveePrevue)
+        {
+               $data = array
+               (
+                       'dateHeureDepartPrevueVol' => $dateDepartPrevue,
+                       'dateHeureArriveePrevueVol' => $dateArriveePrevue
+               );
+               $where = $this->getAdapter()->quoteInto('idVol = ?', $idVol);
+       $this->update($data, $where);
+        }
 }

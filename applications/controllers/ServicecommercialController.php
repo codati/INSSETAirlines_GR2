@@ -6,6 +6,15 @@ class ServiceCommercialController extends Zend_Controller_Action
         $this->headStyleScript = array(
             'css' => 'service_commercial'
         );
+        if(!session_encours())
+        {
+            $redirector = $this->_helper->getHelper('Redirector');
+            $redirector->gotoUrl($this->view->baseUrl());  
+        }
+        if(!Services_verifAcces('Servicecommercial')) 
+        {
+            throw new Zend_Controller_Action_Exception('',403);
+        }
     }
     public function indexAction() 
     {

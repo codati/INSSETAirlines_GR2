@@ -39,6 +39,10 @@ class MaintenanceController extends Zend_Controller_Action
             $redirector = $this->_helper->getHelper('Redirector');
             $redirector->gotoUrl($this->view->baseUrl());  
         }
+        if(!Services_verifAcces('Maintenance')) 
+        {
+            throw new Zend_Controller_Action_Exception('',403);
+        }
     }
 	
 	/**
@@ -49,6 +53,10 @@ class MaintenanceController extends Zend_Controller_Action
     public function indexAction() 
     {   
         $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
+    }
+    public function applimaintenanceAction()
+    {
+        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript)); 
     }
 
     /**
