@@ -55,17 +55,17 @@ class ErrorController extends Zend_Controller_Action
         case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_OTHER:
             switch (get_class($this->_exception->exception)) {
             case 'Zend_View_Exception' :
-                    self::$httpCode = 500;
-                    self::$errorMessage = 'Erreur de traitement d\'une vue';
-                    break;
+                self::$httpCode = 500;
+                self::$errorMessage = 'Erreur de traitement d\'une vue';
+                break;
             case 'Zend_Db_Exception' :
-                    self::$httpCode = 503;
-                    self::$errorMessage = 'Erreur de traitement dans la base de données';
-                    break;
+                self::$httpCode = 503;
+                self::$errorMessage = 'Erreur de traitement dans la base de données';
+                break;
             case 'Metier_Exception' :
-                    self::$httpCode = 200;
-                    self::$errorMessage = $this->_exception->exception->getMessage();
-                    break;
+                self::$httpCode = 200;
+                self::$errorMessage = $this->_exception->exception->getMessage();
+                break;
             case 'Zend_Controller_Action_Exception' :
                 self::$httpCode = $this->_exception->exception->getCode(); 
                 self::$errorMessage = 'Vous n\'avez pas les droits nécéssaires pour accéder à cette page !';

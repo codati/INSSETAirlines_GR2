@@ -31,8 +31,8 @@ class PlanningController extends Zend_Controller_Action
     public function init()
     {
         $this->headStyleScript = array(
-                'css' => 'planning',
-                'js' => array('planning')
+            'css' => 'planning',
+            'js' => array('planning')
         );
 
         if(!session_encours())
@@ -64,23 +64,23 @@ class PlanningController extends Zend_Controller_Action
     public function planifierAction()
     {
         if (Services_verifAcces('Planning')) {
-                $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
+            $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 
-                $tableVol = new Table_Vol();
-                $ListeVol = $tableVol->get_LstVolNonPlanifier(4); //Les vols non planifiés des 4 dernières semaines
+            $tableVol = new Table_Vol();
+            $ListeVol = $tableVol->get_LstVolNonPlanifier(4); //Les vols non planifiés des 4 dernières semaines
 
-                if (count($ListeVol) > 0) {
-                    foreach ($ListeVol as $key => $val) {
-                        $dateDepart = new Zend_Date($val['dateHeureDepartPrevueVol']);
-                        $ListeVol[$key]['dateHeureDepartPrevueVol'] = DateFormat_View($dateDepart);
+            if (count($ListeVol) > 0) {
+                foreach ($ListeVol as $key => $val) {
+                    $dateDepart = new Zend_Date($val['dateHeureDepartPrevueVol']);
+                    $ListeVol[$key]['dateHeureDepartPrevueVol'] = DateFormat_View($dateDepart);
 
-                        $dateArriver = new Zend_Date($val['dateHeureArriveePrevueVol']);
-                        $ListeVol[$key]['dateHeureArriveePrevueVol'] = DateFormat_View($dateArriver);
-                    }
+                    $dateArriver = new Zend_Date($val['dateHeureArriveePrevueVol']);
+                    $ListeVol[$key]['dateHeureArriveePrevueVol'] = DateFormat_View($dateArriver);
                 }
+            }
 
-                //echo '<pre>';print_r($ListeVol);echo '</pre>';exit;
-                $this->view->ListeVol = $ListeVol;
+            //echo '<pre>';print_r($ListeVol);echo '</pre>';exit;
+            $this->view->ListeVol = $ListeVol;
         } else {
             header('Location: /');
         }
@@ -93,33 +93,36 @@ class PlanningController extends Zend_Controller_Action
      */
     public function modifplanningvolAction()
     {
-        if(Services_verifAcces('Planning'))
-        {
+        if (Services_verifAcces('Planning')) {
             $idVol = $this->_getParam('idVol');
             $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
             $this->view->idVol = $idVol;
-            
+
             $tableVol = new Table_Vol();
             $InfosVol = $tableVol->get_InfosVol($idVol);
             //Zend_Debug::dump($InfosVol);exit;
-            
+
             $dateDepartSQL = $InfosVol['dateHeureDepartPrevueVol'];
             $dateArriveeSQL = $InfosVol['dateHeureArriveePrevueVol'];
-            
+
             $InfosVol['dateHeureDepartPrevueVol'] = new Zend_Date($InfosVol['dateHeureDepartPrevueVol']);
             $InfosVol['dateHeureArriveePrevueVol'] = new Zend_Date($InfosVol['dateHeureArriveePrevueVol']);
 
             $this->view->InfosVol = $InfosVol;
             $tableModeleAvion = new Table_ModeleAvion();
-           
+
             $this->view->dateDepart = $dateDepartSQL;
             $this->view->dateArrivee = $dateArriveeSQL;
             $LstModeleDepartSQL = $tableModeleAvion->get_NomModeles_PourAeroport($InfosVol['trigrammeAeDepart']);
             $LstModeleArriveeSQL = $tableModeleAvion->get_NomModeles_PourAeroport($InfosVol['trigrammeAeArrivee']);
             //Zend_Debug::dump($LstModeleArriveeSQL);exit;
 
-            foreach($LstModeleDepartSQL as $val) {$LstModeleDepart[$val['idModeleAvion']] = $val['libelleModeleAvion'];}
-            foreach($LstModeleArriveeSQL as $val) {$LstModeleArrivee[$val['idModeleAvion']] = $val['libelleModeleAvion'];}
+            foreach ($LstModeleDepartSQL as $val) {
+                $LstModeleDepart[$val['idModeleAvion']] = $val['libelleModeleAvion'];
+            }
+            foreach ($LstModeleArriveeSQL as $val) {
+                $LstModeleArrivee[$val['idModeleAvion']] = $val['libelleModeleAvion'];
+            }
 
             $LstModele = array_uintersect($LstModeleDepart, $LstModeleArrivee, 'strcasecmp');
             $this->view->ListeModele = $LstModele;
@@ -175,8 +178,12 @@ class PlanningController extends Zend_Controller_Action
                 $LstModeleDepartSQL = $tableModele->get_NomModeles_PourAeroport($InfosVol['trigrammeAeDepart']);
                 $LstModeleArriveeSQL = $tableModele->get_NomModeles_PourAeroport($InfosVol['trigrammeAeArrivee']);
 
-                foreach($LstModeleDepartSQL as $val) {$LstModeleDepart[$val['idModeleAvion']] = $val['libelleModeleAvion'];}
-                foreach($LstModeleArriveeSQL as $val) {$LstModeleArrivee[$val['idModeleAvion']] = $val['libelleModeleAvion'];}
+                foreach ($LstModeleDepartSQL as $val) {
+                    $LstModeleDepart[$val['idModeleAvion']] = $val['libelleModeleAvion'];
+                }
+                foreach ($LstModeleArriveeSQL as $val) {
+                    $LstModeleArrivee[$val['idModeleAvion']] = $val['libelleModeleAvion'];
+                }
 
                 $LstModele = array_uintersect($LstModeleDepart, $LstModeleArrivee, 'strcasecmp');
                 $LstAvionDispo = $this->lstavionAction($modeleAvion, $dateDepartSQL, $dateArriveeSQL);
@@ -253,8 +260,12 @@ class PlanningController extends Zend_Controller_Action
                 $LstModeleArriveeSQL = $tableModeleAvion->get_NomModeles_PourAeroport($InfosVol['trigrammeAeArrivee']);
                 //Zend_Debug::dump($LstModeleArriveeSQL);exit;
 
-                foreach($LstModeleDepartSQL as $val) {$LstModeleDepart[$val['idModeleAvion']] = $val['libelleModeleAvion'];}
-                foreach($LstModeleArriveeSQL as $val) {$LstModeleArrivee[$val['idModeleAvion']] = $val['libelleModeleAvion'];}
+                foreach ($LstModeleDepartSQL as $val) {
+                    $LstModeleDepart[$val['idModeleAvion']] = $val['libelleModeleAvion'];
+                }
+                foreach ($LstModeleArriveeSQL as $val) {
+                    $LstModeleArrivee[$val['idModeleAvion']] = $val['libelleModeleAvion'];
+                }
 
                 $LstModele = array_uintersect($LstModeleDepart, $LstModeleArrivee, 'strcasecmp');
                 $this->view->ListeModele = $LstModele;
@@ -304,7 +315,9 @@ class PlanningController extends Zend_Controller_Action
                     $pilote = $this->_getParam('pilote', null);
                     $copilote = $this->_getParam('copilote', null);
 
-                    if($modeleAvion == null || $avion == null || $pilote == null || $copilote == null) {exit;}
+                    if ($modeleAvion == null || $avion == null || $pilote == null || $copilote == null) {
+                        exit;
+                    }
 
                     $InfosVol = $tableVol->get_InfosVol($idVol);
 
@@ -321,8 +334,12 @@ class PlanningController extends Zend_Controller_Action
                     $LstModeleDepartSQL = $tableModele->get_NomModeles_PourAeroport($InfosVol['trigrammeAeDepart']);
                     $LstModeleArriveeSQL = $tableModele->get_NomModeles_PourAeroport($InfosVol['trigrammeAeArrivee']);
 
-                    foreach($LstModeleDepartSQL as $val) {$LstModeleDepart[$val['idModeleAvion']] = $val['libelleModeleAvion'];}
-                    foreach($LstModeleArriveeSQL as $val) {$LstModeleArrivee[$val['idModeleAvion']] = $val['libelleModeleAvion'];}
+                    foreach ($LstModeleDepartSQL as $val) {
+                        $LstModeleDepart[$val['idModeleAvion']] = $val['libelleModeleAvion'];
+                    }
+                    foreach ($LstModeleArriveeSQL as $val) {
+                        $LstModeleArrivee[$val['idModeleAvion']] = $val['libelleModeleAvion'];
+                    }
 
                     $LstModele = array_uintersect($LstModeleDepart, $LstModeleArrivee, 'strcasecmp');
                     $LstAvionDispo = $this->lstavionAction($modeleAvion, $dateDepartSQL, $dateArriveeSQL);

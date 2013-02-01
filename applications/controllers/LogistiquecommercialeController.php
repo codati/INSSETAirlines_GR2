@@ -39,9 +39,8 @@ class LogistiquecommercialeController extends Zend_Controller_Action
             $redirector = $this->_helper->getHelper('Redirector');
             $redirector->gotoUrl($this->view->baseUrl());  
         }
-        if(!Services_verifAcces('Logistique commerciale')) 
-        {
-            throw new Zend_Controller_Action_Exception('',403);
+        if (!Services_verifAcces('Logistique commerciale')) {
+            throw new Zend_Controller_Action_Exception('', 403);
         }
     }
     
@@ -53,11 +52,11 @@ class LogistiquecommercialeController extends Zend_Controller_Action
     public function infosvolAction()
     {
         $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
-        
+
         $espaceSession = new Zend_Session_Namespace('RetourTest');
         echo $espaceSession->messageErreur;
         $espaceSession->messageErreur = "";
-        
+
         $monform = new Zend_Form;
 
         // parametrer le formulaire
@@ -107,7 +106,7 @@ class LogistiquecommercialeController extends Zend_Controller_Action
         } else {
             $espaceSession = new Zend_Session_Namespace('RetourTest');
             $espaceSession->messageErreur = '<h3 class="erreur">Saisie invalide.</h3>';
-            
+
             $redirector = $this->_helper->getHelper('Redirector');
             $redirector->gotoUrl($this->view->baseUrl('/logistiquecommerciale/infosvol'));
         }
@@ -159,10 +158,10 @@ class LogistiquecommercialeController extends Zend_Controller_Action
         }
 
         foreach ($lesClasses as $uneClasse) {
-                $ePourcentagePromo = new Zend_Form_Element_Select('sel_pourcent_'.$uneClasse['idClasse']);
-                $ePourcentagePromo->setLabel('% de remise sur la '.$uneClasse['nomClasse'].'');
-                $ePourcentagePromo->addMultiOptions($tabPourcent);
-                $formAjoutPromo->addElement($ePourcentagePromo);     
+            $ePourcentagePromo = new Zend_Form_Element_Select('sel_pourcent_'.$uneClasse['idClasse']);
+            $ePourcentagePromo->setLabel('% de remise sur la '.$uneClasse['nomClasse'].'');
+            $ePourcentagePromo->addMultiOptions($tabPourcent);
+            $formAjoutPromo->addElement($ePourcentagePromo);     
         }
         $eSubmit = new Zend_Form_Element_Submit('sub_submit');
         $eSubmit->setLabel('Valider');
@@ -193,36 +192,36 @@ class LogistiquecommercialeController extends Zend_Controller_Action
 
         $where = array();
         $donneesValoir = array(
-                'dateFinPromo' => $dateFinPromo,
-                'dateDebutPromo' => DateFormat_SQL(Zend_Date::now()),
+            'dateFinPromo' => $dateFinPromo,
+            'dateDebutPromo' => DateFormat_SQL(Zend_Date::now()),
         );
 
         $res =0;
         if ($rCE != 0) {
-                $donneesValoirCE = $donneesValoir;
-                $donneesValoirCE['pourcentagePromo'] = $rCE;
-                $where[] = $tValoir->getAdapter()->quoteInto('idVol = ?', $idVol);
-                $where[] = $tValoir->getAdapter()->quoteInto('idClasse = ?', 1);
+            $donneesValoirCE = $donneesValoir;
+            $donneesValoirCE['pourcentagePromo'] = $rCE;
+            $where[] = $tValoir->getAdapter()->quoteInto('idVol = ?', $idVol);
+            $where[] = $tValoir->getAdapter()->quoteInto('idClasse = ?', 1);
 
-                $res += $tValoir->update($donneesValoirCE, $where);
+            $res += $tValoir->update($donneesValoirCE, $where);
         }
 
         $where = array();
         if ($rPC != 0) {
-                $donneesValoirPC = $donneesValoir;
-                $donneesValoirPC['pourcentagePromo'] = $rPC;
-                $where[] = $tValoir->getAdapter()->quoteInto('idVol = ?', $idVol);
-                $where[] = $tValoir->getAdapter()->quoteInto('idClasse = ?', 2);
-                $res += $tValoir->update($donneesValoirPC, $where);
+            $donneesValoirPC = $donneesValoir;
+            $donneesValoirPC['pourcentagePromo'] = $rPC;
+            $where[] = $tValoir->getAdapter()->quoteInto('idVol = ?', $idVol);
+            $where[] = $tValoir->getAdapter()->quoteInto('idClasse = ?', 2);
+            $res += $tValoir->update($donneesValoirPC, $where);
         }
 
         $where = array();
         if ($rCA != 0) {
-                $donneesValoirCA = $donneesValoir;
-                $donneesValoirCA['pourcentagePromo'] = $rCA;
-                $where[] = $tValoir->getAdapter()->quoteInto('idVol = ?', $idVol);
-                $where[] = $tValoir->getAdapter()->quoteInto('idClasse = ?', 3);
-                $res += $tValoir->update($donneesValoirCA, $where);
+            $donneesValoirCA = $donneesValoir;
+            $donneesValoirCA['pourcentagePromo'] = $rCA;
+            $where[] = $tValoir->getAdapter()->quoteInto('idVol = ?', $idVol);
+            $where[] = $tValoir->getAdapter()->quoteInto('idClasse = ?', 3);
+            $res += $tValoir->update($donneesValoirCA, $where);
         }      
 
         echo '<p id="degage" class="reussi">Vous avez ajouté '.$res.' promos pour le vol n° '.$idVol.'</p>';

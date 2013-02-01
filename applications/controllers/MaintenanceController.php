@@ -108,7 +108,7 @@ class MaintenanceController extends Zend_Controller_Action
 
         // parametrer le formulaire
         $monform->setMethod('post');
-        $monform->setAttrib('class','form');
+        $monform->setAttrib('class', 'form');
 
         $monform->setAction($this->view->baseUrl().'/maintenance/ajoutavionsql');
 
@@ -252,7 +252,7 @@ class MaintenanceController extends Zend_Controller_Action
 
         if ((($newImmatUp != "") AND ($avionModele != "")) AND (preg_match('#^[A-Z0-9\-]+$#', $newImmatUp))) {
             $ajoutSql = $tableAvion->Modifier($avionImmat, $newImmatUp, $avionModele);
-            if($ajoutSql == true) {
+            if ($ajoutSql == true) {
                 $espaceSession->ImmatAvion = "";
                 $espaceSession->ModeleAvion = ""; 
                 $espaceSession->VerifModifAvion = true; 
@@ -320,12 +320,12 @@ class MaintenanceController extends Zend_Controller_Action
         $eImmatAvion->setLabel('Immatriculation de l\'avion : ');
 
         $eDateEffective = new Zend_Form_Element_Text('datePrevue');
-        $eDateEffective->setAttrib('class','datePick');
+        $eDateEffective->setAttrib('class', 'datePick');
         $eDateEffective->setLabel('Date de l\'intervention : ');
-        $eDateEffective->setAttrib('readonly',true);
+        $eDateEffective->setAttrib('readonly', true);
 
         $eTypeIntervention = new Zend_Form_Element_Select('sel_typeIntervention');
-        $eTypeIntervention->addMultiOptions(array('petite'=>'Petite','grande'=>'Grande'));
+        $eTypeIntervention->addMultiOptions(array('petite'=>'Petite', 'grande'=>'Grande'));
         $eTypeIntervention->setLabel('Choisir le type de l\'intervetion à effectuer :');
         
         $eTaf = new Zend_Form_Element_Textarea('area_taf');
@@ -364,7 +364,7 @@ class MaintenanceController extends Zend_Controller_Action
         $immatAvion = $this->getRequest()->getPost('immatAvion');
         // recupere la date et la transforme en format correct pour l'insertion en bdd
         $dateInter = $this->getRequest()->getPost('datePrevue');
-		
+
         if ($dateInter != "") {
             $dateInter = DateFormat_SQL(new Zend_Date(strtolower($dateInter), 'EEEE dd MMMM YY'), false);            
         } else {
@@ -372,9 +372,9 @@ class MaintenanceController extends Zend_Controller_Action
         }
         $typeInter = $this->getRequest()->getPost('sel_typeIntervention');
         $taf = $this->getRequest()->getPost('area_taf');
-        
+
         $tableintervention = new Table_Intervention;
-        $ajout = $tableintervention->ajouter($immatAvion, $dateInter, $typeInter,$taf);
+        $ajout = $tableintervention->ajouter($immatAvion, $dateInter, $typeInter, $taf);
 
         $idDernierIntervention = $tableintervention->dernierAjout();
         // ajouter ligne dans proceder
@@ -387,7 +387,7 @@ class MaintenanceController extends Zend_Controller_Action
             $ajout['class'] = 'erreur';
             $ajout['message'] = 'Vous n\'avez pas saisi de technicien';
         }
-        
+
         $this->view->ajout = $ajout;
      }
 	
@@ -461,14 +461,11 @@ class MaintenanceController extends Zend_Controller_Action
         );
         $tableProceder = new Table_Proceder;
         $modif = $tableProceder->modifier($donnees);
-        if($modif != 0)
-        {
+        if ($modif != 0) {
             $tableInter = new Table_Intervention;
             $tableInter->terminer($numIntervention);
             echo '<p class="reussi">Modification réussie !</p>';
-        }
-        else
-        {
+        } else {
             echo '<p class="erreur">Modification échouée... Veuillez réessayer</p>';
         }
         exit;
@@ -481,7 +478,7 @@ class MaintenanceController extends Zend_Controller_Action
      */
     public function gestionmodeleAction()
     {
-        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 
         $tableModele = new Table_ModeleAvion;
         $lesModeles = $tableModele->getLesModeles();      
@@ -496,7 +493,7 @@ class MaintenanceController extends Zend_Controller_Action
      */
     public function ajoutermodeleavionAction()
     {
-        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
         
         $espaceSession = new Zend_Session_Namespace('AjoutAvionCourant');
 
@@ -510,7 +507,7 @@ class MaintenanceController extends Zend_Controller_Action
 
         // parametrer le formulaire
         $monform->setMethod('post');
-        $monform->setAttrib('class','form');
+        $monform->setAttrib('class', 'form');
 
         $monform->setAction($this->view->baseUrl().'/maintenance/ajoutmodelesql');
         
@@ -533,7 +530,7 @@ class MaintenanceController extends Zend_Controller_Action
 
         $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
         $eSubmit->setLabel('Valider');
-        $eSubmit->setAttrib('class','valider');
+        $eSubmit->setAttrib('class', 'valider');
 
         $monform->addElement($eLibelleModele);
         $monform->addElement($eLongDecollage);
@@ -551,7 +548,7 @@ class MaintenanceController extends Zend_Controller_Action
      */
     public function ajoutmodelesqlAction()
     {
-        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 
         $tableModele = new Table_ModeleAvion;
 
@@ -567,12 +564,10 @@ class MaintenanceController extends Zend_Controller_Action
         $espaceSession->rayonAction = $rayonAction;
         $espaceSession->VerifAjoutModel = false;
         
-        if($libelleModele != "")
-        {          
+        if ($libelleModele != "") {          
             $ajoutsql = $tableModele->Ajouter($longDecollage, $longAtterrissage, $rayonAction, $libelleModele);
 
-            if($ajoutsql == true)
-            {
+            if ($ajoutsql == true) {
                 $espaceSession->libelleModele = "";
                 $espaceSession->longDecollage = "";
                 $espaceSession->longAtterrissage = "";
@@ -580,14 +575,10 @@ class MaintenanceController extends Zend_Controller_Action
                 $espaceSession->VerifAjoutModel = true; 
 
                 $message = '<h3 class="reussi">Ajout réussi</h3>';
-            }
-            else
-            {                  
+            } else {                  
                 $message = '<h3 class="erreur">Ajout échoué</h3>';
             }
-        }
-        else
-        {                
+        } else {                
             $message = '<h3 class="erreur">Ajout échoué, saisie invalide<br><br>'.$libelleModele.' n\'a pas été saisie</h3>';
         }
         $this->view->message = $message;
@@ -600,7 +591,7 @@ class MaintenanceController extends Zend_Controller_Action
      */
     public function modifiermodeleAction() 
     {
-        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 
         $espaceSession = new Zend_Session_Namespace('ModifModeleChoisi');
         
@@ -630,7 +621,7 @@ class MaintenanceController extends Zend_Controller_Action
 
         // parametrer le formulaire
         $monform->setMethod('post');
-        $monform->setAttrib('class','form');
+        $monform->setAttrib('class', 'form');
 
         $monform->setAction($this->view->baseUrl().'/maintenance/modifmodelesql');
 
@@ -653,7 +644,7 @@ class MaintenanceController extends Zend_Controller_Action
 
         $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
         $eSubmit->setLabel('Valider');
-        $eSubmit->setAttrib('class','valider');
+        $eSubmit->setAttrib('class', 'valider');
 
         $monform->addElement($eLibelleModele);
         $monform->addElement($eLongDecollage);
@@ -671,7 +662,7 @@ class MaintenanceController extends Zend_Controller_Action
      */
     public function modifmodelesqlAction()
     {
-        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 
         $tableModele = new Table_ModeleAvion;
 
@@ -691,8 +682,7 @@ class MaintenanceController extends Zend_Controller_Action
         if($libelleModele != "")
         {          
             $ajoutSql = $tableModele->Modifier($idModele, $longueurModele, $longueurAtterrissage, $rayonAction, $libelleModele);
-            if($ajoutSql == true)
-            {
+            if ($ajoutSql == true) {
                 $espaceSession->libelleModele = "";
                 $espaceSession->longModele = "";
                 $espaceSession->longAtterrissage = "";
@@ -700,14 +690,10 @@ class MaintenanceController extends Zend_Controller_Action
                 $espaceSession->VerifModifModel = true;
 
                 $message = '<h3 class="reussi">Modification réussie</h3>';                    
-            }
-            else
-            {                  
+            } else {                  
                 $message = '<h3 class="echoue">Modification échouée</h3>';
             }
-        }
-        else
-        {                
+        } else {                
             $message = '<h3 class="erreur">Modification échouée, saisie invalide<br><br>'.$libelleModele.' ne peut être vide</h3>';
         }
         $this->view->message = $message;
@@ -720,7 +706,7 @@ class MaintenanceController extends Zend_Controller_Action
      */
     public function dispoavionsAction()
     {
-        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
         
         $tableAvion = new Table_Avion();
         $avionsDispo = $tableAvion->GetAvionsDispo();
