@@ -11,7 +11,7 @@ class ServiceCommercialController extends Zend_Controller_Action
             $redirector = $this->_helper->getHelper('Redirector');
             $redirector->gotoUrl($this->view->baseUrl());  
         }
-        if(!Services_verifAcces('Servicecommercial')) 
+        if(!Services_verifAcces('Service commercial')) 
         {
             throw new Zend_Controller_Action_Exception('',403);
         }
