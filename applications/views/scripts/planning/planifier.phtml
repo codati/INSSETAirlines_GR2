@@ -13,8 +13,8 @@
             <?php
             if(count($this->ListeVol) > 0)
             {
-                if($this->modif) { $href = "modifplanningvol"; }
-                else { $href = "planifiervol"; }
+                if($this->modif) { $href = "modifplanningvol"; $action = "Modifier"; }
+                else { $href = "planifiervol"; $action = "Planifier"; }
                     foreach($this->ListeVol as $val)
                     {
                             echo '<tr>';
@@ -23,7 +23,7 @@
                                     echo '<td>'.$val['nomAeroportDepart'].'</td>';
                                     echo '<td>'.$val['dateHeureArriveePrevueVol'].'</td>';
                                     echo '<td>'.$val['nomAeroportArrivee'].'</td>';
-                                    echo '<td><a href="'.$this->baseUrl().'/planning/'.$href.'/idVol/'.$val['idVol'].'">Planifier</a></td>';
+                                    echo '<td><a href="'.$this->baseUrl().'/planning/'.$href.'/idVol/'.$val['idVol'].'">'.$action.'</a></td>';
                             echo '</tr>';
                     }
             }
