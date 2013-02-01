@@ -1,26 +1,64 @@
 <?php
+/**
+ * Contrôleur des erreurs
+ * 
+ * PHP version 5
+ * 
+ * @category INSSET
+ * @package  Airline
+ * @author   Groupe2 <webmasters@insset-airline.com>
+ * @license  http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link     /Maintenance
+ */
+
+/**
+ * Classe du contrôleur error
+ * 
+ * @category INSSET
+ * @package  Airline
+ * @author   Groupe2 <webmasters@insset-airline.com>
+ * @license  http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link     /Maintenance
+ */
 class MaintenanceController extends Zend_Controller_Action
 {
-    public function init() {
+    /**
+	 * Méthode d'initialisation du contrôleur.
+	 * Permet de déclarer les css & js à utiliser.
+	 * 
+	 * @return null
+	 */
+	public function init()
+    {
         $this->headStyleScript = array(
             'css'=>'planif',
             'js'=>'gestionrevision'
-            );             
+        );             
         
-        if(!session_encours())
-        {
+        if (!session_encours()) {
             $redirector = $this->_helper->getHelper('Redirector');
             $redirector->gotoUrl($this->view->baseUrl());  
         }
     }
+	
+	/**
+	 * Page index
+	 * 
+	 * @return null
+	 */
     public function indexAction() 
     {   
-        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
     }
 
+    /**
+	 * Gestion des avions
+	 * 
+	 * @return null
+	 */
     public function gestionavionAction()
     {
-        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 
         $tableAvions = new Table_Avion;
         $lesAvions = $tableAvions->getAvions();      
@@ -28,9 +66,14 @@ class MaintenanceController extends Zend_Controller_Action
         $this->view->lesAvions = $lesAvions;
     }
 
+	/**
+	 * Ajouter un avion à la maintenance (formulaire)
+	 * 
+	 * @return null
+	 */
     public function ajouteravionAction() 
     {   
-        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 
         $tableModele = new Table_ModeleAvion;
 
@@ -38,8 +81,7 @@ class MaintenanceController extends Zend_Controller_Action
 
         $lesOptions = array();
 
-        foreach($lesModeles as $unModele)
-        {
+        foreach ($lesModeles as $unModele) {
             $lesOptions[$unModele['idModeleAvion']] = $unModele['libelleModeleAvion'];
         }
 
@@ -69,7 +111,7 @@ class MaintenanceController extends Zend_Controller_Action
 
         $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
         $eSubmit->setLabel('Valider');
-        $eSubmit->setAttrib('class','valider');
+        $eSubmit->setAttrib('class', 'valider');
 
         $monform->addElement($eImmatAvion);
         $monform->addElement($eModeleAvion);
@@ -78,9 +120,14 @@ class MaintenanceController extends Zend_Controller_Action
         $this->view->leform = $monform;
     }
 
-    public function ajoutsqlAction()
+	/**
+	 * Ajout d'un avion à la maintenant (sql)
+	 * 
+	 * @return null
+	 */
+    public function ajoutavionsqlAction()
     {
-        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 
         $tableAvion = new Table_Avion;
 
@@ -94,33 +141,32 @@ class MaintenanceController extends Zend_Controller_Action
 
         $immatUp = strtoupper($avionImmat);
 
-        if((($immatUp != "") OR ($avionModele != "")) OR (preg_match('#^[A-Z0-9\-]+$#', $immatUp)))
-        {          
+        if ((($immatUp != "") OR ($avionModele != "")) OR (preg_match('#^[A-Z0-9\-]+$#', $immatUp))) {          
             $ajoutsql = $tableAvion->Ajouter($immatUp, $avionModele);
 
-            if($ajoutsql == true)
-            {
+            if ($ajoutsql == true) {
                 $espaceSession->ImmatAvion = "";
                 $espaceSession->ModeleAvion = ""; 
                 $espaceSession->VerifAjoutAvion = true; 
 
                 $message = '<h3 class="reussi">Ajout réussi</h3>';
-            }
-            else
-            {                  
+            } else {                  
                 $message = '<h3 class="erreur">Ajout échoué</h3>';
             }
-        }
-        else
-        {                
+        } else {
             $message = '<h3 class="erreur">Ajout échoué, saisie invalide<br><br>Il faut remplir tous les champs de manière correcte</h3>';
         }
         $this->view->message = $message;
     }
 
+	/**
+	 * Modifier un avion sur la maintenant (formulaire)
+	 * 
+	 * @return null
+	 */
     public function modifieravionAction() 
     {
-        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 
         $tableAvion = new Table_Avion;
         $tableModele = new Table_ModeleAvion;
@@ -129,8 +175,7 @@ class MaintenanceController extends Zend_Controller_Action
 
         $lesOptions = array();
 
-        foreach($lesModeles as $unModele)
-        {
+        foreach ($lesModeles as $unModele) {
             $lesOptions[$unModele['idModeleAvion']] = $unModele['libelleModeleAvion'];
         }
 
@@ -145,7 +190,7 @@ class MaintenanceController extends Zend_Controller_Action
 
         // parametrer le formulaire
         $monform->setMethod('post');
-        $monform->setAttrib('class','form');
+        $monform->setAttrib('class', 'form');
 
         $monform->setAction($this->view->baseUrl().'/maintenance/modifavionsql');
 
@@ -161,7 +206,7 @@ class MaintenanceController extends Zend_Controller_Action
 
         $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
         $eSubmit->setLabel('Valider');
-        $eSubmit->setAttrib('class','valider');
+        $eSubmit->setAttrib('class', 'valider');
 
         $monform->addElement($eImmatAvion);
         $monform->addElement($eModeleAvion);
@@ -169,9 +214,15 @@ class MaintenanceController extends Zend_Controller_Action
 
         $this->view->leform = $monform;
     }
+
+	/**
+	 * Modifier un avion sur la maintenance (sql)
+	 * 
+	 * @return null
+	 */
     public function modifavionsqlAction()
     {
-        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 
         $tableAvion = new Table_Avion;
 
@@ -186,33 +237,32 @@ class MaintenanceController extends Zend_Controller_Action
         $espaceSession->ModeleAvion = $avionModele;
         $espaceSession->VerifModifAvion = false;
 
-        if((($newImmatUp != "") AND ($avionModele != "")) AND (preg_match('#^[A-Z0-9\-]+$#', $newImmatUp)))
-        {          
+        if ((($newImmatUp != "") AND ($avionModele != "")) AND (preg_match('#^[A-Z0-9\-]+$#', $newImmatUp))) {
             $ajoutSql = $tableAvion->Modifier($avionImmat, $newImmatUp, $avionModele);
-            if($ajoutSql == true)
-            {
+            if($ajoutSql == true) {
                 $espaceSession->ImmatAvion = "";
                 $espaceSession->ModeleAvion = ""; 
                 $espaceSession->VerifModifAvion = true; 
 
                 $message = '<h3 class="reussi">Modification réussie</h3>';                    
-            }
-            else
-            {                  
+            } else {                  
                 $message = '<h3 class="echoue">Modification échouée</h3>';
             }
-        }
-        else
-        {                
+        } else {
             $message = '<h3 class="erreur">Modification échouée, saisie invalide<br><br>'.$newAvionImmat.' n\'est pas une valeur valide</h3>';
         }
         $this->view->message = $message;
     }
     
     // Abandon de la fonction
+    /**
+	 * Suppression de la fonction (abandonnée)
+	 * 
+	 * @return null
+	 */
     public function supprimeravionAction() 
     {
-        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 
         $tableAvion = new Table_Avion;
 
@@ -220,28 +270,30 @@ class MaintenanceController extends Zend_Controller_Action
 
         $supprSql = $tableAvion->Supprimer($immatAvion);
 
-        if($supprSql == true)
-        {
+        if($supprSql == true) {
             $this->_helper->redirector('gestionavion', 'Maintenance', null, array());
-        }
-        else
-        {                  
+        } else {                  
             $message = '<h3 class="erreur">Suppression échouée</h3>';
             $this->view->message = $message;
 
         }
     }
-    //  viens de service maintenance controller   // 
+	
+    //  viens de service maintenance controller   //
+    /**
+	 * Planification d'une maintenance
+	 * 
+	 * @return null
+	 */ 
     public function planificationAction()
     {
-        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 
         $tabImmat = new Table_Avion;
         $lesImmats = $tabImmat->get_lstImmatriculations();
 
         $optionsImmat = array();
-        foreach($lesImmats as $uneImmat)
-        {
+        foreach ($lesImmats as $uneImmat) {
             $optionsImmat[$uneImmat["immatriculationAvion"]] = $uneImmat["immatriculationAvion"];            
         }
         
@@ -249,25 +301,31 @@ class MaintenanceController extends Zend_Controller_Action
         $lesTechs = $tabTech->getTechs();
         
         $nomTech = array();
-        foreach($lesTechs as $unTech)
-        {
+        foreach ($lesTechs as $unTech) {
             $nomTech[$unTech['matriculeTechnicien']] = $unTech['nomTechnicien'].' '.$unTech['prenomTechnicien'];
         }
 
         $formPlanif = new Zend_Form();
         $formPlanif->setMethod('post');
         $formPlanif->setAction('/maintenance/ajoutintervention');
-        $formPlanif->setAttrib('id','formplanif');
+        $formPlanif->setAttrib('id', 'formplanif');
 
         $eNomTech = new Zend_Form_Element_MultiCheckbox('sel_nomTech');
         $eNomTech->addMultiOptions($nomTech);
         $eNomTech->setLabel('Technicien(s) : ');
-        $eNomTech->setDecorators(array(
-            'ViewHelper',
-            'Errors',
-            'Label',
-            array('HtmlTag', array('tag'=>'div', 'id'=>'techs'))
-        ));
+        $eNomTech->setDecorators(
+        	array(
+	            'ViewHelper',
+	            'Errors',
+	            'Label',
+	            array(
+	            	'HtmlTag', array(
+	            		'tag'=>'div', 
+	            		'id'=>'techs'
+					)
+				)
+        	)
+		);
         
         $eImmatAvion = new Zend_Form_Element_Select('immatAvion');
         $eImmatAvion->addMultiOptions($optionsImmat);
@@ -287,35 +345,41 @@ class MaintenanceController extends Zend_Controller_Action
 
         $eSubmit = new Zend_Form_Element_Submit('sub_intervention');
         $eSubmit->setName('Ajouter');
-        $eSubmit->setAttrib('class','valider');
+        $eSubmit->setAttrib('class', 'valider');
 
-        $formPlanif->addElements(array(
-            $eNomTech,
-            $eImmatAvion,
-            $eDateEffective,
-            $eTypeIntervention,
-            $eTaf,
-            $eSubmit
-         ));
+        $formPlanif->addElements(
+        	array(
+	            $eNomTech,
+	            $eImmatAvion,
+	            $eDateEffective,
+	            $eTypeIntervention,
+	            $eTaf,
+	            $eSubmit
+         	)
+		);
 
         $this->view->formPlanif = $formPlanif;
 
     }
+
+	/**
+	 * Ajouter une intervention
+	 * 
+	 * @return null
+	 */
     public function ajoutinterventionAction()            
     {
-        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 
         $lesTechniciens = $this->getRequest()->getPost('sel_nomTech');
         //Zend_Debug::dump($matriculeTechnicien);exit;
         $immatAvion = $this->getRequest()->getPost('immatAvion');
         // recupere la date et la transforme en format correct pour l'insertion en bdd
         $dateInter = $this->getRequest()->getPost('datePrevue');
-        if($dateInter != "")
-        {   
-            $dateInter = DateFormat_SQL(new Zend_Date(strtolower($dateInter),'EEEE dd MMMM YY'),false);            
-        }
-        else
-        {
+		
+        if ($dateInter != "") {
+            $dateInter = DateFormat_SQL(new Zend_Date(strtolower($dateInter), 'EEEE dd MMMM YY'), false);            
+        } else {
             $dateInter = null;
         }
         $typeInter = $this->getRequest()->getPost('sel_typeIntervention');
@@ -327,33 +391,34 @@ class MaintenanceController extends Zend_Controller_Action
         $idDernierIntervention = $tableintervention->dernierAjout();
         // ajouter ligne dans proceder
         $tableProceder = new Table_Proceder;
-        if(!empty($lesTechniciens))
-        {
-            foreach($lesTechniciens as $unTech)
-            {
+        if (!empty($lesTechniciens)) {
+            foreach ($lesTechniciens as $unTech) {
                 $tableProceder->creer($unTech, $idDernierIntervention);
             }
-        }
-        else 
-        {
+        } else {
             $ajout['class'] = 'erreur';
             $ajout['message'] = 'Vous n\'avez pas saisi de technicien';
         }
         
         $this->view->ajout = $ajout;
      }
+	
+	/**
+	 * gestion des révisions
+	 * 
+	 * @return null
+	 */
      public function gestionrevisionAction()
      {
-         $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+         $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
          
-        $tabTech = new Table_Technicien;
-        $lesTechs = $tabTech->getTechs();
-        
-        $nomTech = array();
-        foreach($lesTechs as $unTech)
-        {
-            $nomTech[$unTech['matriculeTechnicien']] = $unTech['nomTechnicien'].' '.$unTech['prenomTechnicien'];
-        }
+         $tabTech = new Table_Technicien;
+         $lesTechs = $tabTech->getTechs();
+         
+         $nomTech = array();
+         foreach ($lesTechs as $unTech) {
+             $nomTech[$unTech['matriculeTechnicien']] = $unTech['nomTechnicien'].' '.$unTech['prenomTechnicien'];
+         }
          
          // selectionner un technicien
          $form = new Zend_Form;
@@ -367,6 +432,7 @@ class MaintenanceController extends Zend_Controller_Action
          $form->addElement($eTech);
          $this->view->formChoixTech = $form;
      }
+	 
      public function getintertechAction()
      {
          $layout = Zend_Layout::getMvcInstance();

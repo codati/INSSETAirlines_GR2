@@ -1,35 +1,86 @@
 <?php
-class DirectionstrategiqueController extends Zend_Controller_Action 
+/**
+ * Contrôleur de direction stratégique
+ * 
+ * PHP version 5
+ * 
+ * @category INSSET
+ * @package  Airline
+ * @author   Kevin Verschaeve <kevin.verschaeve@live.fr>
+ * @author   Maxime Vermeulen <bulton.fr@gmail.com>
+ * @license  http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link     /DirectionStrategique
+ */
+
+/**
+ * Classe du contrôleur direction stratégique
+ * 
+ * @category INSSET
+ * @package  Airline
+ * @author   Kevin Verschaeve <kevin.verschaeve@live.fr>
+ * @author   Maxime Vermeulen <bulton.fr@gmail.com>
+ * @license  http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link     /DirectionStrategique
+ */
+class DirectionstrategiqueController extends Zend_Controller_Action
 {
+    /**
+	 * Méthode d'initialisation du contrôleur.
+	 * Permet de déclarer les css & js à utiliser.
+	 * 
+	 * @return null
+	 */
     public function init() 
     {
-        $this->headStyleScript = array('css' => 'directionstrategique', 'js' => 'directionstrategique');
+        $this->headStyleScript = array(
+        	'css' => 'directionstrategique', 
+        	'js' => 'directionstrategique'
+		);
     
-        if(!session_encours())
-        {
+        if (!session_encours()) {
             $redirector = $this->_helper->getHelper('Redirector');
             $redirector->gotoUrl($this->view->baseUrl());  
         }
     }
 	
-    public function indexAction() {$this->_helper->redirector('volscatalogue','directionstrategique');}
+	/**
+	 * Action index. Renvoi automatiquement vers l'action volscatalogue
+	 * 
+	 * @return null
+	 */
+    public function indexAction()
+    {
+    	$this->_helper->redirector('volscatalogue', 'directionstrategique');
+	}
 	
+	/**
+	 * Liste des lignes du catalogue
+	 * 
+	 * @return null
+	 */
 	public function volscatalogueAction()
 	{
-		$this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+		$this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 		
 		$tableLigne = new Table_Ligne;
 		$lignes = $tableLigne->getLignes();
 		$this->view->lignes = $lignes;
 		
 		$nbVolsLigne = array();
-		foreach ($lignes as $ligne) {$nbVolsLigne[$ligne['idLigne']] = $tableLigne->getNbVolsDisponibles($ligne['idLigne']);}
+		foreach ($lignes as $ligne) {
+			$nbVolsLigne[$ligne['idLigne']] = $tableLigne->getNbVolsDisponibles($ligne['idLigne']);
+		}
 		$this->view->nbVolsLigne = $nbVolsLigne;
 	}
 	
+	/**
+	 * Ajoute une ligne (formulaire)
+	 * 
+	 * @return null
+	 */
 	public function ajouterligneAction()
     {
-        $this->_helper->actionStack('header','index','default',array('test'=>true, 'head' => $this->headStyleScript));  
+        $this->_helper->actionStack('header', 'index', 'default', array('test'=>true, 'head' => $this->headStyleScript));  
         
         $this->view->message = $this->_helper->FlashMessenger->getMessages();
         
@@ -37,18 +88,15 @@ class DirectionstrategiqueController extends Zend_Controller_Action
         $trigs = $tableAero->getAeroports();
         
         $aeros = array();
-        foreach($trigs as $trig)
-        {
+        foreach ($trigs as $trig) {
             $aeros[$trig['trigrammeAeroport']] = $trig['nomAeroport'];
-        }
-        //Zend_Debug::dump($aeros);exit;        
+        }        
         
         $tablePeriodicite = new Table_Periodicite();
         $periodicites = $tablePeriodicite->getPeriodicites();
         
         $newPeriodicites = array();
-        foreach($periodicites as $periodicite)
-        {
+        foreach ($periodicites as $periodicite) {
             $newPeriodicites[$periodicite['idPeriode']] = $periodicite['nomPeriode'];
         }
         
@@ -58,7 +106,7 @@ class DirectionstrategiqueController extends Zend_Controller_Action
         $form->setAttrib('class', 'form');
         
         $eTrigDepart = new Zend_Form_Element_Select('trigDepart');
-        $eTrigDepart->setLabel('Choississez un aéroport de départ : ');             
+        $eTrigDepart->setLabel('Choississez un aéroport de départ : ');
         $eTrigDepart->addMultiOptions($aeros);
         
         $eTrigArrivee = new Zend_Form_Element_Select('trigArrivee');
@@ -71,28 +119,30 @@ class DirectionstrategiqueController extends Zend_Controller_Action
         
         $eSubmit = new Zend_Form_Element_Submit('sub_ligne');
         $eSubmit->setName('Ajouter');
-        $eSubmit->setAttrib('class','ajouter');
+        $eSubmit->setAttrib('class', 'ajouter');
         
-        $form->addElements(array(
-            $eTrigDepart,
-            $eTrigArrivee,
-            $ePeriod,
-            $eSubmit
-        ));
+        $form->addElements(
+        	array(
+	            $eTrigDepart,
+	            $eTrigArrivee,
+	            $ePeriod,
+	            $eSubmit
+	        )
+		);
         
         $this->view->formajoutligne = $form;
-       // $form = new ajoutligne;
-       // $form->setTrigrammes($trigs);
-       // $form->setPeriodicite($newPeriodicites);
-       // $form->init();
     }
 	
+	/**
+	 * Modifie une ligne (formulaire)
+	 * 
+	 * @return null
+	 */
 	public function modifierligneAction()
 	{
 		$idLigne = (int) $this->_getParam('ligne', null);
-		if($idLigne != null)
-		{
-			$this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+		if ($idLigne != null) {
+			$this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 	        
 	        $this->view->message = $this->_helper->FlashMessenger->getMessages();
 	        
@@ -104,10 +154,12 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 	        $trigs = $tableAero->getAeroports();
 	        
 	        $aeros = array();
-	        foreach($trigs as $trig) {$aeros[$trig['trigrammeAeroport']] = $trig['nomAeroport'];}
+	        foreach ($trigs as $trig) {
+	        	$aeros[$trig['trigrammeAeroport']] = $trig['nomAeroport'];
+			}
 			
 	        $eTrigDepart = new Zend_Form_Element_Select('trigDepart');
-		    $eTrigDepart->setLabel('Choississez un aéroport de départ : ');             
+		    $eTrigDepart->setLabel('Choississez un aéroport de départ : ');
 	        $eTrigDepart->addMultiOptions($aeros);
 			$eTrigDepart->setValue($infosLigne['trigrammeAeroportDepart']);
 	        
@@ -117,16 +169,17 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 			$eTrigArrivee->setValue($infosLigne['trigrammeAeroportArrivee']);
 	        
 	        $periodLigne = $tableLigne->getPeriodiciteLigne($idLigne);
-	        
 			
 			$periodicites = $tablePeriodicite->getPeriodicites();
 			$newPeriodicites = array();
-			foreach($periodicites as $periodicite) {$newPeriodicites[$periodicite['idPeriode']] = $periodicite['nomPeriode'];}
+			foreach ($periodicites as $periodicite) {
+				$newPeriodicites[$periodicite['idPeriode']] = $periodicite['nomPeriode'];
+			}
 			
 			$form = new Zend_Form;
 			$form->setMethod('post');
 			$form->setAction('/lignes/modifier/idligne/'.$idLigne);
-                        $form->setAttrib('class', 'form');
+            $form->setAttrib('class', 'form');
 			
 			$ePeriod = new Zend_Form_Element_Select('periodicite');
 			$ePeriod->setLabel('Periodicité :');
@@ -135,30 +188,37 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 			
 			$eSubmit = new Zend_Form_Element_Submit('sub_ligne');
 			$eSubmit->setName('Modifier');
-			$eSubmit->setAttrib('class','valider');
+			$eSubmit->setAttrib('class', 'valider');
 			
-			$form->addElements(array(
-	            $eTrigDepart,
-	            $eTrigArrivee,
-				$ePeriod,
-				$eSubmit
-			));
+			$form->addElements(
+				array(
+		            $eTrigDepart,
+		            $eTrigArrivee,
+					$ePeriod,
+					$eSubmit
+				)
+			);
 			
 			$infosLigne = $tableLigne->getInfoLigne($idLigne);
 			$this->view->laLigne = $infosLigne;
 			$this->view->formModif = $form;
+		} else {
+			$this->_helper->redirector('index', 'directionstrategique');
 		}
-		else {$this->_helper->redirector('index', 'directionstrategique');}
 	}
 	
+	/**
+	 * Liste les vols d'une ligne
+	 * 
+	 * @return null
+	 */
 	public function voirvolsAction()
 	{
-		$this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));  
+		$this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));  
         
         $idLigne = (int) $this->_getParam('ligne', null);
 		
-		if($idLigne != null)
-		{
+		if ($idLigne != null) {
 			$TableLigne = new Table_Ligne;
 			$TableVol = new Table_Vol;
 			$TableEscale = new Table_Escale;
@@ -177,34 +237,44 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 			
 			$lstVol = array();
 			$key = 0;
-			foreach($paginator as $val)
-			{
-				if(!empty($val->dateHeureDepartPrevueVol)) {$departPrevu = DateFormat_View(new Zend_Date($val->dateHeureDepartPrevueVol), true, false);}
-	            else {$departPrevu = '';}
+			foreach ($paginator as $val) {
+				$departPrevu = $departEffectif = $arrivePrevu = $arriveEffectif = '';
+				
+				if (!empty($val->dateHeureDepartPrevueVol)) {
+					$departPrevu = DateFormat_View(new Zend_Date($val->dateHeureDepartPrevueVol), true, false);
+				}
 	
-	            if(!empty($val->dateHeureDepartEffectiveVol)) {$departEffectif = DateFormat_View(new Zend_Date($val->dateHeureDepartEffectiveVol), true, false);}
-	            else {$departEffectif = '';}
+	            if (!empty($val->dateHeureDepartEffectiveVol)) {
+	            	$departEffectif = DateFormat_View(new Zend_Date($val->dateHeureDepartEffectiveVol), true, false);
+				}
+	            
+	            if (!empty($val->dateHeureArriveePrevueVol)) {
+	            	$arrivePrevu = DateFormat_View(new Zend_Date($val->dateHeureArriveePrevueVol), true, false);
+				}
 	
-	            if(!empty($val->dateHeureArriveePrevueVol)) {$arrivePrevu = DateFormat_View(new Zend_Date($val->dateHeureArriveePrevueVol), true, false);}
-	            else {$arrivePrevu = '';}
-	
-	            if(!empty($val->dateHeureArriveeEffectiveVol)) {$arriveEffectif = DateFormat_View(new Zend_Date($val->dateHeureArriveeEffectiveVol), true, false);}
-	            else {$arriveEffectif = '';}
+	            if (!empty($val->dateHeureArriveeEffectiveVol)) {
+	            	$arriveEffectif = DateFormat_View(new Zend_Date($val->dateHeureArriveeEffectiveVol), true, false);
+				}
 				
 				$escales = $TableEscale->get_InfosEscales($val->idVol);
-				foreach($escales as $cle => $escale)
-				{
-					if(!empty($escale['datehDepartPrevueEscale'])) {$Esc_departPrevu = DateFormat_View(new Zend_Date($escale['datehDepartPrevueEscale']), true, false);}
-		            else {$Esc_departPrevu = '';}
+				foreach ($escales as $cle => $escale) {
+					$Esc_departPrevu = $Esc_departEffectif = $Esc_arrivePrevu = $Esc_arriveEffectif = '';
+					
+					if (!empty($escale['datehDepartPrevueEscale'])) {
+						$Esc_departPrevu = DateFormat_View(new Zend_Date($escale['datehDepartPrevueEscale']), true, false);
+					}
 		
-		            if(!empty($escale['datehDepartEffectiveEscale'])) {$Esc_departEffectif = DateFormat_View(new Zend_Date($escale['datehDepartEffectiveEscale']), true, false);}
-		            else {$Esc_departEffectif = '';}
+		            if (!empty($escale['datehDepartEffectiveEscale'])) {
+		            	$Esc_departEffectif = DateFormat_View(new Zend_Date($escale['datehDepartEffectiveEscale']), true, false);
+					}
 		
-		            if(!empty($escale['datehArriveePrevueEscale'])) {$Esc_arrivePrevu = DateFormat_View(new Zend_Date($escale['datehArriveePrevueEscale']), true, false);}
-		            else {$Esc_arrivePrevu = '';}
+		            if (!empty($escale['datehArriveePrevueEscale'])) {
+		            	$Esc_arrivePrevu = DateFormat_View(new Zend_Date($escale['datehArriveePrevueEscale']), true, false);
+					}
 		
-		            if(!empty($escale['datehArriveeEffectiveEscale'])) {$Esc_arriveEffectif = DateFormat_View(new Zend_Date($escale['datehArriveeEffectiveEscale']), true, false);}
-		            else {$Esc_arriveEffectif = '';}
+		            if (!empty($escale['datehArriveeEffectiveEscale'])) {
+		            	$Esc_arriveEffectif = DateFormat_View(new Zend_Date($escale['datehArriveeEffectiveEscale']), true, false);
+					}
 					
             		$escales[$cle]['datehDepartPrevueEscale'] = $Esc_departPrevu;
 					$escales[$cle]['datehDepartEffectiveEscale'] = $Esc_departEffectif;
@@ -226,17 +296,23 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 			$this->view->paginator = $paginator;
 		
 			$msg = $this->_helper->FlashMessenger->getMessages();
-			if($msg != '') {$this->view->message = $msg;}
+			if ($msg != '') {
+				$this->view->message = $msg;
+			}
 		}
 	}
-	
+
+	/**
+	 * Ajoute un vol
+	 * 
+	 * @return null
+	 */
 	public function ajoutervolAction()
 	{
 		$idLigne = $this->_getParam('ligne', null);
 		
-		if($idLigne != null)
-		{
-			$this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+		if ($idLigne != null) {
+			$this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 			
 			$tableLigne = new Table_Ligne;
 			$tableAero = new Table_Aeroport;
@@ -265,8 +341,7 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 			$affForm = true;
 			$erreurForm = '';
 			
-			if($validForm != null)
-			{
+			if ($validForm != null) {
 				$dateDep = $this->_getParam('dateDep');
 				$dateArr = $this->_getParam('dateArr');
 				$nbEscale = $this->_getParam('nbEscale');
@@ -275,14 +350,11 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 				$erreurEscale = false;
 				$escale = array();
 				
-				if($nbEscale > 0)
-				{
+				if ($nbEscale > 0) {
 					$orderEx = explode('.', $escaleOrder);
 					
-					for($i=0;$i<=$nbEscale;$i++)
-					{
-						if(in_array('escale_'.$i, $orderEx))
-						{
+					for ($i=0;$i<=$nbEscale;$i++) {
+						if (in_array('escale_'.$i, $orderEx)) {
 							$depaero = $this->_getParam('escale_'.$i.'_DepAero');
 							$depdate = $this->_getParam('escale_'.$i.'_DepDate');
 							$arraero = $this->_getParam('escale_'.$i.'_ArrAero');
@@ -298,29 +370,33 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 							$escale[$i]['arraerotxt'] = $arraerotxt['nomAeroport'];
 							$escale[$i]['arrdate'] = $arrdate;
 							
-							if($depaero == null || $depdate == null || $arraero == null || $arrdate == null) {$erreurEscale = true;}
+							if ($depaero == null || $depdate == null || $arraero == null || $arrdate == null) {
+								$erreurEscale = true;
+							}
 						}
 					}
 				}
+				
 				$nbEscaleReel = count($escale);
 				
-				if($erreurEscale == false && $dateDep != null && $dateArr != null) {$affForm = false;}
-				else 
-				{
-						if($erreurEscale == true) {$erreurForm = 'Un champ n\'a pas été rempli dans les escales.';}
-					elseif($dateDep == null) {$erreurForm = 'La date de départ du vol n\'est pas indiquée.';}
-					elseif($dateArr == null) {$erreurForm = 'La date d\'arrivée du vol n\'est pas indiquée.';}
+				if ($erreurEscale == false && $dateDep != null && $dateArr != null) {
+					$affForm = false;
+				} else {
+					if ($erreurEscale == true) {
+						$erreurForm = 'Un champ n\'a pas été rempli dans les escales.';
+					} elseif ($dateDep == null) {
+						$erreurForm = 'La date de départ du vol n\'est pas indiquée.';
+					} elseif ($dateArr == null) {
+						$erreurForm = 'La date d\'arrivée du vol n\'est pas indiquée.';
+					}
 				}
-			}
-			else
-			{
+			} else {
 				$dateDep = $dateArr = $escaleOrder = '';
 				$nbEscale = 0;
 				$escale = array();
 			}
 			
-			if($affForm == false)
-			{
+			if ($affForm == false) {
 				//Création du vol en bdd.
 				
 				/**
@@ -353,14 +429,12 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 				$tableVol = new Table_Vol;
 				$idVol = $tableVol->ajouter($idLigne, $dateDepSql, $dateArrSql);
 				
-				if($nbEscaleReel > 0)
-				{
+				if ($nbEscaleReel > 0) {
 					$tableEscale = new Table_Escale;
 					$i = 1;
-					foreach($escale as $val)
-					{
-						if($trigAeroLigne['trigArrivee'] != $val['arraero'])
-						{
+					
+					foreach ($escale as $val) {
+						if ($trigAeroLigne['trigArrivee'] != $val['arraero']) {
 							$escDep = new Zend_Date($val['depdate']);
 							$escDepSql = DateFormat_SQL($escDep);
 							
@@ -377,16 +451,16 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 		        $this->_helper->FlashMessenger($message);
 		        $redirector = $this->_helper->getHelper('Redirector');
 		        $redirector->gotoUrl($this->view->baseUrl('/directionstrategique/voirvols/ligne/'.$idLigne));
-			}
-			else
-			{
+			} else {
 				/*
 					Création du formulaire à la main et non via Zend car 
 					j'ai besoin de pouvoir placer les balises form où je le veux.
 				*/
 				
 				//Gestion de l'erreur.
-				if($erreurForm != '') {$this->view->errorForm = $erreurForm;}
+				if ($erreurForm != '') {
+					$this->view->errorForm = $erreurForm;
+				}
 				
 				$this->view->trigLigne = $trigAeroLigne;
 				$this->view->lstAero = $tableAero->getAeroports();
@@ -399,19 +473,24 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 				$this->view->nbEscale = $nbEscale;
 				$this->view->escale = $escale;
 			}
+		} else {
+			$this->_helper->redirector('index', 'directionstrategique');
 		}
-		else {$this->_helper->redirector('index', 'directionstrategique');}
 	}
 	
+	/**
+	 * Modifier un vol
+	 * 
+	 * @return null
+	 */
 	public function modifiervolAction()
 	{
 		
 		$idVol = $this->_getParam('vol', null);
 		$idLigne = $this->_getParam('ligne', null);
 		
-		if($idVol != null && $idLigne != null)
-		{
-			$this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+		if ($idVol != null && $idLigne != null) {
+			$this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 			
 			$tableVol = new Table_Vol;
 			$tableEscale = new Table_Escale;
@@ -419,8 +498,8 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 			$tableAero = new Table_Aeroport;
 			
 			$volExist = $tableVol->existeVol($idVol);
-			if($volExist)
-			{
+			
+			if ($volExist) {
 				$infosLigne = $tableLigne->getUneLigne($idLigne);
 				$infosVol = $tableVol->get_InfosVol($idVol);
 				
@@ -448,8 +527,7 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 				$affForm = true;
 				$erreurForm = '';
 				
-				if($validForm != null)
-				{
+				if ($validForm != null) {
 					$dateDep = $this->_getParam('dateDep');
 					$dateArr = $this->_getParam('dateArr');
 					$nbEscale = $this->_getParam('nbEscale');
@@ -458,14 +536,11 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 					$erreurEscale = false;
 					$escale = array();
 					
-					if($nbEscale > 0)
-					{
+					if ($nbEscale > 0) {
 						$orderEx = explode('.', $escaleOrder);
 						
-						for($i=0;$i<=$nbEscale;$i++)
-						{
-							if(in_array('escale_'.$i, $orderEx))
-							{
+						for ($i=0;$i<=$nbEscale;$i++) {
+							if (in_array('escale_'.$i, $orderEx)) {
 								$depaero = $this->_getParam('escale_'.$i.'_DepAero');
 								$depdate = $this->_getParam('escale_'.$i.'_DepDate');
 								$arraero = $this->_getParam('escale_'.$i.'_ArrAero');
@@ -481,45 +556,35 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 								$escale[$i]['arraerotxt'] = $arraerotxt['nomAeroport'];
 								$escale[$i]['arrdate'] = $arrdate;
 								
-								if($depaero == null || $depdate == null || $arraero == null || $arrdate == null) {$erreurEscale = true;}
+								if ($depaero == null || $depdate == null || $arraero == null || $arrdate == null) {
+									$erreurEscale = true;
+								}
 							}
 						}
 					}
+					
 					$nbEscaleReel = count($escale);
 					
-					if($erreurEscale == false && $dateDep != null && $dateArr != null) {$affForm = false;}
-					else 
-					{
-							if($erreurEscale == true) {$erreurForm = 'Un champ n\'a pas été rempli dans les escales.';}
-						elseif($dateDep == null) {$erreurForm = 'La date de départ du vol n\'est pas indiquée.';}
-						elseif($dateArr == null) {$erreurForm = 'La date d\'arrivée du vol n\'est pas indiquée.';}
+					if ($erreurEscale == false && $dateDep != null && $dateArr != null) {
+						$affForm = false;
+					} else {
+						if ($erreurEscale == true) {
+							$erreurForm = 'Un champ n\'a pas été rempli dans les escales.';
+						} elseif ($dateDep == null) {
+							$erreurForm = 'La date de départ du vol n\'est pas indiquée.';
+						} elseif ($dateArr == null) {
+							$erreurForm = 'La date d\'arrivée du vol n\'est pas indiquée.';
+						}
 					}
-				}
-				else
-				{
+				} else {
 					//$infosVol
 					$dateDep = $infosVol['dateHeureDepartPrevueVol'];
 					$dateArr = $infosVol['dateHeureArriveePrevueVol'];
 					$nbEscale = $infosVol['nbEscale'];
 					
 					//get_InfosEscales
-					if($nbEscale > 0)
-					{
+					if ($nbEscale > 0) {
 						$infosEscales = $tableEscale->get_InfosEscales($idVol);
-						/*
-						array(
-							'numeroEscale',
-                            'datehArriveeEffectiveEscale',
-                            'datehArriveePrevueEscale',
-                            'datehDepartEffectiveEscale',
-                            'datehDepartPrevueEscale',
-                            'trigrammeAeroport'
-                        ))
-                        ->join(array('ae' => 'aeroport'), 'ae.trigrammeAeroport=e.trigrammeAeroport', 'nomAeroport')
-                        ->join(array('d' => 'desservir'), 'd.trigrammeAeroport=e.trigrammeAeroport', '')
-                        ->join(array('v' => 'ville'), 'v.idVille=d.idVille', 'nomVille')
-                        ->join(array('p' => 'pays'), 'p.idPays=v.idPays', 'nomPays')
-						*/
 						
 						$escaleDepAero = $trigAeroLigne['trigDepart'];
 						$escaleDepAeroTxt = stripslashes($infosLigne['depart']);
@@ -527,19 +592,19 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 						
 						$escaleOrder = '';
 						$escale = array();
-						foreach($infosEscales as $escaleItem)
-						{
+						foreach ($infosEscales as $escaleItem) {
 							$num = $escaleItem['numeroEscale'];
 							
-							if($escaleOrder != '') {$escaleOrder .= '.';}
+							if ($escaleOrder != '') {
+								$escaleOrder .= '.';
+							}
 							$escaleOrder .= 'escale_'.$num;
 							
 							$escaleArrAero = $escaleItem['trigrammeAeroport'];
 							$escaleArrAeroTxt = $escaleItem['nomAeroport'];
 							$escaleArrDate = $escaleItem['datehArriveePrevueEscale'];
 							
-							$escale[$num] = array
-							(
+							$escale[$num] = array(
 								'depaero' => $escaleDepAero,
 								'depaerotxt' => $escaleDepAeroTxt,
 								'depdate' => $escaleDepDate,
@@ -554,8 +619,7 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 						}
 						
 						$num++;
-						$escale[$num] = array
-						(
+						$escale[$num] = array(
 							'depaero' => $escaleDepAero,
 							'depaerotxt' => $escaleDepAeroTxt,
 							'depdate' => $escaleDepDate,
@@ -563,16 +627,13 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 							'arraerotxt' => stripslashes($infosLigne['arrivee']),
 							'arrdate' => $infosVol['dateHeureArriveePrevueVol']
 						);
-					}
-					else
-					{
+					} else {
 						$escaleOrder = '';
 						$escale = array();
 					}
 				}
 				
-				if($affForm == false)
-				{
+				if ($affForm == false) {
 					//Création du vol en bdd.
 					
 					/**
@@ -596,28 +657,20 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 							)
 					*/
 					
-					Zend_Debug::dump($dateDep);
 					$dateDep = new Zend_Date($dateDep);
 					$dateDepSql = DateFormat_SQL($dateDep);
 					
-					Zend_Debug::dump($dateArr);
 					$dateArr = new Zend_Date($dateArr);
 					$dateArrSql = DateFormat_SQL($dateArr);
-					
-					Zend_Debug::dump($dateDepSql);
-					Zend_Debug::dump($dateArrSql);
 					
 					$tableVol = new Table_Vol;
 					$idVol = $tableVol->modifier($idVol, $dateDepSql, $dateArrSql);
 					$tableEscale->supprAllEscale($idVol);
 					
-					if($nbEscaleReel > 0)
-					{
+					if ($nbEscaleReel > 0) {
 						$i = 1;
-						foreach($escale as $val)
-						{
-							if($trigAeroLigne['trigArrivee'] != $val['arraero'])
-							{
+						foreach ($escale as $val) {
+							if ($trigAeroLigne['trigArrivee'] != $val['arraero']) {
 								$escDep = new Zend_Date($val['depdate']);
 								$escDepSql = DateFormat_SQL($escDep);
 								
@@ -634,16 +687,16 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 			        $this->_helper->FlashMessenger($message);
 			        $redirector = $this->_helper->getHelper('Redirector');
 			        $redirector->gotoUrl($this->view->baseUrl('/directionstrategique/voirvols/ligne/'.$idLigne));
-				}
-				else
-				{
+				} else {
 					/*
 						Création du formulaire à la main et non via Zend car 
 						j'ai besoin de pouvoir placer les balises form où je le veux.
 					*/
 					
 					//Gestion de l'erreur.
-					if($erreurForm != '') {$this->view->errorForm = $erreurForm;}
+					if ($erreurForm != '') {
+						$this->view->errorForm = $erreurForm;
+					}
 					
 					$this->view->trigLigne = $trigAeroLigne;
 					$this->view->lstAero = $tableAero->getAeroports();
@@ -656,25 +709,32 @@ class DirectionstrategiqueController extends Zend_Controller_Action
 					$this->view->nbEscale = $nbEscale;
 					$this->view->escale = $escale;
 				}
+			} else {
+				$this->_helper->redirector('index', 'directionstrategique');
 			}
-			else {$this->_helper->redirector('index', 'directionstrategique');}
+		} else {
+			$this->_helper->redirector('index', 'directionstrategique');
 		}
-		else {$this->_helper->redirector('index', 'directionstrategique');}
 	}
 	
+	/**
+	 * Duplique un vol
+	 * 
+	 * @return null
+	 */
 	public function copyvolAction()
 	{
 		$idRefVol = $this->_getParam('vol', null);
 		$idLigne = $this->_getParam('ligne', null);
 		
-		if($idRefVol != null && $idLigne != null)
-		{
+		if ($idRefVol != null && $idLigne != null) {
 			$tableVol = new Table_Vol;
 			$tableVol->copy($idRefVol);
 			$this->_helper->FlashMessenger('<div class="reussi">Copie du vol réussie.</div>');
 			$this->_helper->redirector('voirvols', 'directionstrategique', null, array('copy' => true, 'ligne' => $idLigne));
+		} else {
+			$this->_helper->redirector('index', 'directionstrategique');
 		}
-		else {$this->_helper->redirector('index', 'directionstrategique');}
 	}
 }
 
