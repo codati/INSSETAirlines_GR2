@@ -40,7 +40,7 @@ class VolsController extends Zend_Controller_Action
      */
     public function indexAction()
     {
-        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
     }
 
     /**
@@ -50,7 +50,7 @@ class VolsController extends Zend_Controller_Action
      */
     public function consulterAction()
     {
-        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 
         /*On récupère, puis renvoie l'id de la ligne passé dans le lien*/
         $idLigne = $this->_getParam('idligne');
@@ -84,7 +84,7 @@ class VolsController extends Zend_Controller_Action
         /*On récupérer les escales des vols via id*/
         $tableEscale = new Table_Escale;
         foreach ($lesVols as $unVol) {
-           $lesEscales[$unVol['idVol']] = $tableEscale->get_InfosEscales($unVol['idVol']);
+            $lesEscales[$unVol['idVol']] = $tableEscale->get_InfosEscales($unVol['idVol']);
         }
         $this->view->lesEscales = $lesEscales;
     }
