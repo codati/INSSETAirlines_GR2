@@ -87,7 +87,7 @@ class ErrorController extends Zend_Controller_Action
      */
     public function errorAction()
     {
-        $this->_helper->actionStack('header', 'index', 'default', array());
+        $this->_helper->actionStack('header', 'index', 'default', array('head'=>$this->headStyleScript));
     	$this->view->message = self::$errorMessage;
     	$this->view->httpCode = self::$httpCode;
     }
