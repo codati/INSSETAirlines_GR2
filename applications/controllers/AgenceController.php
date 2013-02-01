@@ -219,7 +219,7 @@ class AgenceController extends Zend_Controller_Action
         if($res == 1)
         {
             // balise p pas fermée : normal
-            $msg = '<p class="reussi rel">Vos places ont étés confirmées à tant !';            
+            $msg = '<p class="reussi rel">Vos places ont étés confirmées à temps !';            
         }
         else
         {
