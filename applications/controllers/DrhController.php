@@ -41,7 +41,7 @@ class DrhController extends Zend_Controller_Action
             $redirector = $this->_helper->getHelper('Redirector');
             $redirector->gotoUrl($this->view->baseUrl());  
         }
-        if(!Services_verifAcces('Drh')) 
+        if(!Services_verifAcces('DRH')) 
         {
             throw new Zend_Controller_Action_Exception('',403);
         }
