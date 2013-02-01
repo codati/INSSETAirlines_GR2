@@ -1,6 +1,6 @@
 <?php
 /**
- * ContrÃ´leur de service commercial
+ * Controlleur de service commercial
  * 
  * PHP version 5
  * 
@@ -12,7 +12,7 @@
  */
 
 /**
- * Classe du contrÃ´leur service commercial
+ * Classe du controlleur service commercial
  * 
  * @category INSSET
  * @package  Airline
@@ -22,13 +22,14 @@
  */
 class ServiceCommercialController extends Zend_Controller_Action
 {
-     /**
-	 * MÃ©thode d'initialisation du contrÃ´leur.
-	 * Permet de dÃ©clarer les css & js Ã  utiliser.
-	 * Verifie que l'on est connectÃ© 
-     * Verifie que l'on a les droits nÃ©cÃ©ssaires pour accÃ©der a la page
-	 * @return null
-	 */
+    /**
+     * Methode d'initialisation du controlleur.
+     * Permet de declarer les css & js Ã  utiliser.
+     * Verifie que l'on est connecte 
+     * Verifie que l'on a les droits nÃ©cÃ©ssaires pour acceder a la page
+     * 
+     * @return null
+     */
     public function init()
     {
         $this->headStyleScript = array(
@@ -43,19 +44,19 @@ class ServiceCommercialController extends Zend_Controller_Action
         }
     }
     /**
-	 * Action index. Renvoi automatiquement vers l'action volscatalogue
-	 * 
-	 * @return null
-	 */
+     * Action index. Renvoi automatiquement vers l'action volscatalogue
+     * 
+     * @return null
+     */
     public function indexAction() 
     {
         $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
     }
     /**
-    * Renvoi la liste des places rÃ©servÃ©es et libre pour un vol et par classe
-    *
-    * @return array
-    */
+     * Renvoi la liste des places rÃ©servÃ©es et libre pour un vol et par classe
+     *
+     * @return array
+     */
     public function placesbloqueesAction()
     {
         $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
