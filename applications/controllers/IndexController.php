@@ -1,6 +1,6 @@
 <?php
 /**
- * Contrôleur des erreurs
+ * Contrôleur des index
  * 
  * PHP version 5
  * 
@@ -12,7 +12,7 @@
  */
 
 /**
- * Classe du contrôleur error
+ * Classe du contrôleur index
  * 
  * @category INSSET
  * @package  Airline

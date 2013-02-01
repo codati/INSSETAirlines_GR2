@@ -41,27 +41,26 @@ class DrhController extends Zend_Controller_Action
             $redirector = $this->_helper->getHelper('Redirector');
             $redirector->gotoUrl($this->view->baseUrl());  
         }
-        if(!Services_verifAcces('DRH')) 
-        {
+        if (!Services_verifAcces('DRH')) {
             throw new Zend_Controller_Action_Exception('',403);
         }
     }
 
-	/**
-	 * Page index
-	 * 
-	 * @return null
-	 */
+    /**
+     * Page index
+     * 
+     * @return null
+     */
     public function indexAction()
     {
         $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
     }
 
-	/**
-	 * Gestion des techniciens
-	 * 
-	 * @return null
-	 */
+    /**
+     * Gestion des techniciens
+     * 
+     * @return null
+     */
     public function gestiontechnicienAction()
     {
         $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
@@ -72,11 +71,11 @@ class DrhController extends Zend_Controller_Action
         $this->view->lesTechs = $lesTechs;
     }
 
-	/**
-	 * page api
-	 * 
-	 * @return null
-	 */
+    /**
+     * page api
+     * 
+     * @return null
+     */
     public function apiAction()
     {
         //On change de layout : pour ne pas avoir les balises body/head etc
@@ -98,10 +97,10 @@ class DrhController extends Zend_Controller_Action
     }
 
     /**
-	 * Ajouter technicien (formulaire)
-	 * 
-	 * @return null
-	 */
+     * Ajouter technicien (formulaire)
+     * 
+     * @return null
+     */
     public function ajoutertechnicienAction() 
     {
         $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
@@ -152,10 +151,10 @@ class DrhController extends Zend_Controller_Action
     }
 
     /**
-	 * Ajout d'un technicien (validation sql)
-	 * 
-	 * @return null
-	 */
+     * Ajout d'un technicien (validation sql)
+     * 
+     * @return null
+     */
     public function ajoutsqltechnicienAction()
     {
         $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
@@ -197,11 +196,11 @@ class DrhController extends Zend_Controller_Action
         $this->view->message = $message;
     }
 
-	/**
-	 * Modification du technicien (formulaire)
-	 * 
-	 * @return null
-	 */
+    /**
+     * Modification du technicien (formulaire)
+     * 
+     * @return null
+     */
     public function modifiertechnicienAction() 
     {
         $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
@@ -212,7 +211,7 @@ class DrhController extends Zend_Controller_Action
         $test = $espaceSession->test;
         $matricule = $this->_getParam('matricule');
         $espaceSession->matricule = $matricule;
-//            Zend_Debug::dump($espaceSession->matricule);exit;
+        
         $infosTech = $tableTech->getInfos($matricule);  
 
         if ($test != "echoue") {
@@ -264,11 +263,11 @@ class DrhController extends Zend_Controller_Action
         $this->view->leform = $monform;
     }
 
-	/**
-	 * Modification du technicien (sql)
-	 * 
-	 * @return null
-	 */
+    /**
+     * Modification du technicien (sql)
+     * 
+     * @return null
+     */
     public function modifsqltechnicienAction()
     {
         $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
@@ -313,11 +312,11 @@ class DrhController extends Zend_Controller_Action
         $this->view->message = $message;
     }
 
-	/**
-	 * Supprimer le technicien
-	 * 
-	 * @return null
-	 */
+    /**
+     * Supprimer le technicien
+     * 
+     * @return null
+     */
     public function supprimertechnicienAction() 
     {
         $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
@@ -337,69 +336,66 @@ class DrhController extends Zend_Controller_Action
     }
 
     /**
-	 * Habilitation du technicien (form)
-	 *
-	 * @author Fabien Piercourt <fabien.piercourt@gmail.com>
-	 * 
-	 * @return null
-	 */
+     * Habilitation du technicien (form)
+     *
+     * @author Fabien Piercourt <fabien.piercourt@gmail.com>
+     * 
+     * @return null
+     */
     public function habilitationAction() 
     {   
-      $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 
-      $this->view->message = $this->_helper->FlashMessenger->getMessages();
+        $this->view->message = $this->_helper->FlashMessenger->getMessages();
 
-      $formHabiliter = new Zend_Form();
-      // parametrer le formulaire
-      $formHabiliter->setMethod('post');
-      $formHabiliter->setAttrib('class','form');
-      $formHabiliter->setAction($this->view->baseUrl().'/drh/habiliter');
+        $formHabiliter = new Zend_Form();
+        // parametrer le formulaire
+        $formHabiliter->setMethod('post');
+        $formHabiliter->setAttrib('class','form');
+        $formHabiliter->setAction($this->view->baseUrl().'/drh/habiliter');
 
-      //On récupère tous les pilotes
-      $tPilote = new Table_Pilote;
-      $pilotes = $tPilote->fetchAll()->toArray();
-      foreach ($pilotes as $unPilote)
-      {
-           $lesPilotes[$unPilote['idPilote']] = $unPilote['nomPilote'].' '.$unPilote['prenomPilote'];
-      }
-      //Zend_Debug::dump($lePilote);exit;
-      $ePilote = new Zend_Form_Element_Select('sel_pilote');
-      $ePilote->addMultiOptions($lesPilotes);
-      $ePilote->setLabel('Pilote :');
+        //On récupère tous les pilotes
+        $tPilote = new Table_Pilote;
+        $pilotes = $tPilote->fetchAll()->toArray();
+        foreach ($pilotes as $unPilote) {
+             $lesPilotes[$unPilote['idPilote']] = $unPilote['nomPilote'].' '.$unPilote['prenomPilote'];
+        }
+        //Zend_Debug::dump($lePilote);exit;
+        $ePilote = new Zend_Form_Element_Select('sel_pilote');
+        $ePilote->addMultiOptions($lesPilotes);
+        $ePilote->setLabel('Pilote :');
 
-      //On récupère tous les modèles d'avion
-      $tModeleAvion = new Table_ModeleAvion;
-      $modelesavion = $tModeleAvion->fetchAll()->toArray();
-      foreach ($modelesavion as $unModele)
-      {
-           $lesModeles[$unModele['idModeleAvion']] = $unModele['libelleModeleAvion'];
-      }
-      //Zend_Debug::dump($lesModeles);exit;
-      $eModele = new Zend_Form_Element_Select('sel_modele');
-      $eModele->addMultiOptions($lesModeles);
-      $eModele->setLabel('Modèle d\'avion :');
+        //On récupère tous les modèles d'avion
+        $tModeleAvion = new Table_ModeleAvion;
+        $modelesavion = $tModeleAvion->fetchAll()->toArray();
+        foreach ($modelesavion as $unModele) {
+             $lesModeles[$unModele['idModeleAvion']] = $unModele['libelleModeleAvion'];
+        }
+        //Zend_Debug::dump($lesModeles);exit;
+        $eModele = new Zend_Form_Element_Select('sel_modele');
+        $eModele->addMultiOptions($lesModeles);
+        $eModele->setLabel('Modèle d\'avion :');
 
-      $eDate = new Zend_Form_Element_Text('date');
-      $eDate->setAttrib('class', 'datePick');
-      $eDate->setLabel('Date de validité du brevet :');
-      $eDate->setAttrib('readonly', true);
+        $eDate = new Zend_Form_Element_Text('date');
+        $eDate->setAttrib('class', 'datePick');
+        $eDate->setLabel('Date de validité du brevet :');
+        $eDate->setAttrib('readonly', true);
 
-      $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
-      $eSubmit->setLabel('Valider');
-      $eSubmit->setAttrib('class','valider');
+        $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
+        $eSubmit->setLabel('Valider');
+        $eSubmit->setAttrib('class', 'valider');
 
-      $formHabiliter->addElements(array ($ePilote, $eModele, $eDate, $eSubmit));
-      $this->view->formHabiliter = $formHabiliter;
-
+        $formHabiliter->addElements(array ($ePilote, $eModele, $eDate, $eSubmit));
+        $this->view->formHabiliter = $formHabiliter;
     }
 
     /**
-	 * Habilitation technicien (sql)
-	 *
-	 * @author Fabien Piercourt <fabien.piercourt@gmail.com>
-	 * 
-	 * @return null
-	 */
+     * Habilitation technicien (sql)
+     *
+     * @author Fabien Piercourt <fabien.piercourt@gmail.com>
+     * 
+     * @return null
+     */
     public function habiliterAction()
     {
 		$this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
@@ -410,34 +406,32 @@ class DrhController extends Zend_Controller_Action
 		$dateValidite = $this->getRequest()->getPost('date');
 		
 		if (empty($dateValidite)) {
-			$message='<div class="erreur">Erreur ! Vous n\'avez pas saisi de date.</div>';
-		}
-		else
-		{
-			//Mise au format sql de la date
-			$dateValidite = DateFormat_SQL(new Zend_Date(strtolower($dateValidite), 'EEEE dd MMMM YY'),false);
-			
-			$tBreveter = new Table_Breveter;
-			//Si le brevet existe, on met a jour sa date de validite
-			if ($tBreveter->existeBrevet($idPilote, $idModeleAvion)) {
-				$donneesBrevet = array(
-					'dateValiditeBrevet' => $dateValidite
-				);
-				
-				$where[] = $tBreveter->getAdapter()->quoteInto('idPilote = ?', $idPilote);
-				$where[] = $tBreveter->getAdapter()->quoteInto('idModeleAvion = ?', $idModeleAvion);
-				$tBreveter->update($donneesBrevet, $where);
-				$message = '<div class="reussi">La date de validité du brevet de ce pilote a bien été modifiée.</div>';
-			} else { //Sinon, on créer une nouvelle ligne dans la table breveter
-				$donneesBreveter = array(
-				'idPilote' => $idPilote,
-				'idModeleAvion' => $idModeleAvion,
-				'dateValiditeBrevet' => $dateValidite
-				);
-				
-				$tBreveter->insert($donneesBreveter);
-				$message = '<div class="reussi">Le brevet de ce pilote a bien été créé.</div>';
-			}             
+                    $message='<div class="erreur">Erreur ! Vous n\'avez pas saisi de date.</div>';
+		} else {
+                    //Mise au format sql de la date
+                    $dateValidite = DateFormat_SQL(new Zend_Date(strtolower($dateValidite), 'EEEE dd MMMM YY'),false);
+
+                    $tBreveter = new Table_Breveter;
+                    //Si le brevet existe, on met a jour sa date de validite
+                    if ($tBreveter->existeBrevet($idPilote, $idModeleAvion)) {
+                        $donneesBrevet = array(
+                                'dateValiditeBrevet' => $dateValidite
+                        );
+
+                        $where[] = $tBreveter->getAdapter()->quoteInto('idPilote = ?', $idPilote);
+                        $where[] = $tBreveter->getAdapter()->quoteInto('idModeleAvion = ?', $idModeleAvion);
+                        $tBreveter->update($donneesBrevet, $where);
+                        $message = '<div class="reussi">La date de validité du brevet de ce pilote a bien été modifiée.</div>';
+                    } else { //Sinon, on créer une nouvelle ligne dans la table breveter
+                        $donneesBreveter = array(
+                        'idPilote' => $idPilote,
+                        'idModeleAvion' => $idModeleAvion,
+                        'dateValiditeBrevet' => $dateValidite
+                        );
+
+                        $tBreveter->insert($donneesBreveter);
+                        $message = '<div class="reussi">Le brevet de ce pilote a bien été créé.</div>';
+                    }             
 		}
 
 		$this->_helper->FlashMessenger($message);
@@ -446,166 +440,165 @@ class DrhController extends Zend_Controller_Action
 	}
 
     /**
-	 * Personnel naviguant (formulaire)
-	 *
-	 * @author Fabien Piercourt <fabien.piercourt@gmail.com>
-	 * 
-	 * @return null
-	 */
+     * Personnel naviguant (formulaire)
+     *
+     * @author Fabien Piercourt <fabien.piercourt@gmail.com>
+     * 
+     * @return null
+     */
     public function personaviguantAction()
     {
-          $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 
-          //On récupère tous les pilotes
-          $tPilote = new Table_Pilote;
-          $lesPilotes = $tPilote->fetchAll()->toArray();
-          //envoi des pilotes a la vue
-          $this->view->lesPilotes = $lesPilotes;
+        //On récupère tous les pilotes
+        $tPilote = new Table_Pilote;
+        $lesPilotes = $tPilote->fetchAll()->toArray();
+        //envoi des pilotes a la vue
+        $this->view->lesPilotes = $lesPilotes;
 
-          //formulaire d'ajout de pilote
-          $formNouveauPilote = new Zend_Form();
-          // parametrer le formulaire
-          $formNouveauPilote->setMethod('post');
-          $formNouveauPilote->setAttrib('class','form');
-          $formNouveauPilote->setAction($this->view->baseUrl().'/drh/ajouterpilote');
+        //formulaire d'ajout de pilote
+        $formNouveauPilote = new Zend_Form();
+        // parametrer le formulaire
+        $formNouveauPilote->setMethod('post');
+        $formNouveauPilote->setAttrib('class','form');
+        $formNouveauPilote->setAction($this->view->baseUrl().'/drh/ajouterpilote');
 
-          $eNom = new Zend_Form_Element_Text('NomPilote');
-          $eNom->setLabel('Nom du pilote : ');
-          $eNom->setAttrib('required', 'required');
+        $eNom = new Zend_Form_Element_Text('NomPilote');
+        $eNom->setLabel('Nom du pilote : ');
+        $eNom->setAttrib('required', 'required');
 
-          $ePrenom = new Zend_Form_Element_Text('PrenomPilote');
-          $ePrenom->setLabel('Premom du pilote : ');
-          $ePrenom->setAttrib('required', 'required');
+        $ePrenom = new Zend_Form_Element_Text('PrenomPilote');
+        $ePrenom->setLabel('Premom du pilote : ');
+        $ePrenom->setAttrib('required', 'required');
 
-          $eAdresse = new Zend_Form_Element_Text('AdressePilote');
-          $eAdresse->setLabel('Adresse du pilote : ');
-          $eAdresse->setAttrib("required", "required");
-          
-          $eDate = new Zend_Form_Element_Text('dateNaissPilote');
-          $eDate->setLabel('Date de naissance (AAAA-MM-JJ) : ');
-          $eDate->setAttrib("required", "required");
-          $eDate->setAttrib("dateFormat", "yy-mm-dd");
-          $eDate->setAttrib('class','datePick');
+        $eAdresse = new Zend_Form_Element_Text('AdressePilote');
+        $eAdresse->setLabel('Adresse du pilote : ');
+        $eAdresse->setAttrib("required", "required");
 
-          $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
-          $eSubmit->setLabel('Valider');
-          $eSubmit->setAttrib('class','valider');
+        $eDate = new Zend_Form_Element_Text('dateNaissPilote');
+        $eDate->setLabel('Date de naissance (AAAA-MM-JJ) : ');
+        $eDate->setAttrib("required", "required");
+        $eDate->setAttrib("dateFormat", "yy-mm-dd");
+        $eDate->setAttrib('class','datePick');
 
-          $formNouveauPilote->addElements(array ($eNom, $ePrenom, $eAdresse, $eDate, $eSubmit));
-          $this->view->formNouveauPilote = $formNouveauPilote;
+        $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
+        $eSubmit->setLabel('Valider');
+        $eSubmit->setAttrib('class', 'valider');
+
+        $formNouveauPilote->addElements(array ($eNom, $ePrenom, $eAdresse, $eDate, $eSubmit));
+        $this->view->formNouveauPilote = $formNouveauPilote;
     }
 
     /**
-	 * Ajout d'un pilote (sql)
-	 *
-	 * @author Fabien Piercourt <fabien.piercourt@gmail.com>
-	 * 
-	 * @return null
-	 */
+     * Ajout d'un pilote (sql)
+     *
+     * @author Fabien Piercourt <fabien.piercourt@gmail.com>
+     * 
+     * @return null
+     */
     public function ajouterpiloteAction()
     {
-         $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 
-         $tPilote = new Table_Pilote();
-         
-         $nom = $this->getRequest()->getPost('NomPilote');
-         $prenom = $this->getRequest()->getPost('PrenomPilote');
-         $adresse = $this->getRequest()->getPost('AdressePilote');
-         $dateNais = $this->getRequest()->getPost('dateNaissPilote');
-         
-         if (empty($nom) && empty($prenom) && empty($adresse) && empty($dateNais)) {
-              $message = '<div class="erreur">Erreur ! Veuillez remplir tous les champs.</div>';
-         } else {
-              $donneesPilote = array(
-                  'prenomPilote' => $prenom,
-                  'nomPilote' => $nom,
-                  'adressePilote' => $adresse,
-                  'dateNaissancePilote' => $dateNais                                
-              );
-              
-              $tPilote->insert($donneesPilote);
-              $message = '<div class="reussi">Le pilote a bien été créé.</div>';
-         }
-         $this->view->message = $message;
+        $tPilote = new Table_Pilote();
+
+        $nom = $this->getRequest()->getPost('NomPilote');
+        $prenom = $this->getRequest()->getPost('PrenomPilote');
+        $adresse = $this->getRequest()->getPost('AdressePilote');
+        $dateNais = $this->getRequest()->getPost('dateNaissPilote');
+
+        if (empty($nom) && empty($prenom) && empty($adresse) && empty($dateNais)) {
+            $message = '<div class="erreur">Erreur ! Veuillez remplir tous les champs.</div>';
+        } else {
+            $donneesPilote = array(
+                'prenomPilote' => $prenom,
+                'nomPilote' => $nom,
+                'adressePilote' => $adresse,
+                'dateNaissancePilote' => $dateNais                                
+            );
+
+            $tPilote->insert($donneesPilote);
+            $message = '<div class="reussi">Le pilote a bien été créé.</div>';
+        }
+        $this->view->message = $message;
     }
 
     /**
-	 * Modification d'un pilote (formulaire)
-	 *
-	 * @author Fabien Piercourt <fabien.piercourt@gmail.com>
-	 * 
-	 * @return null
-	 */
+     * Modification d'un pilote (formulaire)
+     *
+     * @author Fabien Piercourt <fabien.piercourt@gmail.com>
+     * 
+     * @return null
+     */
     public function modifierpiloteAction()
     {
-         
-         $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
-         $tPilote = new Table_Pilote(); 
-         $idPilote = $this->_getParam('id');
-         $nom = $this->getRequest()->getPost('NomPilote');
-         $prenom = $this->getRequest()->getPost('PrenomPilote');
-         $adresse = $this->getRequest()->getPost('AdressePilote');
-         $dateNais = $this->getRequest()->getPost('dateNaissPilote');
-         
-         if (empty($nom) && empty($prenom) && empty($adresse) && empty($dateNais)) {
-              $message = '<div class="information">Remplissez le formulaire ci-dessous.</div>'; 
-         } else {
-              $donneesPilote = array(
-                  'prenomPilote' => $prenom,
-                  'nomPilote' => $nom,
-                  'adressePilote' => $adresse,
-                  'dateNaissancePilote' => $dateNais                                
-              );
-              
-              try {
-	              $where = $tPilote->getAdapter()->quoteInto('idPilote = ?', $idPilote); 
-	              $tPilote->update($donneesPilote, $where);           
-              } catch (Exception $exc) {
-                   echo $exc->getMessage();
-              }
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
+        $tPilote = new Table_Pilote(); 
+        $idPilote = $this->_getParam('id');
+        $nom = $this->getRequest()->getPost('NomPilote');
+        $prenom = $this->getRequest()->getPost('PrenomPilote');
+        $adresse = $this->getRequest()->getPost('AdressePilote');
+        $dateNais = $this->getRequest()->getPost('dateNaissPilote');
+
+        if (empty($nom) && empty($prenom) && empty($adresse) && empty($dateNais)) {
+            $message = '<div class="information">Remplissez le formulaire ci-dessous.</div>'; 
+        } else {
+            $donneesPilote = array(
+                'prenomPilote' => $prenom,
+                'nomPilote' => $nom,
+                'adressePilote' => $adresse,
+                'dateNaissancePilote' => $dateNais                                
+            );
+
+            try {
+               $where = $tPilote->getAdapter()->quoteInto('idPilote = ?', $idPilote); 
+               $tPilote->update($donneesPilote, $where);           
+            } catch (Exception $exc) {
+               echo $exc->getMessage();
+            }
 
 
-              $message = '<div class="reussi">Le pilote a bien été modifié.</div>';
-         }
-         $lePilote = $tPilote->find($idPilote)->toArray();
-         $lePilote = $lePilote[0];
-         //Zend_Debug::dump($lePilote);exit;
+            $message = '<div class="reussi">Le pilote a bien été modifié.</div>';
+        }
+        $lePilote = $tPilote->find($idPilote)->toArray();
+        $lePilote = $lePilote[0];
+        //Zend_Debug::dump($lePilote);exit;
 
-          
-         $formPilote = new Zend_Form();
-         // parametrer le formulaire
-         $formPilote->setMethod('post');
-         $formPilote->setAction($this->view->baseUrl().'/drh/modifierpilote/id/'.$idPilote);
-         $formPilote->setAttrib('class', 'form');
 
-         $eNom = new Zend_Form_Element_Text('NomPilote');
-         $eNom->setLabel('Nom du pilote : ');
-         $eNom->setValue($lePilote['nomPilote']);
-         $eNom->setAttrib("required", "required");
-          
-         $ePrenom = new Zend_Form_Element_Text('PrenomPilote');
-         $ePrenom->setLabel('Premom du pilote : ');
-         $ePrenom->setValue($lePilote['prenomPilote']);
-         $ePrenom->setAttrib("required", "required");
+        $formPilote = new Zend_Form();
+        // parametrer le formulaire
+        $formPilote->setMethod('post');
+        $formPilote->setAction($this->view->baseUrl().'/drh/modifierpilote/id/'.$idPilote);
+        $formPilote->setAttrib('class', 'form');
 
-         $eAdresse = new Zend_Form_Element_Text('AdressePilote');
-         $eAdresse->setLabel('Adresse du pilote : ');
-         $eAdresse->setValue($lePilote['adressePilote']);    
-         $eAdresse->setAttrib("required", "required");
+        $eNom = new Zend_Form_Element_Text('NomPilote');
+        $eNom->setLabel('Nom du pilote : ');
+        $eNom->setValue($lePilote['nomPilote']);
+        $eNom->setAttrib("required", "required");
 
-         $eDate = new Zend_Form_Element_Text('dateNaissPilote');
-         $eDate->setLabel('Date de naissance (AAAA-MM-JJ) : ');
-         $eDate->setValue($lePilote['dateNaissancePilote']);
-         $eDate->setAttrib("required", "required");
-         $eDate->setAttrib("dateFormat", "yy-mm-dd");
-         $eDate->setAttrib('class', 'datePick');
-          
-         $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
-         $eSubmit->setLabel('Valider');
-         $eSubmit->setAttrib('class', 'valider');
-         $formPilote->addElements(array ($eNom, $ePrenom, $eAdresse, $eDate, $eSubmit));
-         
-         $this->view->formPilote = $formPilote;     
-         $this->view->message = $message;     
+        $ePrenom = new Zend_Form_Element_Text('PrenomPilote');
+        $ePrenom->setLabel('Premom du pilote : ');
+        $ePrenom->setValue($lePilote['prenomPilote']);
+        $ePrenom->setAttrib("required", "required");
+
+        $eAdresse = new Zend_Form_Element_Text('AdressePilote');
+        $eAdresse->setLabel('Adresse du pilote : ');
+        $eAdresse->setValue($lePilote['adressePilote']);    
+        $eAdresse->setAttrib("required", "required");
+
+        $eDate = new Zend_Form_Element_Text('dateNaissPilote');
+        $eDate->setLabel('Date de naissance (AAAA-MM-JJ) : ');
+        $eDate->setValue($lePilote['dateNaissancePilote']);
+        $eDate->setAttrib("required", "required");
+        $eDate->setAttrib("dateFormat", "yy-mm-dd");
+        $eDate->setAttrib('class', 'datePick');
+
+        $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
+        $eSubmit->setLabel('Valider');
+        $eSubmit->setAttrib('class', 'valider');
+        $formPilote->addElements(array ($eNom, $ePrenom, $eAdresse, $eDate, $eSubmit));
+
+        $this->view->formPilote = $formPilote;     
+        $this->view->message = $message;     
     }
 }
