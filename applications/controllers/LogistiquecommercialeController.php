@@ -61,7 +61,7 @@ class LogistiquecommercialeController extends Zend_Controller_Action
 
         // parametrer le formulaire
         $monform->setMethod('post');
-        $monform->setAttrib('class','form');
+        $monform->setAttrib('class', 'form');
 
         $monform->setAction($this->view->baseUrl().'/logistiquecommerciale/infosduvol');
 

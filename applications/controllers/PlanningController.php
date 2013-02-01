@@ -35,14 +35,12 @@ class PlanningController extends Zend_Controller_Action
             'js' => array('planning')
         );
 
-        if(!session_encours())
-        {
+        if (!session_encours()) {
             $redirector = $this->_helper->getHelper('Redirector');
             $redirector->gotoUrl($this->view->baseUrl());  
         }
-        if(!Services_verifAcces('Planning')) 
-        {
-            throw new Zend_Controller_Action_Exception('',403);
+        if (!Services_verifAcces('Planning')) {
+            throw new Zend_Controller_Action_Exception('', 403);
         }
     }
     
@@ -95,7 +93,7 @@ class PlanningController extends Zend_Controller_Action
     {
         if (Services_verifAcces('Planning')) {
             $idVol = $this->_getParam('idVol');
-            $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+            $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
             $this->view->idVol = $idVol;
 
             $tableVol = new Table_Vol();
@@ -193,16 +191,11 @@ class PlanningController extends Zend_Controller_Action
                 $classesOk = true;
                 foreach ($LstClasses as $key => $val) {
                     $LstClasses[$key]['value'] = $value = $this->_getParam('class_'.$val['idClasse'], null);
-                    if($value == null) {$classesOk = false;}
+                    if ($value == null) {
+                        $classesOk = false;
+                    }
                 }
-                if (
-                    in_array($modeleAvion, $LstModele) AND
-                    in_array($avion, $LstAvionDispo) AND
-                    in_array($pilote, $LstPiloteDispo) AND
-                    in_array($copilote, $LstPiloteDispo) AND
-                    ($pilote != $copilote) AND
-                    ($classesOk != false)
-                ) {
+                if (in_array($modeleAvion, $LstModele) AND in_array($avion, $LstAvionDispo) AND in_array($pilote, $LstPiloteDispo) AND in_array($copilote, $LstPiloteDispo) AND ($pilote != $copilote) AND ($classesOk != false) ) {
                     header('Location: /planning/planifiervol/idVol/'.$idVol);
                 }
 
@@ -230,20 +223,22 @@ class PlanningController extends Zend_Controller_Action
      * Méthode d'initialisation du contrôleur.
      * Permet de déclarer les css & js à utiliser.
      * 
+     * @param int $idVol : L'id du vol
+     * 
      * @return null
      */
-    public function planifiervolAction($idVol =null)
+    public function planifiervolAction($idVol = null)
     {
         if (Services_verifAcces('Planning')) {
             $idVol = $this->_getParam('idVol', null);
             
             if ($idVol != null) {
-                $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+                $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
                 $this->view->idVol = $idVol;
 
                 $tableVol = new Table_Vol();
                 $InfosVol = $tableVol->get_InfosVol($idVol);
-               // echo '<pre>';print_r($InfosVol);echo '</pre>';exit;
+                // echo '<pre>';print_r($InfosVol);echo '</pre>';exit;
 
                 $dateDepartSQL = $InfosVol['dateHeureDepartPrevueVol'];
                 $dateArriveeSQL = $InfosVol['dateHeureArriveePrevueVol'];
@@ -374,15 +369,7 @@ class PlanningController extends Zend_Controller_Action
                     exit;
                     */
 
-                    if(
-                        in_array($modeleAvion, $LstModele) AND
-                        in_array($avion, $LstAvionDispo) AND
-                        in_array($pilote, $LstPiloteDispo) AND
-                        in_array($copilote, $LstPiloteDispo) AND
-                        ($pilote != $copilote) AND
-                        ($classesOk != false)
-                    )
-                    {
+                    if (in_array($modeleAvion, $LstModele) AND in_array($avion, $LstAvionDispo) AND in_array($pilote, $LstPiloteDispo) AND in_array($copilote, $LstPiloteDispo) AND ($pilote != $copilote) AND ($classesOk != false)) {
                         header('Location: /planning/planifiervol/idVol/'.$idVol);
                     }
 
@@ -462,6 +449,10 @@ class PlanningController extends Zend_Controller_Action
     /**
      * Liste les avions
      * 
+     * @param int $idModele    : l'id du modele
+     * @param int $dateDepart  : date du depart
+     * @param int $dateArrivee : date d'arrivée
+     * 
      * @return null
      */
     public function lstavionAction($idModele=0, $dateDepart=0, $dateArrivee=0)
@@ -488,20 +479,28 @@ class PlanningController extends Zend_Controller_Action
             //echo '<pre>';print_r($lstAvionSQL);echo '</pre>';
 
             $lstAvion = array();
-            foreach($lstAvionSQL as $val) {$lstAvion[$val['immatriculationAvion']] = $val['immatriculationAvion'];}
+            foreach ($lstAvionSQL as $val) {
+                $lstAvion[$val['immatriculationAvion']] = $val['immatriculationAvion'];
+            }
             //echo '<pre>';print_r($lstAvion);echo '</pre>';
 
             if ($get == null) {
                 return $lstAvion;
             } else {
                 $json = Zend_Json::encode($lstAvion);
-                echo $json;exit;
+                echo $json;
+                exit;
             }
         }
     }
     
     /**
      * Liste les pilotes
+     * 
+     * @param int $idModele    : l'id du modele
+     * @param int $dateDepart  : date du depart
+     * @param int $dateArrivee : date d'arrivée
+     * @param int $pilote      : id d'un pilote
      * 
      * @return null
      */
@@ -701,7 +700,7 @@ class PlanningController extends Zend_Controller_Action
     public function modifplanningAction()
     {
         if (Services_verifAcces('Planning')) {
-            $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+            $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
             
             $tableVol = new Table_Vol;
             $volsPlanifs = $tableVol->getVolsPlanifies();
@@ -711,6 +710,12 @@ class PlanningController extends Zend_Controller_Action
             $this->render('planifier');
         }
     }
+    
+    /**
+     * Fin de la modification du planning
+     * 
+     * @return null
+     */
     public function finmodifplanifAction()
     {
         if (Services_verifAcces('Planning')) {
@@ -724,7 +729,9 @@ class PlanningController extends Zend_Controller_Action
                 $pilote = $this->_getParam('idPilote', null);
                 $copilote = $this->_getParam('idCoPilote', null);
 
-                if($modeleAvion == null || $avion == null || $pilote == null || $copilote == null) {exit;}
+                if ($modeleAvion == null || $avion == null || $pilote == null || $copilote == null) {
+                    exit;
+                }
 
                 $tableAssurer = new Table_Assurer();
                 $tableValoir = new Table_Valoir();

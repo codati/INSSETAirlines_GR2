@@ -42,7 +42,7 @@ class DrhController extends Zend_Controller_Action
             $redirector->gotoUrl($this->view->baseUrl());  
         }
         if (!Services_verifAcces('DRH')) {
-            throw new Zend_Controller_Action_Exception('',403);
+            throw new Zend_Controller_Action_Exception('', 403);
         }
     }
 
@@ -63,7 +63,7 @@ class DrhController extends Zend_Controller_Action
      */
     public function gestiontechnicienAction()
     {
-        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 
         $tableTech = new Table_Technicien;
         $lesTechs = $tableTech->getTechs();      
@@ -103,7 +103,7 @@ class DrhController extends Zend_Controller_Action
      */
     public function ajoutertechnicienAction() 
     {
-        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 
         $espaceSession = new Zend_Session_Namespace('AjoutTechCourant');
 
@@ -117,7 +117,7 @@ class DrhController extends Zend_Controller_Action
 
         // parametrer le formulaire
         $monform->setMethod('post');
-        $monform->setAttrib('class','form');
+        $monform->setAttrib('class', 'form');
 
         $monform->setAction($this->view->baseUrl().'/drh/ajoutsqltechnicien');
 
@@ -139,7 +139,7 @@ class DrhController extends Zend_Controller_Action
 
         $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
         $eSubmit->setLabel('Valider');
-        $eSubmit->setAttrib('class','valider');
+        $eSubmit->setAttrib('class', 'valider');
 
         $monform->addElement($eNomTech);
         $monform->addElement($ePrenomTech);
@@ -270,7 +270,7 @@ class DrhController extends Zend_Controller_Action
      */
     public function modifsqltechnicienAction()
     {
-        $this->_helper->actionStack('header','index','default',array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 
         $tableTech = new Table_Technicien;
 
@@ -351,7 +351,7 @@ class DrhController extends Zend_Controller_Action
         $formHabiliter = new Zend_Form();
         // parametrer le formulaire
         $formHabiliter->setMethod('post');
-        $formHabiliter->setAttrib('class','form');
+        $formHabiliter->setAttrib('class', 'form');
         $formHabiliter->setAction($this->view->baseUrl().'/drh/habiliter');
 
         //On récupère tous les pilotes
@@ -409,13 +409,13 @@ class DrhController extends Zend_Controller_Action
                     $message='<div class="erreur">Erreur ! Vous n\'avez pas saisi de date.</div>';
 		} else {
                     //Mise au format sql de la date
-                    $dateValidite = DateFormat_SQL(new Zend_Date(strtolower($dateValidite), 'EEEE dd MMMM YY'),false);
+                    $dateValidite = DateFormat_SQL(new Zend_Date(strtolower($dateValidite), 'EEEE dd MMMM YY'), false);
 
                     $tBreveter = new Table_Breveter;
                     //Si le brevet existe, on met a jour sa date de validite
                     if ($tBreveter->existeBrevet($idPilote, $idModeleAvion)) {
                         $donneesBrevet = array(
-                                'dateValiditeBrevet' => $dateValidite
+                            'dateValiditeBrevet' => $dateValidite
                         );
 
                         $where[] = $tBreveter->getAdapter()->quoteInto('idPilote = ?', $idPilote);
@@ -460,7 +460,7 @@ class DrhController extends Zend_Controller_Action
         $formNouveauPilote = new Zend_Form();
         // parametrer le formulaire
         $formNouveauPilote->setMethod('post');
-        $formNouveauPilote->setAttrib('class','form');
+        $formNouveauPilote->setAttrib('class', 'form');
         $formNouveauPilote->setAction($this->view->baseUrl().'/drh/ajouterpilote');
 
         $eNom = new Zend_Form_Element_Text('NomPilote');
@@ -479,7 +479,7 @@ class DrhController extends Zend_Controller_Action
         $eDate->setLabel('Date de naissance (AAAA-MM-JJ) : ');
         $eDate->setAttrib("required", "required");
         $eDate->setAttrib("dateFormat", "yy-mm-dd");
-        $eDate->setAttrib('class','datePick');
+        $eDate->setAttrib('class', 'datePick');
 
         $eSubmit = new Zend_Form_Element_Submit('bt_sub');    
         $eSubmit->setLabel('Valider');
@@ -551,10 +551,10 @@ class DrhController extends Zend_Controller_Action
             );
 
             try {
-               $where = $tPilote->getAdapter()->quoteInto('idPilote = ?', $idPilote); 
-               $tPilote->update($donneesPilote, $where);           
+                $where = $tPilote->getAdapter()->quoteInto('idPilote = ?', $idPilote); 
+                $tPilote->update($donneesPilote, $where);           
             } catch (Exception $exc) {
-               echo $exc->getMessage();
+                echo $exc->getMessage();
             }
 
 

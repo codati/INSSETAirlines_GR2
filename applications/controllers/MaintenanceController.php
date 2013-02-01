@@ -389,7 +389,7 @@ class MaintenanceController extends Zend_Controller_Action
         }
 
         $this->view->ajout = $ajout;
-     }
+    }
 	
     /**
      * gestion des révisions
@@ -602,15 +602,12 @@ class MaintenanceController extends Zend_Controller_Action
         $leModele = $tableModele->getModeleById($idModele);
         //Zend_Debug::dump($leModele);exit;
         //Zend_Debug::dump($espaceSession->verifModif);exit;
-        if(($espaceSession->VerifModifModel == true) OR ($espaceSession->VerifModifModel == ""))
-        {
+        if (($espaceSession->VerifModifModel == true) OR ($espaceSession->VerifModifModel == "")) {
             $libelleModele = $leModele["libelleModeleAvion"];
             $longDecollage = $leModele["longueurDecollage"];
             $longAtterrissage = $leModele["longueurAtterrissage"];
             $rayonAction = $leModele["rayonAction"];
-        }
-        else
-        {
+        } else {
             $libelleModele = $espaceSession->libelleModele;
             $longDecollage = $espaceSession->longDecollage;
             $longAtterrissage = $espaceSession->longAtterrissage;
@@ -679,8 +676,7 @@ class MaintenanceController extends Zend_Controller_Action
         $espaceSession->rayonAction = $rayonAction;
         $espaceSession->VerifModifModel = false;
 
-        if($libelleModele != "")
-        {          
+        if ($libelleModele != "") {          
             $ajoutSql = $tableModele->Modifier($idModele, $longueurModele, $longueurAtterrissage, $rayonAction, $libelleModele);
             if ($ajoutSql == true) {
                 $espaceSession->libelleModele = "";

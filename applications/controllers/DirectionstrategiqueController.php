@@ -42,7 +42,7 @@ class DirectionstrategiqueController extends Zend_Controller_Action
             $redirector->gotoUrl($this->view->baseUrl());  
         }        
         if (!Services_verifAcces('Direction strategique')) {
-            throw new Zend_Controller_Action_Exception('',403);
+            throw new Zend_Controller_Action_Exception('', 403);
         }
     }
 	
@@ -63,17 +63,17 @@ class DirectionstrategiqueController extends Zend_Controller_Action
      */
     public function volscatalogueAction()
     {
-            $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
+        $this->_helper->actionStack('header', 'index', 'default', array('head' => $this->headStyleScript));
 
-            $tableLigne = new Table_Ligne;
-            $lignes = $tableLigne->getLignes();
-            $this->view->lignes = $lignes;
+        $tableLigne = new Table_Ligne;
+        $lignes = $tableLigne->getLignes();
+        $this->view->lignes = $lignes;
 
-            $nbVolsLigne = array();
-            foreach ($lignes as $ligne) {
-                    $nbVolsLigne[$ligne['idLigne']] = $tableLigne->getNbVolsDisponibles($ligne['idLigne']);
-            }
-            $this->view->nbVolsLigne = $nbVolsLigne;
+        $nbVolsLigne = array();
+        foreach ($lignes as $ligne) {
+            $nbVolsLigne[$ligne['idLigne']] = $tableLigne->getNbVolsDisponibles($ligne['idLigne']);
+        }
+        $this->view->nbVolsLigne = $nbVolsLigne;
     }
 
     /**
